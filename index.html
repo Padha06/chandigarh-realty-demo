@@ -1,0 +1,2241 @@
+<!-- ============================================================================
+CHANDIGARH REALTY — LUXURY ELEVATION v2.0 (single-file demo, no build step)
+CHANGELOG (source → change):
+- Typography: Playfair Display + Inter pairing, Cormorant Garamond italic accents,
+  12/14/16/20/24/32/48/72 scale, optical tracking, text-wrap balance/pretty
+  (FontAlternatives Blog; EstateLux trio; Communication Arts "Normal Is Boring")
+- Material: warm off-white #FAF8F4, graphite #2A2E35, letterpress cards,
+  cinematic navy→near-black footer/tour gradient (Sotheby's restraint; DiverseKit quiet palettes)
+- Layout: asymmetric editorial "Tricity Letter" block, masonry hero-listing grid,
+  scroll progress bar, dossier corner-frames (Sotheby's; Compass/SERHANT.; Marren)
+- Motion: 12px/500ms expo-out reveals, CSS-staggered grids, Ken Burns cards,
+  crossfading hero slideshow — all reduced-motion guarded (Norvique restraint)
+- Hero: SERHANT. structure (dark hero, rounded search, region cards), trusted strip,
+  italic gold line, sticky search
+- Listings: days-on-market + price-drop + 360° badges (Matterport 3–4.5×), compare drawer
+- Modal: Compass 60/40 + tabs (Overview/360/Locality/EMI) + similar homes
+- Tour: room thumbnail strip, 8s guided mode, ?tour= deep-links (Piercies3sc),
+  3D measure tool + day/night (drgy/property-viewer raycasting; Zillow Showcase; Matterport)
+- Localities: price heatmap + 6-mo sparklines (Local Logic/Baird & Warner 3× insight value)
+- EMI: bank chips, rent-vs-buy, printable summary
+- Lead form: 3 fields + expander + call-time chips + next-steps timeline (VWO/Makelaarsland 89%)
+- Footer: newsletter ("listings we'd buy ourselves"), EN/हिं/ਪੰ switcher
+- Special picks: WhatsApp Concierge (contextual deep-link), Locality Match quiz, 3D Measure tool
+- A11y/perf: lazy+async images, noscript, aria-live, focus-visible gold ring,
+  inline SVG icons (no emoji), on-demand Three.js, sub-450KB single file
+Kept intact: Pannellum 360 rooms, Three.js dollhouse + GLB loader + Draco,
+fallback photo tour, all 9 listings-data, filters, EMI engine, lead validation.
+============================================================================= -->
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chandigarh Realty — Premium Properties in Tricity | Buy, Sell, Rent</title>
+<meta name="description" content="Chandigarh's trusted real estate firm. Verified villas, apartments, floors & plots in Sector 17, Mohali, Panchkula, Zirakpur. RERA-registered. 15+ years, 1200+ happy families." />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: { DEFAULT: '#1a365d', deep: '#0f1f3c', light: '#2c5282' },
+        gold: { DEFAULT: '#d4a574', dark: '#b8894f', light: '#f3e3cb' },
+        teal: { DEFAULT: '#0f766e', dark: '#0b5a54' },
+        cream: '#f8f7f5',
+        paper: '#FAF8F4', /* ENHANCED: quiet warm off-white page base (DiverseKit) */
+        graphite: '#2A2E35', /* ENHANCED: secondary text instead of slate-600 */
+      },
+      fontFamily: {
+        serif: ['"Playfair Display"', 'Georgia', 'serif'],
+        accent: ['"Cormorant Garamond"', 'Georgia', 'serif'], /* ENHANCED: italic accent face (EstateLux trio) */
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+      },
+      boxShadow: {
+        card: '0 10px 30px rgba(26,54,93,.10)',
+        lift: '0 24px 48px rgba(26,54,93,.18)',
+      }
+    }
+  }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Cormorant+Garamond:ital,wght@1,500;1,600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* ENHANCED: quiet luxury base — warm paper + graphite (DiverseKit/Sotheby's) */
+  body { font-family: Inter, system-ui, sans-serif; background: #FAF8F4; color: #2A2E35; }
+  .font-serif { font-family: "Playfair Display", Georgia, serif; }
+  .font-accent { font-family: "Cormorant Garamond", Georgia, serif; }
+  /* ENHANCED: type scale 12/14/16/20/24/32/48/72 + optical tracking */
+  h1, h2, h3 { text-wrap: balance; }
+  p, li { text-wrap: pretty; }
+  .display-xl { font-size: clamp(48px, 6vw, 72px); letter-spacing: -0.02em; line-height: 1.04; }
+  .display-lg { font-size: clamp(32px, 4vw, 48px); letter-spacing: -0.02em; line-height: 1.08; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.06em; }
+  /* ENHANCED: restrained reveal — 12px / 500ms expo-out (Norvique) */
+  .reveal { opacity: 0; transform: translateY(12px); transition: opacity .5s cubic-bezier(.16,1,.3,1), transform .5s cubic-bezier(.16,1,.3,1); }
+  .reveal.visible { opacity: 1; transform: none; }
+  .reveal-d1 { transition-delay: .08s } .reveal-d2 { transition-delay: .16s } .reveal-d3 { transition-delay: .24s }
+  /* ENHANCED: CSS-only stagger for grid children */
+  .stagger > *:nth-child(1) { transition-delay: 0ms } .stagger > *:nth-child(2) { transition-delay: 50ms }
+  .stagger > *:nth-child(3) { transition-delay: 100ms } .stagger > *:nth-child(4) { transition-delay: 150ms }
+  .stagger > *:nth-child(5) { transition-delay: 200ms } .stagger > *:nth-child(6) { transition-delay: 250ms }
+  .stagger > *:nth-child(n+7) { transition-delay: 300ms }
+  /* ENHANCED: letterpress cards (Sotheby's) */
+  .luxe { background: #fff; border: 1px solid rgba(26,54,93,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 10px 30px rgba(26,54,93,.08); }
+  /* ENHANCED: dossier corner frames (Marren) */
+  .dossier { position: relative; }
+  .dossier::before, .dossier::after { content: ""; position: absolute; width: 26px; height: 26px; border: 2px solid #d4a574; z-index: 2; pointer-events: none; }
+  .dossier::before { top: 10px; left: 10px; border-right: 0; border-bottom: 0; }
+  .dossier::after { bottom: 10px; right: 10px; border-left: 0; border-top: 0; }
+  /* ENHANCED: Ken Burns on card imagery (12s, subtle) */
+  @keyframes kenburns { from { transform: scale(1) } to { transform: scale(1.05) } }
+  .prop-card img.ph { animation: none; }
+  .prop-card:hover img.ph { animation: kenburns 12s ease-out forwards; }
+  /* ENHANCED: cinematic gradient continuity (footer + tour) */
+  .cinematic { background: linear-gradient(180deg, #0f1f3c 0%, #0a1428 60%, #060b16 100%); }
+  /* ENHANCED: gold focus ring */
+  :focus-visible { outline: 2px solid #d4a574; outline-offset: 2px; border-radius: 4px; }
+  /* ENHANCED: scroll progress */
+  #progressBar { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, #d4a574, #f3e3cb); z-index: 80; }
+  /* ENHANCED: hero slideshow */
+  .slide-layer { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.6s ease; }
+  .slide-layer.on { opacity: 1; }
+  .slide-layer.on::after { content: ""; position: absolute; inset: 0; animation: slowzoom 15s ease-out forwards; }
+  @keyframes slowzoom { from { transform: scale(1) } to { transform: scale(1.06) } }
+  /* ENHANCED: intro sequence (once per session, skippable) */
+  #intro { transition: opacity .6s ease; }
+  #introLogo { stroke-dasharray: 320; stroke-dashoffset: 320; animation: draw 1.1s ease forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0 } }
+  /* ENHANCED: reduced-motion guards */
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .marquee-track { animation: none; }
+    .slide-layer.on::after { animation: none; }
+    .prop-card:hover img.ph { animation: none; }
+    #intro { display: none; }
+  }
+  /* Hero */
+  .hero-bg { background-image: linear-gradient(180deg, rgba(15,31,60,.72) 0%, rgba(15,31,60,.55) 45%, rgba(15,31,60,.78) 100%), url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; }
+  /* Property card */
+  .prop-card { transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s ease; }
+  .prop-card:hover { transform: translateY(-8px); box-shadow: 0 24px 48px rgba(26,54,93,.18); }
+  .prop-card img.ph { transition: transform .8s cubic-bezier(.22,.61,.36,1); }
+  .prop-card:hover img.ph { transform: scale(1.06); }
+  /* Marquee */
+  @keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+  .marquee-track { animation: marquee 28s linear infinite; }
+  /* Testimonial */
+  .tst-slide { display: none; } .tst-slide.active { display: grid; animation: fadeUp .6s ease both; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+  /* Modal */
+  #propModal { transition: opacity .25s ease; }
+  /* Range sliders */
+  input[type=range] { accent-color: #1a365d; }
+  /* Toast */
+  #toast { transition: transform .35s cubic-bezier(.22,.61,.36,1), opacity .35s ease; }
+  /* 360 demo rotation */
+  #tourFrame { transition: transform .12s linear; transform-style: preserve-3d; }
+  .gold-underline { background-image: linear-gradient(#d4a574,#d4a574); background-size: 100% 3px; background-repeat: no-repeat; background-position: 0 100%; }
+  .chip-active { background: #1a365d !important; color: #fff !important; border-color: #1a365d !important; }
+  /* 360 tour */
+  #tourViewer .pnlm-container { background: #0f1f3c; }
+  .tour-pill-active { background: #d4a574 !important; color: #0f1f3c !important; border-color: #d4a574 !important; }
+  ::selection { background: #d4a574; color: #0f1f3c; }
+  /* ENHANCED (layout): touch targets + safe-area docking */
+  @media (pointer: coarse) {
+    #tourOverlay button, .mtab, .chip, #timeChips .tchip { min-height: 44px; }
+  }
+  #conciergeBtn { bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); right: calc(1.25rem + env(safe-area-inset-right, 0px)); }
+  #topBtn { bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); }
+  #toast { bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); }
+  #compareBar { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  /* ENHANCED (harden): honest sample labeling — dashed = illustrative, not fact */
+  .demo-pill { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1px dashed currentColor; border-radius: 999px; padding: 2px 8px; opacity: .8; font-weight: 700; white-space: nowrap; }
+  /* ENHANCED (harden): long-text toast resilience */
+  #toast { max-width: 92vw; white-space: normal; text-align: center; }
+</style>
+</head>
+<body class="antialiased">
+<!-- ENHANCED: scroll progress (thin gold bar) -->
+<div id="progressBar" aria-hidden="true"></div>
+<!-- ENHANCED (harden): plain-HTML fallback if the Tailwind CDN is blocked -->
+<div id="cdnWarn" class="hidden" style="background:#7f1d1d;color:#fff;padding:10px 16px;text-align:center;font-size:14px;">Design assets failed to load (offline?). Everything below still works.</div>
+<!-- ENHANCED: cinematic intro — 1.2s logo draw, fades from black, once per session, click to skip -->
+<div id="intro" class="fixed inset-0 z-[90] bg-[#060b16] grid place-items-center cursor-pointer" role="presentation" aria-hidden="true">
+  <div class="text-center px-6">
+    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+      <rect id="introLogo" x="14" y="14" width="92" height="92" rx="18" stroke="#d4a574" stroke-width="3"/>
+      <text x="60" y="74" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="38" font-weight="700" fill="#d4a574">CR</text>
+    </svg>
+    <p class="font-serif text-white text-2xl mt-4">Chandigarh Realty</p>
+    <p class="eyebrow uppercase text-white/50 font-semibold mt-1">Tricity Property Experts</p>
+  </div>
+</div>
+<noscript><div style="background:#1a365d;color:#fff;padding:16px;text-align:center;font-family:sans-serif">Chandigarh Realty — please enable JavaScript for search, tours &amp; calculators. Browse: <a style="color:#d4a574" href="#properties">Properties</a> · <a style="color:#d4a574" href="#localities">Localities</a> · <a style="color:#d4a574" href="#contact">Contact +91 172 465 4321</a></div></noscript>
+
+<!-- ══════════ TOP BAR ══════════ -->
+<div class="bg-navy-deep text-white/90 text-xs sm:text-[13px]">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
+    <p class="truncate">✔ RERA Registered: PBRERA-SAS79-CR0142 &nbsp;·&nbsp; Serving Chandigarh · Mohali · Panchkula · Zirakpur &nbsp;·&nbsp; <span class="demo-pill">Demo</span></p>
+    <div class="hidden sm:flex items-center gap-4 shrink-0">
+      <a href="tel:+911724654321" class="hover:text-gold inline-flex items-center gap-1.5"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg>+91 172 465 4321</a>
+      <a href="#contact" class="hover:text-gold inline-flex items-center gap-1.5"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6L22 7"/></svg>hello@chandigarhrealty.in</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ NAVBAR ══════════ -->
+<header id="navbar" class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-navy/10 transition-shadow">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <a href="#top" class="flex items-center gap-3">
+      <span class="w-11 h-11 rounded-xl bg-navy text-gold font-serif font-800 text-xl grid place-items-center font-bold shadow-card">CR</span>
+      <span class="leading-tight">
+        <span class="block font-serif font-bold text-navy text-lg">Chandigarh Realty</span>
+        <span class="block text-[11px] tracking-[.22em] uppercase text-navy/60 font-semibold">Tricity Property Experts</span>
+      </span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-7 text-[15px] font-medium text-navy/80">
+      <a href="#properties" class="hover:text-navy">Buy</a>
+      <a href="#localities" class="hover:text-navy">Localities</a>
+      <a href="#tour" class="hover:text-navy">Virtual Tour</a>
+      <a href="#emi" class="hover:text-navy">EMI Calculator</a>
+      <a href="#testimonials" class="hover:text-navy">Reviews</a>
+      <a href="#contact" class="hover:text-navy">Contact</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <button id="favBtn" class="relative hidden sm:inline-flex items-center gap-2 border border-navy/20 rounded-full px-4 py-2 text-sm font-semibold text-navy hover:border-navy" aria-label="Saved properties">
+        ♥ Saved <span id="favCount" class="min-w-[22px] h-[22px] px-1 rounded-full bg-gold text-navy-deep text-xs grid place-items-center font-bold">0</span>
+      </button>
+      <a href="#contact" class="hidden sm:inline-flex bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm transition">Book Free Visit →</a>
+      <button id="menuBtn" class="lg:hidden w-11 h-11 grid place-items-center rounded-xl border border-navy/20 text-navy text-xl" aria-label="Menu">☰</button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="lg:hidden hidden border-t border-navy/10 bg-white px-4 py-3">
+    <nav class="grid gap-1 text-navy font-medium">
+      <a href="#properties" class="py-2 border-b border-navy/5">Buy</a>
+      <a href="#localities" class="py-2 border-b border-navy/5">Localities</a>
+      <a href="#tour" class="py-2 border-b border-navy/5">Virtual Tour</a>
+      <a href="#emi" class="py-2 border-b border-navy/5">EMI Calculator</a>
+      <a href="#testimonials" class="py-2 border-b border-navy/5">Reviews</a>
+      <a href="#contact" class="py-2">Contact · Book Free Visit</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ══════════ HERO ══════════ -->
+<!-- ENHANCED: SERHANT.-structure dark hero + crossfading slideshow (7s, slow zoom) -->
+<section id="top" class="text-white relative overflow-hidden bg-navy-deep">
+  <div class="absolute inset-0" id="heroSlides" aria-hidden="true">
+    <div class="slide-layer on" style="background-image:url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80')"></div>
+    <div class="slide-layer" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=80')"></div>
+    <div class="slide-layer" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80')"></div>
+  </div>
+  <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(15,31,60,.74) 0%, rgba(15,31,60,.55) 45%, rgba(15,31,60,.84) 100%)" aria-hidden="true"></div>
+  <div class="max-w-7xl mx-auto px-4 pt-14 pb-10 sm:pt-20 sm:pb-14 relative">
+    <div class="max-w-3xl">
+      <p class="reveal inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-[13px] font-semibold tracking-wide">
+        <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span> 15+ YEARS · 1,200+ FAMILIES SETTLED IN TRICITY <span class="demo-pill">Demo</span>
+      </p>
+      <h1 class="reveal reveal-d1 font-serif font-bold display-xl mt-5" data-i18n="heroH1">
+        Find a home in Chandigarh<br class="hidden sm:block" /> you'll <span class="text-gold italic">love to live in.</span>
+      </h1>
+      <!-- ENHANCED: unforgettable italic gold line (brand voice) -->
+      <p class="reveal reveal-d1 font-accent italic text-gold text-2xl sm:text-[28px] mt-3" data-i18n="heroLine">— where the paperwork is as clean as the marble.</p>
+      <p class="reveal reveal-d2 mt-4 text-white/85 text-base sm:text-lg max-w-xl">
+        Verified homes across Tricity — clear titles, fair prices, legal help included.
+      </p>
+    </div>
+
+    <!-- Search card -->
+    <!-- ENHANCED: sticky search card (holds for first viewport) + trusted strip + region cards -->
+    <div class="reveal reveal-d3 mt-8 bg-white text-slate-800 rounded-2xl shadow-lift p-4 sm:p-5 max-w-4xl lg:sticky lg:top-[76px] z-30 luxe">
+      <div class="grid sm:grid-cols-4 gap-3">
+        <label class="block">
+          <span class="text-xs font-bold uppercase tracking-wider text-navy/60">Location</span>
+          <select id="qLocation" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 font-medium focus:outline-none focus:ring-2 focus:ring-navy/40">
+            <option value="">All Tricity</option>
+            <option>Chandigarh</option><option>Mohali</option><option>Panchkula</option><option>Zirakpur</option><option>Kharar</option>
+          </select>
+        </label>
+        <label class="block">
+          <span class="text-xs font-bold uppercase tracking-wider text-navy/60">Property type</span>
+          <select id="qType" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 font-medium focus:outline-none focus:ring-2 focus:ring-navy/40">
+            <option value="">Any type</option>
+            <option>Apartment</option><option>Villa</option><option>Floor</option><option>Plot</option><option>Commercial</option>
+          </select>
+        </label>
+        <label class="block">
+          <span class="text-xs font-bold uppercase tracking-wider text-navy/60">Budget</span>
+          <select id="qBudget" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 font-medium focus:outline-none focus:ring-2 focus:ring-navy/40">
+            <option value="">Any budget</option>
+            <option value="100">Under ₹1 Cr</option>
+            <option value="100-250">₹1 – ₹2.5 Cr</option>
+            <option value="250-500">₹2.5 – ₹5 Cr</option>
+            <option value="500">₹5 Cr+</option>
+          </select>
+        </label>
+        <div class="flex items-end">
+          <button id="searchBtn" data-i18n="searchBtn" class="w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl px-2 sm:px-4 py-3.5 transition text-sm sm:text-[15px] whitespace-nowrap">Search Homes ⌕</button>
+        </div>
+      </div>
+      <p class="mt-3 text-[13px] text-slate-500">Popular right now: <button class="link-quick text-navy font-semibold hover:underline" data-q="3BHK Mohali">3BHK in Mohali</button> · <button class="link-quick text-navy font-semibold hover:underline" data-q="Villa Panchkula">Villa in Panchkula</button> · <button class="link-quick text-navy font-semibold hover:underline" data-q="Floor Sector 35">Floor in Sector 35</button></p>
+    </div>
+    <!-- ENHANCED (distill): regions collapse to one scroll strip, not a grid -->
+    <div class="reveal mt-4 flex gap-3 max-w-4xl overflow-x-auto pb-1 snap-x" id="regionCards">
+      <button onclick="filterLocality('Sector 17')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 snap-start"><span class="block font-serif font-bold text-lg">Chandigarh</span><span class="block text-white/65 text-[13px]">Sectors 17 · 35 · 22 — from ₹2.1 Cr</span></button>
+      <button onclick="filterLocality('Mohali')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 snap-start"><span class="block font-serif font-bold text-lg">Mohali</span><span class="block text-white/65 text-[13px]">Phase 10 · Airport Rd — from ₹68 L</span></button>
+      <button onclick="filterLocality('Panchkula')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 snap-start"><span class="block font-serif font-bold text-lg">Panchkula</span><span class="block text-white/65 text-[13px]">Sec 12 · 20 — from ₹1.9 Cr</span></button>
+      <button onclick="filterLocality('Zirakpur')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 snap-start"><span class="block font-serif font-bold text-lg">Zirakpur</span><span class="block text-white/65 text-[13px]">VIP Road — from ₹68 L</span></button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ENHANCED (distill): proof bar lives below the fold — the hero keeps one job -->
+<section class="cinematic" aria-label="Track record">
+  <p class="text-center pt-8"><span class="demo-pill text-gold">Demo figures — replace with client numbers</span></p>
+  <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold"><span class="counter" data-target="15">0</span>+</p><p class="text-[13px] text-white/80 mt-1">Years in Tricity market</p></div>
+      <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold"><span class="counter" data-target="1200">0</span>+</p><p class="text-[13px] text-white/80 mt-1">Happy families settled</p></div>
+      <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold">₹<span class="counter" data-target="850">0</span>Cr+</p><p class="text-[13px] text-white/80 mt-1">Property transacted</p></div>
+      <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold">4.9★</p><p class="text-[13px] text-white/80 mt-1">Google rating · 480+ reviews</p></div>
+  </div>
+  <div class="border-t border-white/10 bg-white/5 backdrop-blur overflow-hidden">
+    <div class="flex whitespace-nowrap marquee-track py-2.5 text-[13px] text-white/80 font-medium">
+      <span class="px-6">SECTOR 17 · From ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">MOHALI PHASE 10 · From ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">PANCHKULA SEC 20 · From ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">ZIRAKPUR VIP ROAD · From ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">SECTOR 17 · From ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">MOHALI PHASE 10 · From ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">PANCHKULA SEC 20 · From ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">ZIRAKPUR VIP ROAD · From ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FEATURED PROPERTIES ══════════ -->
+<section id="properties" class="max-w-7xl mx-auto px-4 py-14 sm:py-20">
+  <div class="reveal flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Handpicked · Verified · RERA-checked</p>
+      <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">Featured <span class="gold-underline">properties</span></h2>
+      <p class="text-slate-600 mt-2 max-w-xl">Every listing is physically visited, title-checked and price-benchmarked by our team before it appears here.</p>
+    </div>
+    <label class="text-sm font-medium text-slate-600">Sort:
+      <select id="sortSel" class="ml-1 border border-slate-200 rounded-lg px-3 py-2 font-semibold text-navy bg-white">
+        <option value="new">Newest first</option>
+        <option value="lo">Price: low → high</option>
+        <option value="hi">Price: high → low</option>
+        <option value="area">Largest area</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="reveal mt-6 flex flex-wrap gap-2" id="filterChips">
+    <button data-type="" class="chip chip-active border border-navy/20 bg-white rounded-full px-4 py-2 text-sm font-semibold text-navy">All</button>
+    <button data-type="Apartment" class="chip border border-navy/20 bg-white rounded-full px-4 py-2 text-sm font-semibold text-navy">Apartments</button>
+    <button data-type="Villa" class="chip border border-navy/20 bg-white rounded-full px-4 py-2 text-sm font-semibold text-navy">Villas</button>
+    <button data-type="Floor" class="chip border border-navy/20 bg-white rounded-full px-4 py-2 text-sm font-semibold text-navy">Builder Floors</button>
+    <button data-type="Plot" class="chip border border-navy/20 bg-white rounded-full px-4 py-2 text-sm font-semibold text-navy">Plots</button>
+    <button data-type="Commercial" class="chip border border-navy/20 bg-white rounded-full px-4 py-2 text-sm font-semibold text-navy">Commercial</button>
+  </div>
+
+  <p id="resultCount" class="mt-4 text-sm text-slate-500" aria-live="polite"></p>
+  <div id="propGrid" class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-6 stagger"></div>
+</section>
+
+<!-- ENHANCED: Sotheby's-style editorial block — stories, not spec sheets (DiverseKit) -->
+<section class="max-w-7xl mx-auto px-4 py-24 sm:py-32">
+  <div class="reveal grid lg:grid-cols-12 gap-8 items-center">
+    <div class="lg:col-span-4 max-w-[480px]">
+      <p class="eyebrow uppercase text-teal font-bold">The Tricity Letter · Q3 2026 <span class="demo-pill">Sample</span></p>
+      <h2 class="font-serif font-bold text-navy display-lg mt-2">Airport Road is doing what Sector 17 did in 2012.</h2>
+      <p class="font-accent italic text-xl text-gold-dark mt-3">Our market letter, read by 4,000 Tricity families.</p>
+      <p class="text-graphite/80 mt-4 leading-relaxed">Registry data from 214 Mohali transactions shows 8.1% YoY growth along the airport corridor — driven by IT City possession and genuine end-user demand, not investor flipping. Zirakpur's rental market tightened to 11-day median letting times.</p>
+      <ul class="mt-5 space-y-2 text-[15px] font-semibold text-navy">
+        <li>— 214 registries analysed, street by street</li>
+        <li>— Rental yields mapped across 9 sectors</li>
+        <li>— 3 micro-markets we'd buy in this quarter</li>
+      </ul>
+      <a href="#contact" class="mt-6 inline-block border border-navy/25 text-navy font-semibold rounded-full px-6 py-3 hover:border-navy transition text-sm">Get the full letter →</a>
+    </div>
+    <div class="lg:col-span-8">
+      <div class="dossier rounded-3xl overflow-hidden shadow-lift">
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80" alt="Tricity commercial corridor at dusk" loading="lazy" decoding="async" width="1600" height="900" class="w-full h-[320px] sm:h-[480px] object-cover" />
+      </div>
+      <div class="mt-4 grid grid-cols-3 gap-3 text-center">
+        <div class="luxe rounded-2xl p-4"><p class="font-serif text-2xl font-bold text-navy">8.1%</p><p class="text-xs text-graphite/60 font-semibold">Airport corridor YoY</p></div>
+        <div class="luxe rounded-2xl p-4"><p class="font-serif text-2xl font-bold text-navy">11 days</p><p class="text-xs text-graphite/60 font-semibold">Median letting time</p></div>
+        <div class="luxe rounded-2xl p-4"><p class="font-serif text-2xl font-bold text-navy">214</p><p class="text-xs text-graphite/60 font-semibold">Registries studied</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ LOCALITIES ══════════ -->
+<section id="localities" class="bg-navy-deep text-white py-14 sm:py-20">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="reveal flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <p class="text-gold font-bold tracking-[.2em] text-xs uppercase">Where Tricity is moving</p>
+        <h2 class="font-serif font-bold text-3xl sm:text-5xl mt-2">Explore by locality</h2>
+        <p class="text-white/70 mt-2 max-w-xl">Live asking-price ranges from our last 90 days of closed deals. Tap a card to filter listings.</p>
+      </div>
+    </div>
+    <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5" id="localityGrid"></div>
+    <!-- ENHANCED: price heatmap by ₹/sq.ft (hyperlocal insight pattern) -->
+    <div class="reveal mt-10">
+      <p class="eyebrow uppercase text-gold font-bold">Sector heat map · asking ₹/sq.ft <span class="demo-pill">Demo</span></p>
+      <div class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-sm font-bold">
+        <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.95)">Sector 17<br /><span class="font-serif text-xl">₹14.2k</span></div>
+        <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.8)">Sector 35<br /><span class="font-serif text-xl">₹12.8k</span></div>
+        <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.6)">Panchkula S20<br /><span class="font-serif text-xl">₹9.9k</span></div>
+        <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.55)">Panchkula S12<br /><span class="font-serif text-xl">₹8.9k</span></div>
+        <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.5)">Mohali Ph-10<br /><span class="font-serif text-xl">₹8.1k</span></div>
+        <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.42)">Airport Road<br /><span class="font-serif text-xl">₹7.4k</span></div>
+        <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.32)">Zirakpur VIP Rd<br /><span class="font-serif text-xl">₹6.2k</span></div>
+        <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.24)">Kharar<br /><span class="font-serif text-xl">₹5.2k</span></div>
+      </div>
+    </div>
+    <!-- ENHANCED: market pulse sparklines (6-month trend) -->
+    <div class="reveal mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="pulseGrid"></div>
+    <div class="reveal mt-8 text-center">
+      <button onclick="openQuiz()" class="bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full px-8 py-3.5 transition">Find my locality match — 3 questions →</button>
+      <p class="mt-2 text-white/50 text-sm">Shareable, takes 30 seconds. No spam.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ 3D / VIRTUAL TOUR TEASER ══════════ -->
+<section id="tour" class="max-w-7xl mx-auto px-4 py-14 sm:py-20">
+  <div class="reveal grid lg:grid-cols-2 gap-8 items-center bg-white rounded-3xl shadow-card border border-navy/10 overflow-hidden">
+    <div class="p-7 sm:p-10">
+      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">See it before you visit</p>
+      <h2 class="font-serif font-bold text-navy text-3xl sm:text-4xl mt-2">360° virtual tours &amp; 3D walkthroughs</h2>
+      <p class="text-slate-600 mt-3">Short on time? Walk through shortlisted homes on your phone. Outstation buyers close with video walkthroughs + live agent call.</p>
+      <ul class="mt-4 space-y-2 text-[15px] text-slate-700">
+        <li>✔ 360° room tours on every premium listing</li>
+        <li>✔ Live video visit with our agent (Hindi / English / Punjabi)</li>
+        <li>✔ 3D floor-plan previews for under-construction projects</li>
+      </ul>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <button class="bg-navy text-white font-semibold rounded-full px-6 py-3 hover:bg-navy-deep" onclick="openTour(1)">Try a sample tour →</button>
+        <a href="#contact" class="border border-navy/25 text-navy font-semibold rounded-full px-6 py-3 hover:border-navy">Request live video visit</a>
+      </div>
+      <p class="mt-4 text-xs text-slate-400">Live working demo — drag to look around. After onboarding we shoot <b>your actual listings</b> in 360°.</p>
+    </div>
+    <div class="relative bg-navy-deep min-h-[320px] sm:min-h-[420px] grid place-items-center overflow-hidden select-none" id="tourStage" title="Drag to rotate">
+      <img id="tourFrame" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80" alt="360 tour preview" decoding="async" width="1200" height="800" class="w-full h-full object-cover absolute inset-0 opacity-90" draggable="false" />
+      <div class="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent"></div>
+      <div class="absolute top-4 left-4 bg-white/90 rounded-full px-4 py-1.5 text-xs font-bold text-navy">● 360° PREVIEW — DRAG ⟷ · TAP TO ENTER</div>
+      <button onclick="openTour(1)" aria-label="Enter 360 degree tour" class="absolute inset-0 m-auto w-20 h-20 rounded-full bg-gold text-navy-deep text-3xl grid place-items-center shadow-lift hover:scale-110 transition">▶</button>
+      <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
+        <div><p class="font-serif font-bold text-lg leading-tight">4BHK Villa · Sector 20, Panchkula</p><p class="text-white/70 text-sm">₹3.8 Cr · 3,200 sq.ft · Park-facing</p></div>
+        <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm" onclick="openTour(1)">Enter tour</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ EMI CALCULATOR ══════════ -->
+<section id="emi" class="bg-cream border-y border-navy/10">
+  <div class="max-w-7xl mx-auto px-4 py-14 sm:py-20 grid lg:grid-cols-2 gap-10 items-start">
+    <div class="reveal">
+      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Plan your budget honestly</p>
+      <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">What will it cost <span class="italic text-gold-dark">per month?</span></h2>
+      <p class="text-slate-600 mt-3 max-w-md">Move the sliders. We arrange pre-approved loans from HDFC, SBI &amp; ICICI at 8.4–9.1% with same-week disbursal for salaried buyers.</p>
+      <div class="mt-6 space-y-5 bg-white rounded-2xl border border-navy/10 p-6 shadow-card luxe">
+        <!-- ENHANCED: pre-filled bank rate chips -->
+        <div class="grid grid-cols-3 items-center gap-2">
+          <span class="eyebrow uppercase text-navy/50 font-bold col-span-3">Bank rates:</span>
+          <button onclick="setBank(8.55,'HDFC')" class="border border-navy/20 rounded-full px-3.5 py-1.5 text-[13px] font-bold text-navy hover:border-navy">HDFC 8.55%</button>
+          <button onclick="setBank(8.40,'SBI')" class="border border-navy/20 rounded-full px-3.5 py-1.5 text-[13px] font-bold text-navy hover:border-navy">SBI 8.40%</button>
+          <button onclick="setBank(8.75,'ICICI')" class="border border-navy/20 rounded-full px-3.5 py-1.5 text-[13px] font-bold text-navy hover:border-navy">ICICI 8.75%</button>
+        </div>
+        <div>
+          <div class="flex justify-between text-sm font-semibold text-navy"><span>Property price</span><span id="emiPriceLbl">₹1.5 Cr</span></div>
+          <input id="emiPrice" type="range" min="3000000" max="50000000" step="500000" value="15000000" class="w-full mt-2" />
+        </div>
+        <div>
+          <div class="flex justify-between text-sm font-semibold text-navy"><span>Down payment</span><span id="emiDownLbl">20% · ₹30 L</span></div>
+          <input id="emiDown" type="range" min="10" max="60" step="5" value="20" class="w-full mt-2" />
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <div class="flex justify-between text-sm font-semibold text-navy"><span>Interest</span><span id="emiRateLbl">8.7% p.a.</span></div>
+            <input id="emiRate" type="range" min="8" max="11" step="0.1" value="8.7" class="w-full mt-2" />
+          </div>
+          <div>
+            <div class="flex justify-between text-sm font-semibold text-navy"><span>Tenure</span><span id="emiTenLbl">20 yrs</span></div>
+            <input id="emiTen" type="range" min="5" max="30" step="1" value="20" class="w-full mt-2" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-d1 lg:sticky lg:top-24">
+      <div class="bg-navy text-white rounded-3xl p-7 sm:p-9 shadow-lift">
+        <p class="text-white/70 text-sm font-semibold uppercase tracking-widest">Estimated EMI</p>
+        <p class="font-serif text-5xl font-bold text-gold mt-1"><span id="emiOut">₹1,06,245</span><span class="text-lg text-white/70 font-sans font-medium">/mo</span></p>
+        <div class="mt-5 h-3 rounded-full bg-white/15 overflow-hidden flex"><div id="emiBarP" class="bg-gold" style="width:55%"></div><div id="emiBarI" class="bg-teal" style="width:45%"></div></div>
+        <div class="mt-4 grid grid-cols-3 gap-3 text-center">
+          <div class="bg-white/10 rounded-xl p-3"><p class="text-[11px] text-white/60 uppercase font-bold">Loan</p><p id="emiLoan" class="font-bold">₹1.2 Cr</p></div>
+          <div class="bg-white/10 rounded-xl p-3"><p class="text-[11px] text-white/60 uppercase font-bold">Interest</p><p id="emiInt" class="font-bold">₹1.35 Cr</p></div>
+          <div class="bg-white/10 rounded-xl p-3"><p class="text-[11px] text-white/60 uppercase font-bold">Total</p><p id="emiTot" class="font-bold">₹2.85 Cr</p></div>
+        </div>
+        <a href="#contact" class="mt-6 block text-center bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full py-3.5 transition">Check my loan eligibility →</a>
+        <!-- ENHANCED: rent-vs-buy toggle + printable summary -->
+        <label class="mt-3 flex items-center justify-between bg-white/10 rounded-xl px-4 py-3 text-sm font-semibold cursor-pointer">
+          <span>Compare with renting</span>
+          <input id="rentToggle" type="checkbox" onchange="calcEmi()" class="w-5 h-5 accent-[#d4a574]" />
+        </label>
+        <p id="rentOut" class="hidden mt-2 text-sm text-white/80"></p>
+        <button onclick="printEmi()" class="mt-2 w-full border border-white/25 text-white font-semibold rounded-full py-3 text-sm hover:border-gold transition">⎙ Print / save as PDF</button>
+        <p class="mt-3 text-center text-xs text-white/50">Indicative only. Final offer depends on bank &amp; profile.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ WHY US + SERVICES ══════════ -->
+<section class="max-w-7xl mx-auto px-4 py-14 sm:py-20">
+  <div class="reveal text-center max-w-2xl mx-auto">
+    <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Why families choose us</p>
+    <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">A broker who acts like <span class="italic text-gold-dark">your family CA</span></h2>
+  </div>
+  <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div class="reveal bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><h3 class="font-bold text-navy mt-3">Title-first verification</h3><p class="text-sm text-slate-600 mt-1">Registry, CLU, GPA chain &amp; loan-history checked by an independent lawyer before we list.</p></div>
+    <div class="reveal reveal-d1 bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><h3 class="font-bold text-navy mt-3">Fair-price benchmarking</h3><p class="text-sm text-slate-600 mt-1">We show last 6 months of registry rates on the same street — you never overpay.</p></div>
+    <div class="reveal reveal-d2 bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6z"/><path d="M14 3v6h6"/><path d="M9 14h6M9 17h4"/></svg><h3 class="font-bold text-navy mt-3">Loan + legal desk</h3><p class="text-sm text-slate-600 mt-1">Pre-approval in 48 hrs, stamp-duty guidance and registration-day support included.</p></div>
+    <div class="reveal reveal-d3 bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="2" y="13" width="4" height="7" rx="1.5"/><rect x="18" y="13" width="4" height="7" rx="1.5"/><path d="M20 20a4 4 0 0 1-4 2h-1"/></svg><h3 class="font-bold text-navy mt-3">After-handover support</h3><p class="text-sm text-slate-600 mt-1">Society NOC, meter transfer, interiors &amp; resale valuation — free for 1 year.</p></div>
+  </div>
+</section>
+
+<!-- ══════════ TESTIMONIALS ══════════ -->
+<section id="testimonials" class="bg-white border-y border-navy/10">
+  <div class="max-w-5xl mx-auto px-4 py-14 sm:py-20">
+    <div class="reveal text-center">
+      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">480+ Google reviews · 4.9★ <span class="demo-pill">Demo</span></p>
+      <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">Families we've settled</h2>
+    </div>
+    <div class="reveal mt-8 bg-cream rounded-3xl border border-navy/10 p-7 sm:p-10 min-h-[240px]" id="tstWrap"></div>
+    <div class="mt-5 flex items-center justify-center gap-2" id="tstDots"></div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT / LEAD FORM ══════════ -->
+<section id="contact" class="max-w-7xl mx-auto px-4 py-14 sm:py-20">
+  <div class="reveal grid lg:grid-cols-5 gap-8">
+    <div class="lg:col-span-2">
+      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Book a free site visit</p>
+      <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">Talk to a Tricity expert <span class="italic text-gold-dark">today.</span></h2>
+      <p class="text-slate-600 mt-3">Tell us your budget and preferred sectors — we'll send 3 matching verified options on WhatsApp within 2 working hours.</p>
+      <div class="mt-6 space-y-3 text-[15px]">
+        <p class="bg-white border border-navy/10 rounded-xl px-4 py-3 shadow-card">SCO 2451-52, Sector 22-C, Chandigarh 160022</p>
+        <p class="bg-white border border-navy/10 rounded-xl px-4 py-3 shadow-card"><a class="font-bold text-navy" href="tel:+911724654321">+91 172 465 4321</a> · <a class="font-bold text-navy" href="https://wa.me/919876543210">WhatsApp: 98765 43210</a></p>
+        <p class="bg-white border border-navy/10 rounded-xl px-4 py-3 shadow-card">Open all days · 9:30 AM – 7:30 PM</p>
+      </div>
+    </div>
+    <div class="lg:col-span-3">
+      <form id="leadForm" class="bg-white rounded-3xl border border-navy/10 shadow-lift p-6 sm:p-8" novalidate>
+        <!-- ENHANCED: 3-field quick form + expander (VWO/Makelaarsland 89% pattern) -->
+        <div class="grid sm:grid-cols-2 gap-4">
+          <label class="block"><span class="text-sm font-bold text-navy">Full name *</span><input id="fName" autocomplete="name" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 focus:outline-none focus:ring-2 focus:ring-navy/40" placeholder="e.g. Simran Kaur" /></label>
+          <label class="block"><span class="text-sm font-bold text-navy">Phone *</span><input id="fPhone" inputmode="numeric" autocomplete="tel" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 focus:outline-none focus:ring-2 focus:ring-navy/40" placeholder="10-digit mobile" /></label>
+          <label class="block sm:col-span-2"><span class="text-sm font-bold text-navy">I'm interested in *</span>
+            <select id="fIntent" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 bg-white"><option>Buying a home to live in</option><option>Investment property</option><option>Selling my property</option><option>Renting</option><option>Home loan guidance</option></select></label>
+          <div class="sm:col-span-2"><button type="button" id="leadMoreBtn" onclick="const m=document.getElementById('leadMore');m.classList.toggle('hidden');this.textContent=m.classList.contains('hidden')?'+ Add details (budget, email, message)':'− Hide details'" class="text-sm font-bold text-teal hover:underline">+ Add details (budget, email, message)</button></div>
+          <div id="leadMore" class="hidden sm:col-span-2 grid sm:grid-cols-2 gap-4">
+          <label class="block"><span class="text-sm font-bold text-navy">Email</span><input id="fEmail" type="email" autocomplete="email" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 focus:outline-none focus:ring-2 focus:ring-navy/40" placeholder="you@email.com" /></label>
+          <label class="block"><span class="text-sm font-bold text-navy">Budget</span>
+            <select id="fBudget" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 bg-white"><option>Under ₹1 Cr</option><option selected>₹1 – ₹2.5 Cr</option><option>₹2.5 – ₹5 Cr</option><option>₹5 Cr+</option></select></label>
+          <label class="block sm:col-span-2"><span class="text-sm font-bold text-navy">Message</span><textarea id="fMsg" rows="3" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 focus:outline-none focus:ring-2 focus:ring-navy/40" placeholder="e.g. 3BHK near good schools in Mohali, ready-to-move, budget ₹1.4 Cr"></textarea></label>
+          </div>
+          <div class="sm:col-span-2">
+            <span class="text-sm font-bold text-navy">Best time to call</span>
+            <div class="mt-1 flex gap-2" id="timeChips">
+              <button type="button" data-t="Morning" class="tchip border border-navy/25 rounded-full px-4 py-1.5 text-sm font-semibold text-navy">Morning</button>
+              <button type="button" data-t="Afternoon" class="tchip border border-navy/25 rounded-full px-4 py-1.5 text-sm font-semibold text-navy">Afternoon</button>
+              <button type="button" data-t="Evening" class="tchip border border-navy/25 rounded-full px-4 py-1.5 text-sm font-semibold text-navy">Evening</button>
+            </div>
+          </div>
+        </div>
+        <p id="formErr" class="hidden mt-3 text-sm font-semibold text-red-600"></p>
+        <button class="mt-5 w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-4 transition text-[16px]">Request Callback →</button>
+        <p class="mt-3 text-xs text-slate-400 text-center">By submitting, you agree to be contacted about properties. No spam, ever. demo stores locally only.</p>
+        <div id="formOk" class="hidden mt-4 bg-teal/10 border border-teal/30 text-teal-dark rounded-xl p-4 text-sm font-semibold">✔ Thank you! Reference ID: <span id="leadId"></span>
+          <!-- ENHANCED: what-happens-next timeline -->
+          <ol class="mt-3 space-y-2 font-medium text-graphite/80">
+            <li><b class="text-navy">1.</b> Expert calls you within 2 working hours.</li>
+            <li><b class="text-navy">2.</b> 3 verified matches on WhatsApp, with registry benchmarks.</li>
+            <li><b class="text-navy">3.</b> Zero-pressure site visits, evenings &amp; weekends.</li>
+          </ol>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="cinematic text-white/80">
+  <div class="max-w-7xl mx-auto px-4 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div>
+      <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gold text-navy-deep font-serif font-bold text-lg grid place-items-center">CR</span><span class="font-serif font-bold text-white text-lg">Chandigarh Realty</span></div>
+      <p class="text-sm mt-3 text-white/60">Tricity's title-first property advisory. Buy, sell &amp; rent with verified listings and honest pricing since 2011.</p>
+      <p class="text-xs mt-3 text-white/40">RERA: PBRERA-SAS79-CR0142 (demo number)</p>
+    </div>
+    <div><p class="font-bold text-white mb-3">Explore</p><ul class="space-y-2 text-sm"><li><a href="#properties" class="hover:text-gold">Featured properties</a></li><li><a href="#localities" class="hover:text-gold">Localities</a></li><li><a href="#tour" class="hover:text-gold">Virtual tours</a></li><li><a href="#emi" class="hover:text-gold">EMI calculator</a></li></ul></div>
+    <div><p class="font-bold text-white mb-3">Services</p><ul class="space-y-2 text-sm"><li>Home buying &amp; selling</li><li>Rental management</li><li>Home loans &amp; legal</li><li>NRI property desk</li></ul></div>
+    <div><p class="font-bold text-white mb-3">Contact</p><ul class="space-y-2 text-sm"><li>SCO 2451-52, Sector 22-C, Chandigarh</li><li>+91 172 465 4321</li><li>hello@chandigarhrealty.in</li><li class="pt-1"><a href="#contact" class="inline-block bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Book free visit →</a></li></ul></div>
+  </div>
+  <!-- ENHANCED: newsletter + language switcher -->
+  <div class="border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6 items-center">
+      <form id="newsForm" class="flex flex-col sm:flex-row gap-3 sm:items-center">
+        <p class="font-serif text-lg text-white shrink-0">One email a month. <span class="italic text-gold">Only the listings we'd buy ourselves.</span></p>
+        <div class="flex gap-2 flex-1">
+          <input id="newsEmail" type="email" placeholder="you@email.com" aria-label="Email for newsletter" class="flex-1 min-w-0 bg-white/10 border border-white/20 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold" />
+          <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm shrink-0">Join →</button>
+        </div>
+      </form>
+      <div class="flex md:justify-end items-center gap-2 text-sm font-semibold">
+        <span class="text-white/50 text-xs uppercase eyebrow">Language:</span>
+        <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-4 py-1.5">English</button>
+        <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">हिंदी</button>
+        <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">ਪੰਜਾਬੀ</button>
+      </div>
+    </div>
+  </div>
+  <div class="border-t border-white/10"><div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-2 items-center justify-between text-xs text-white/40"><span>© 2026 Chandigarh Realty (demo). Prices indicative; verify RERA &amp; title before purchase.</span><span>Made for client preview · v1.0</span></div></div>
+</footer>
+
+<!-- Floating buttons -->
+<!-- ENHANCED: WhatsApp Concierge — message follows the last-viewed property -->
+<a id="conciergeBtn" href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20property%20options%20in%20Tricity" target="_blank" rel="noopener" class="fixed bottom-5 right-5 z-40 w-14 h-14 rounded-full bg-[#25D366] shadow-lift grid place-items-center" aria-label="Chat on WhatsApp"><svg class="w-7 h-7 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4 0-.5.1-.7l.5-.6c.1-.2.1-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9.9-1.1 2.2-.2 3.9a11.6 11.6 0 0 0 4.5 4.2c1.7.8 2.4.9 3.2.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.1-.5-.2z"/></svg></a>
+<button id="topBtn" class="fixed bottom-5 left-5 z-40 w-12 h-12 rounded-full bg-navy text-white shadow-lift hidden" aria-label="Back to top">↑</button>
+<div id="toast" role="status" aria-live="polite" class="fixed bottom-6 left-1/2 -translate-x-1/2 translate-y-24 opacity-0 z-50 bg-navy-deep text-white text-sm font-semibold rounded-full px-5 py-3 shadow-lift"></div>
+<!-- ENHANCED: compare drawer — buyers shortlist 3–5; forwardable shortlist -->
+<div id="compareBar" class="fixed bottom-0 inset-x-0 z-40 hidden">
+  <div class="max-w-5xl mx-auto m-3 bg-navy-deep text-white rounded-2xl shadow-lift p-4 flex flex-wrap items-center gap-3">
+    <p class="font-serif font-bold text-gold" id="compareTitle">Compare (0)</p>
+    <div id="compareItems" class="flex flex-wrap gap-2 flex-1"></div>
+    <button onclick="showPage('comparePage')" class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Compare table →</button>
+    <button onclick="compareWhatsApp()" class="border border-white/25 text-white font-bold rounded-full px-5 py-2.5 text-sm">WhatsApp</button>
+    <button onclick="clearCompare()" class="text-white/60 text-sm font-semibold hover:text-white">Clear</button>
+  </div>
+</div>
+
+<!-- ══════════ 360° VIRTUAL TOUR OVERLAY ══════════ -->
+<div id="tourOverlay" class="fixed inset-0 z-[70] hidden bg-navy-deep">
+  <div class="h-[100dvh] flex flex-col">
+    <div class="flex flex-wrap items-center justify-between gap-2 px-4 sm:px-6 py-3 text-white border-b border-white/10">
+      <div class="min-w-0">
+        <p class="text-[11px] font-bold tracking-[.2em] text-gold">360° VIRTUAL TOUR · DRAG TO LOOK AROUND</p>
+        <p id="tourTitle" class="font-serif font-bold text-lg leading-tight truncate"></p>
+        <p id="tourSub" class="text-white/60 text-xs"></p>
+      </div>
+      <div class="flex flex-wrap items-center justify-end gap-2">
+        <div class="flex rounded-full overflow-hidden border border-white/25 text-xs font-bold shrink-0">
+          <button id="viewPanoBtn" onclick="setTourView('pano')" class="px-4 py-1.5 tour-pill-active">360° Rooms</button>
+          <button id="view3DBtn" onclick="setTourView('3d')" class="px-4 py-1.5 text-white/85">3D Home</button>
+        </div>
+        <button id="rotBtn" onclick="tourToggleRotate()" class="border border-white/25 rounded-full px-4 py-1.5 text-xs font-bold hover:border-gold">⟳ Auto-rotate: ON</button>
+        <button onclick="replayCoach()" class="border border-white/25 rounded-full px-3.5 py-1.5 text-xs font-bold hover:border-gold" aria-label="Replay tour tips">?</button>
+        <button onclick="tourFullscreen()" class="border border-white/25 rounded-full px-4 py-1.5 text-xs font-bold hover:border-gold" aria-label="Fullscreen">⛶</button>
+        <button onclick="closeTour()" id="tourDoneBtn" class="bg-gold text-navy-deep rounded-full px-5 py-1.5 text-xs font-bold">✕ Done</button>
+      </div>
+    </div>
+    <div id="tourPills" class="flex gap-2 px-4 sm:px-6 py-2.5 overflow-x-auto border-b border-white/10"></div>
+    <div id="dollTools" class="hidden gap-2 px-4 sm:px-6 py-2.5 overflow-x-auto border-b border-white/10 text-xs font-bold items-center">
+      <span class="text-gold shrink-0">INTERACTIVE 3D · DRAG TO ORBIT</span>
+      <button onclick="dollSpin()" id="dollSpinBtn" class="shrink-0 border border-gold/70 text-gold rounded-full px-4 py-1.5">Spin: ON</button>
+      <button onclick="dollView('iso')" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">3D View</button>
+      <button onclick="dollView('top')" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">Floor Plan</button>
+      <!-- ENHANCED (layout): grouped 3D tools — views | instruments | models -->
+      <span class="self-center text-white/25 shrink-0" aria-hidden="true">|</span>
+      <!-- ENHANCED: measure tool (raycasting) + day/night (drgy/property-viewer pattern) -->
+      <button onclick="dollMeasure()" id="dollMeasureBtn" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">Measure: OFF</button>
+      <button onclick="dollDayNight()" id="dollDayBtn" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">Night</button>
+      <span class="self-center text-white/25 shrink-0" aria-hidden="true">|</span>
+      <button onclick="loadModel('home')" id="modelHomeBtn" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">3D Home</button>
+      <button onclick="loadModel('stylised')" id="modelDollBtn" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">3BHK Layout</button>
+    </div>
+    <div class="relative flex-1 min-h-0">
+      <div id="tourViewer" class="absolute inset-0 hidden"></div>
+      <div id="dollhouseWrap" class="absolute inset-0 hidden bg-[#eef2f6]">
+        <div id="dollhouse" class="absolute inset-0"></div>
+        <div id="dollTip" class="absolute hidden pointer-events-none bg-navy-deep text-white text-xs font-semibold rounded-lg px-3 py-2 shadow-lift whitespace-nowrap z-10"></div>
+        <div id="dollLoading" class="absolute inset-0 grid place-items-center text-navy pointer-events-none"><div class="text-center"><p class="text-4xl">🏠</p><p id="dollLoadTxt" class="mt-2 font-semibold text-sm">Building 3D home…</p></div></div>
+      </div>
+      <div id="tourLoading" class="absolute inset-0 grid place-items-center text-white">
+        <div class="text-center"><p class="text-4xl animate-pulse">🌀</p><p class="mt-2 font-semibold">Loading 360° tour…</p></div>
+      </div>
+      <div id="tourFallback" class="absolute inset-0 hidden bg-black">
+        <img id="fbImg" class="w-full h-full object-cover" alt="Property photo tour" draggable="false" />
+        <span class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent pointer-events-none"></span>
+        <button onclick="fbNav(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 text-navy text-xl font-bold" aria-label="Previous">‹</button>
+        <button onclick="fbNav(1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 text-navy text-xl font-bold" aria-label="Next">›</button>
+        <span id="fbCount" class="absolute top-4 right-4 bg-black/60 text-white text-xs font-bold rounded-full px-3 py-1.5"></span>
+      </div>
+      <!-- ENHANCED (onboard): first-run coachmarks — 3 steps, skippable, shown once -->
+      <div id="coach" class="hidden absolute left-1/2 -translate-x-1/2 bottom-28 z-10 w-[92%] max-w-sm">
+        <div class="bg-navy-deep text-white rounded-2xl p-5 shadow-lift border border-gold/40">
+          <p class="eyebrow uppercase text-gold font-bold" id="coachKicker">Tour tips · 1 of 3</p>
+          <p class="font-bold mt-1" id="coachTitle"></p>
+          <p class="text-sm text-white/70 mt-1" id="coachText"></p>
+          <div class="mt-4 flex items-center justify-between gap-2">
+            <button onclick="coachSkip()" class="text-white/60 text-sm font-semibold hover:text-white">Skip tips</button>
+            <div class="flex gap-1.5 items-center" id="coachDots"></div>
+            <button onclick="coachNext()" id="coachNext" class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2 text-sm">Next →</button>
+          </div>
+        </div>
+      </div>
+      <!-- ENHANCED: Matterport-style bottom thumbnail strip -->
+      <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-navy-deep/95 to-transparent pointer-events-none">
+        <div id="tourThumbs" class="hidden gap-2 overflow-x-auto pointer-events-auto mb-3"></div>
+        <div class="flex flex-wrap items-end justify-between gap-3">
+        <p class="text-white/85 text-[13px] font-medium pointer-events-auto"><span id="tourHint">Drag to look around · Scroll to zoom · Tap glowing dots to move rooms</span><br /><span id="fbNote" class="text-white/50 text-xs"></span></p>
+        <a href="#contact" onclick="closeTour()" class="pointer-events-auto bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Request live video visit →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ENHANCED: Locality Match quiz (special pick — viral, captures intent) -->
+<div id="quizModal" class="fixed inset-0 z-[65] hidden">
+  <div class="absolute inset-0 bg-navy-deep/70 backdrop-blur-sm" onclick="closeQuiz()"></div>
+  <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] max-w-lg bg-white rounded-3xl p-7 shadow-lift max-h-[90vh] overflow-y-auto">
+    <div id="quizBody"></div>
+  </div>
+</div>
+
+<!-- ENHANCED: Saved Homes — separate full page (hash-routed #saved) -->
+<div id="savedPage" class="fixed inset-0 z-[60] hidden bg-[#FAF8F4] overflow-y-auto" role="dialog" aria-modal="true" aria-label="Saved homes page">
+  <div class="cinematic text-white">
+    <div class="max-w-5xl mx-auto px-4 pt-5 flex items-center justify-between gap-3">
+      <button onclick="closePage()" class="border border-white/25 hover:border-gold rounded-full px-5 py-2 text-sm font-bold transition">← All listings</button>
+      <p class="eyebrow uppercase text-gold font-bold">Your shortlist · saved on this device</p>
+    </div>
+    <div class="max-w-5xl mx-auto px-4 py-6">
+      <h2 class="font-serif font-bold display-lg" id="savedTitle">Saved homes (0)</h2>
+      <p class="text-white/60 mt-1">View dossiers, contact the agent, or tick compare — then pit them against each other.</p>
+    </div>
+  </div>
+  <div class="max-w-5xl mx-auto px-4 py-8">
+    <div id="savedList" class="grid gap-3"></div>
+    <div id="savedActions" class="mt-5 hidden flex-wrap gap-2">
+      <button onclick="showPage('comparePage')" id="savedCompareBtn" class="flex-1 min-w-[200px] bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-3 text-sm">Compare selected →</button>
+      <button onclick="savedWhatsApp()" class="flex-1 min-w-[200px] bg-[#25D366] text-white font-bold rounded-xl py-3 text-sm">Send shortlist on WhatsApp →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ENHANCED: Compare Table — separate full page (hash-routed #compare) -->
+<div id="comparePage" class="fixed inset-0 z-[60] hidden bg-[#FAF8F4] overflow-y-auto" role="dialog" aria-modal="true" aria-label="Compare properties page">
+  <div class="cinematic text-white">
+    <div class="max-w-6xl mx-auto px-4 pt-5 flex items-center justify-between gap-3">
+      <button onclick="closePage()" class="border border-white/25 hover:border-gold rounded-full px-5 py-2 text-sm font-bold transition">← Back</button>
+      <p class="eyebrow uppercase text-gold font-bold">Feature-by-feature verdict</p>
+    </div>
+    <div class="max-w-6xl mx-auto px-4 py-6">
+      <h2 class="font-serif font-bold display-lg">Compare homes</h2>
+      <p class="text-white/60 mt-1">Every ticked property, judged on price, locality, area, growth and EMI.</p>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <div id="compareTable"></div>
+  </div>
+</div>
+
+<!-- ══════════ PROPERTY MODAL ══════════ -->
+<div id="propModal" class="fixed inset-0 z-[60] hidden opacity-0">
+  <div class="absolute inset-0 bg-navy-deep/70 backdrop-blur-sm" onclick="closeModal()"></div>
+  <div class="absolute inset-x-3 top-[3%] sm:inset-x-0 sm:mx-auto sm:max-w-4xl bg-white rounded-3xl overflow-hidden max-h-[94vh] overflow-y-auto shadow-lift">
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/loaders/DRACOLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+<script>
+/* ───────── DATA ───────── */
+const IMG = (id, w=1200) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+const PROPERTIES = [
+  { id:1, title:"4BHK Park-Facing Villa", city:"Panchkula", sector:"Sector 20", type:"Villa", price:380, priceLbl:"₹3.8 Cr", beds:4, baths:5, area:3200, facing:"Park-facing", status:"Ready to move", tag:"Featured", img:IMG("photo-1600596542815-ffad4c1539a9"), gallery:[IMG("photo-1600596542815-ffad4c1539a9"),IMG("photo-1600607687939-ce8a6c25118c"),IMG("photo-1600585154526-990dced4db0d")], desc:"Independent villa on a 500 sq.yd plot with modular kitchen, home theatre, terrace garden and 2-car stilt parking. Clear title, loan-ready, 5-min from NH-7.", amenities:["Modular kitchen","Home theatre","Terrace garden","2-car parking","Power backup","CCTV"], posted:9 },
+  { id:2, title:"3BHK Premium Apartment", city:"Mohali", sector:"Phase 10, Airport Rd", type:"Apartment", price:142, priceLbl:"₹1.42 Cr", beds:3, baths:3, area:1850, facing:"East-facing", status:"Ready to move", tag:"High demand", img:IMG("photo-1545324418-cc1a3fa10c00"), gallery:[IMG("photo-1545324418-cc1a3fa10c00"),IMG("photo-1560448204-e02f11c3d0e2"),IMG("photo-1600210492486-724fe5c67fb0")], desc:"Gated-society 3BHK with clubhouse, pool and 80% open greens. Top floor available with terrace rights. Ideal for families near IT City & airport.", amenities:["Clubhouse","Swimming pool","Kids play area","Covered parking","Lift + backup","Gated security"], posted:4 },
+  { id:3, title:"Independent Builder Floor", city:"Chandigarh", sector:"Sector 35-D", type:"Floor", price:235, priceLbl:"₹2.35 Cr", beds:3, baths:4, area:2100, facing:"North-East", status:"Ready to move", tag:"Rare listing", img:IMG("photo-1600585154340-be6161a56a0c"), gallery:[IMG("photo-1600585154340-be6161a56a0c"),IMG("photo-1600607687920-4e2a09cf159d"),IMG("photo-1600566753086-00f18fb6b3ea")], desc:"Stilt + 4 independent floor in the heart of Sector 35 — walk to market, schools and Sector 34 offices. Separate gate, mumty + store, registry-ready.", amenities:["Stilt parking","Separate gate","Mumty + store","Near market","Registry-ready","Vastu aligned"], posted:2 },
+  { id:4, title:"2BHK Smart Investment Flat", city:"Zirakpur", sector:"VIP Road", type:"Apartment", price:89, priceLbl:"₹89 L", beds:2, baths:2, area:1150, facing:"West-facing", status:"Ready to move", tag:"Best rental yield", img:IMG("photo-1568605114967-8130f3a36994"), gallery:[IMG("photo-1568605114967-8130f3a36994"),IMG("photo-1600047509807-ba8f99d2cdde")], desc:"High-rental-demand 2BHK on VIP Road — currently fetching ₹18–20k/month. Perfect first investment or starter home with easy highway access.", amenities:["High rental yield","Highway access","Lift","Visitor parking","Loan eligible","Low maintenance"], posted:12 },
+  { id:5, title:"5BHK Luxury Duplex Villa", city:"Mohali", sector:"DLF Hyde Park, Sec 125", type:"Villa", price:465, priceLbl:"₹4.65 Cr", beds:5, baths:6, area:4100, facing:"Golf-facing", status:"Ready to move", tag:"Luxury", img:IMG("photo-1512917774080-9991f1c4c750"), gallery:[IMG("photo-1512917774080-9991f1c4c750"),IMG("photo-1613490493576-7fde63acd811"),IMG("photo-1600585154340-be6161a56a0c")], desc:"Signature duplex with double-height living, private lawn, Italian marble and smart-home automation. DLF-maintained estate with club & golf greens.", amenities:["Private lawn","Smart home","Italian marble","Club + golf","5-car parking","Servant quarter"], posted:6 },
+  { id:6, title:"250 sq.yd Residential Plot", city:"Kharar", sector:"Sector 127, Greater Mohali", type:"Plot", price:118, priceLbl:"₹1.18 Cr", beds:0, baths:0, area:2250, facing:"East-facing", status:"Immediate possession", tag:"Gated township", img:IMG("photo-1500382017468-9049fed747ef"), gallery:[IMG("photo-1500382017468-9049fed747ef")], desc:"East-facing 250 gaj plot in a gated township with 40-ft roads, street lights and park on the block. Build when ready — boundary wall done.", amenities:["Gated township","40-ft road","Park-facing block","Clear title","Loan eligible","Boundary done"], posted:15 },
+  { id:7, title:"Showroom on High-Street", city:"Chandigarh", sector:"Sector 17-E Piazza", type:"Commercial", price:520, priceLbl:"₹5.2 Cr", beds:0, baths:2, area:1800, facing:"Piazza-facing", status:"Leased @ ₹2.1L/mo", tag:"Pre-leased", img:IMG("photo-1486406146926-c627a92ad1ab"), gallery:[IMG("photo-1486406146926-c627a92ad1ab")], desc:"Pre-leased showroom in Sector 17 piazza belt with national-brand tenant till 2031 + 15% escalation every 3 years. 4.8% assured yield.", amenities:["Pre-leased","National tenant","4.8% yield","Escalation clause","Clear title","High footfall"], posted:8 },
+  { id:8, title:"3BHK Family Floor", city:"Panchkula", sector:"Sector 12", type:"Floor", price:198, priceLbl:"₹1.98 Cr", beds:3, baths:3, area:1950, facing:"Park-facing", status:"Ready to move", tag:"Family pick", img:IMG("photo-1580587771525-78b9dba3b914"), gallery:[IMG("photo-1580587771525-78b9dba3b914"),IMG("photo-1600566753086-00f18fb6b3ea")], desc:"First-floor with terrace rights in peaceful Sector 12 — opposite park, near DAV school & Nada Sahib road. Fresh paint, new wardrobes, ready papers.", amenities:["Terrace rights","Park-facing","Near school","New wardrobes","Registry-ready","Peaceful block"], posted:5 },
+  { id:9, title:"1BHK Starter + Study", city:"Mohali", sector:"Sector 71, near ISB Rd", type:"Apartment", price:68, priceLbl:"₹68 L", beds:1, baths:1, area:750, facing:"Balcony garden", status:"Ready to move", tag:"First-home", img:IMG("photo-1502672260266-1c1ef2d93688"), gallery:[IMG("photo-1502672260266-1c1ef2d93688")], desc:"Compact 1BHK+study loved by young professionals near Sohana hospital & Bestech Square. Low EMI (~₹48k), easy resale, society with gym.", amenities:["Low EMI","Near hospital","Gym","Power backup","Easy resale","Loan eligible"], posted:3 },
+];
+const LOCALITIES = [
+  { name:"Sector 17 & 35, Chandigarh", img:IMG("photo-1449824913935-59a10b8d2000",800), range:"₹2.1 – ₹5.2 Cr", trend:"▲ 6.2% YoY", count:3, note:"Heritage sectors · walk-to-everything" },
+  { name:"Mohali · Phase 10 / Airport Rd", img:IMG("photo-1449844908441-8829872d2607",800), range:"₹68 L – ₹1.6 Cr", trend:"▲ 8.1% YoY", count:3, note:"IT City spillover · best appreciation" },
+  { name:"Panchkula · Sec 12 / 20", img:IMG("photo-1477959858617-67f85cf4f1df",800), range:"₹1.9 – ₹3.8 Cr", trend:"▲ 5.4% YoY", count:2, note:"Greenest blocks · HUDA planning" },
+  { name:"Zirakpur · VIP Road", img:IMG("photo-1480714378408-67cf0d13bc1b",800), range:"₹68 – ₹95 L", trend:"▲ 9.3% YoY", count:1, note:"Highest rental yield · highway belt" },
+  { name:"Kharar · Greater Mohali", img:IMG("photo-1444723121867-7a241cacace9",800), range:"₹1.1 – ₹1.5 Cr", trend:"▲ 7.6% YoY", count:1, note:"Plots + new townships" },
+  { name:"Sector 22 · Office & Retail", img:IMG("photo-1486406146926-c627a92ad1ab",800), range:"₹4.5 Cr+", trend:"▲ 4.1% YoY", count:1, note:"Pre-leased commercial" },
+];
+const TESTIMONIALS = [
+  { name:"Col. R. Bedi (Retd.)", detail:"Bought 3BHK · Sector 35, Chandigarh", text:"They rejected two houses I had almost finalised — title issues I would never have caught. The third one they found was better and ₹9 lakh cheaper than the dealer's quote. That honesty is rare.", img:"RB" },
+  { name:"Simran & Harpreet Gill", detail:"Bought Villa · Panchkula Sec 20", text:"We were in Toronto through the whole purchase. Video walkthroughs, lawyer verification on call, and registry done in one India trip. Settled in 40 days flat.", img:"SG" },
+  { name:"Ankit Verma, IT Professional", detail:"Invested 2BHK · Zirakpur VIP Road", text:"Showed me actual rent agreements on the same tower before I paid a rupee. My flat rented in 11 days at the exact rent they predicted. Numbers-first people.", img:"AV" },
+];
+
+/* ───────── STATE ───────── */
+let activeType = "", sortBy = "new", searchCity = "", searchBudget = "";
+/* ENHANCED (harden): storage that never throws (private-mode safe) */
+const store = {
+  get(k, f){ try { const v = localStorage.getItem(k); return v === null ? f : JSON.parse(v); } catch(e){ return f; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} },
+};
+let favorites = new Set(store.get("cr_favs", []));
+const inr = n => n >= 100 ? `₹${(n/100).toFixed(n%100?2:1).replace(/\.00$/,"")} Cr` : `₹${n} L`;
+const fmt = n => "₹" + Math.round(n).toLocaleString("en-IN");
+
+/* ───────── PROPERTY GRID ───────── */
+/* ENHANCED: conversion signals — DOM + price-drop pills (data-backed), 360° badges (Matterport 3–4.5×) */
+const PRICE_DROPS = { 4: "₹6 L price drop", 8: "₹8 L price drop", 6: "Fresh price" };
+const TOUR_HOMES = new Set([1, 2, 3, 5, 7]);
+const compareSet = new Set(store.get("cr_cmp", []));
+/* ENHANCED: inline SVG spec icons (no emoji) */
+const svgWrap = inner => `<svg class="w-4 h-4 inline-block -mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${inner}</svg>`;
+const SVG_BED = svgWrap('<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>');
+const SVG_BATH = svgWrap('<path d="M4 12h16v2a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5v-2Z"/><path d="M6 12V5a2 2 0 0 1 4 0"/><path d="M7 19l-1 2M17 19l1 2"/>');
+const SVG_AREA = svgWrap('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>');
+function specLine(p){
+  if (p.type === "Plot") return `<span>${SVG_AREA} ${p.area.toLocaleString("en-IN")} sq.ft · ${p.facing}</span>`;
+  if (p.type === "Commercial") return `<span>${SVG_AREA} ${p.area.toLocaleString("en-IN")} sq.ft · Leased asset</span>`;
+  return `<span>${SVG_BED} ${p.beds} BHK</span><span>${SVG_BATH} ${p.baths} bath</span><span>${SVG_AREA} ${p.area.toLocaleString("en-IN")} sq.ft</span>`;
+}
+function currentList(){
+  let list = PROPERTIES.filter(p =>
+    (!activeType || p.type === activeType) &&
+    (!searchCity || p.city === searchCity) &&
+    (!searchBudget || (searchBudget==="100" ? p.price<100 : searchBudget==="100-250" ? (p.price>=100&&p.price<=250) : searchBudget==="250-500" ? (p.price>250&&p.price<=500) : p.price>500))
+  );
+  if (sortBy==="lo") list = [...list].sort((a,b)=>a.price-b.price);
+  if (sortBy==="hi") list = [...list].sort((a,b)=>b.price-a.price);
+  if (sortBy==="area") list = [...list].sort((a,b)=>b.area-a.area);
+  if (sortBy==="new") list = [...list].sort((a,b)=>a.posted-b.posted);
+  return list;
+}
+function renderProps(){
+  const list = currentList();
+  document.getElementById("resultCount").innerHTML = list.length ? `Showing ${list.length} verified propert${list.length>1?"ies":"y"}` : `No matches for this combination. <button onclick="resetFilters()" class="font-bold text-navy underline">Reset filters</button>`;
+  document.getElementById("propGrid").innerHTML = list.map((p,i)=>{
+  /* ENHANCED: masonry hero-listing — first card spans 2 cols, horizontal (Compass/SERHANT. editorial priority) */
+  const hero = (i === 0 && list.length > 2);
+  const dom = p.posted <= 5 ? "● New this week" : `${p.posted} days on market`;
+  const drop = PRICE_DROPS[p.id] ? `<span class="bg-red-600 text-white text-xs font-bold rounded-full px-3 py-1.5">↓ ${PRICE_DROPS[p.id]}</span>` : "";
+  const tour = TOUR_HOMES.has(p.id) ? `<span class="bg-teal text-white text-xs font-bold rounded-full px-3 py-1.5">▶ 360° tour</span>` : "";
+  return `
+    <article class="prop-card reveal bg-white rounded-2xl overflow-hidden border border-navy/10 shadow-card luxe flex ${hero ? "sm:col-span-2 flex-col sm:grid sm:grid-cols-2" : "flex-col"}">
+      <div class="relative ${hero ? "h-60 sm:h-full sm:min-h-[340px]" : "h-60"} overflow-hidden dossier">
+        <img class="ph w-full h-full object-cover" src="${p.img}" alt="${p.title} — ${p.sector}, ${p.city}" loading="lazy" decoding="async" width="800" height="600" />
+        <span class="absolute top-3 left-3 bg-navy-deep/90 text-gold text-xs font-bold rounded-full px-3 py-1.5">${p.tag}</span>
+        <button onclick="toggleFav(${p.id})" aria-label="Save ${p.title}" class="absolute top-3 right-3 w-10 h-10 rounded-full grid place-items-center text-lg shadow ${favorites.has(p.id)?"bg-gold text-navy-deep":"bg-white/90 text-navy"}">${favorites.has(p.id)?"♥":"♡"}</button>
+        <span class="absolute bottom-3 left-3 bg-white/95 text-navy text-xs font-bold rounded-full px-3 py-1.5">${p.status}</span>
+      </div>
+      <div class="p-5 flex flex-col flex-1">
+        <div class="flex items-start justify-between gap-2">
+          <p class="font-serif text-2xl font-bold text-navy">${p.priceLbl}</p>
+          <p class="text-[11px] font-bold text-teal bg-teal/10 rounded-full px-2.5 py-1 whitespace-nowrap">${p.type.toUpperCase()}</p>
+        </div>
+        <h3 class="font-bold text-[17px] mt-1">${p.title}</h3>
+        <p class="text-sm text-graphite/70">${p.sector}, ${p.city}</p>
+        <div class="flex flex-wrap gap-2 mt-2">
+          <span class="text-[11px] font-bold text-navy/70 bg-navy/5 rounded-full px-2.5 py-1">${dom}</span>${drop}${tour}
+        </div>
+        <div class="flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-graphite/80 mt-3 pb-3 border-b border-slate-100">${specLine(p)}</div>
+        <div class="flex flex-col sm:flex-row gap-2 mt-4">
+          <button onclick="openModal(${p.id})" class="flex-1 bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-2.5 text-sm transition">View Dossier →</button>
+          <a href="https://wa.me/919876543210?text=${encodeURIComponent("Hi, I'm interested in "+p.title+", "+p.sector+", "+p.city+" ("+p.priceLbl+")")}" target="_blank" rel="noopener" class="border border-teal/40 text-teal-dark font-semibold rounded-xl px-4 py-2.5 text-sm hover:bg-teal hover:text-white transition">WhatsApp</a>
+        </div>
+        <label class="mt-3 inline-flex items-center gap-2 text-[13px] font-semibold text-navy/70 cursor-pointer">
+          <input type="checkbox" ${compareSet.has(p.id)?"checked":""} onchange="toggleCompare(${p.id})" class="w-4 h-4 accent-[#1a365d]" /> Compare this home
+        </label>
+      </div>
+    </article>`; }).join("");
+  updateFavCount(); renderCompare();
+  /* ENHANCED: CSS-staggered grid entrance (50ms steps, no JS timers) */
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    document.querySelectorAll("#propGrid .prop-card").forEach(c=>c.classList.add("visible"));
+  }));
+}
+/* ENHANCED: compare drawer logic */
+function toggleCompare(id){
+  if (compareSet.has(id)) compareSet.delete(id);
+  else { if (compareSet.size >= 3){ toast("Compare up to 3 homes — uncheck one first"); return; } compareSet.add(id); }
+  store.set("cr_cmp", [...compareSet]);
+  renderProps();
+}
+function renderCompare(){
+  const bar = document.getElementById("compareBar");
+  const items = [...compareSet].map(id=>PROPERTIES.find(p=>p.id===id)).filter(Boolean);
+  document.getElementById("compareTitle").textContent = `Compare (${items.length})`;
+  document.getElementById("compareItems").innerHTML = items.map(p=>
+    `<span class="bg-white/10 rounded-full pl-3 pr-2 py-1.5 text-[13px] font-semibold flex items-center gap-2">${p.title.split(" ").slice(0,2).join(" ")} · ${p.priceLbl}<button onclick="toggleCompare(${p.id})" aria-label="Remove" class="w-5 h-5 rounded-full bg-white/20 grid place-items-center text-xs">✕</button></span>`).join("")
+    || `<span class="text-white/50 text-sm">Tick “Compare this home” on up to 3 listings.</span>`;
+  bar.classList.toggle("hidden", items.length === 0);
+  /* ENHANCED (layout): dock FABs away while the drawer owns the thumb zone */
+  document.getElementById("conciergeBtn").style.display = items.length ? "none" : "";
+  document.getElementById("topBtn").style.display = items.length ? "none" : "";
+}
+function compareWhatsApp(){
+  const items = [...compareSet].map(id=>PROPERTIES.find(p=>p.id===id)).filter(Boolean);
+  if (!items.length) return;
+  const msg = "Hi, please compare these homes for me:\n" + items.map((p,i)=>`${i+1}. ${p.title}, ${p.sector}, ${p.city} — ${p.priceLbl}`).join("\n");
+  window.open("https://wa.me/919876543210?text=" + encodeURIComponent(msg), "_blank");
+}
+function clearCompare(){ compareSet.clear(); store.set("cr_cmp", []); renderProps(); }
+function updateFavCount(){ document.getElementById("favCount").textContent = favorites.size; }
+function toggleFav(id){
+  favorites.has(id) ? favorites.delete(id) : favorites.add(id);
+  store.set("cr_favs", [...favorites]);
+  renderProps();
+  toast(favorites.has(id) ? "♥ Saved to your list" : "Removed from saved");
+}
+
+/* ───────── FILTERS / SEARCH / SORT ───────── */
+document.getElementById("filterChips").addEventListener("click", e=>{
+  const b = e.target.closest(".chip"); if(!b) return;
+  document.querySelectorAll(".chip").forEach(c=>c.classList.remove("chip-active"));
+  b.classList.add("chip-active"); activeType = b.dataset.type; renderProps();
+});
+document.getElementById("sortSel").addEventListener("change", e=>{ sortBy = e.target.value; renderProps(); });
+/* ENHANCED (clarify): one-click recovery from empty filter states */
+function resetFilters(){
+  searchCity = ""; searchBudget = ""; activeType = ""; sortBy = "new";
+  document.getElementById("qLocation").value = "";
+  document.getElementById("qType").value = "";
+  document.getElementById("qBudget").value = "";
+  document.getElementById("sortSel").value = "new";
+  document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("chip-active", c.dataset.type===""));
+  renderProps();
+  toast("Filters cleared — showing everything");
+}
+document.getElementById("searchBtn").addEventListener("click", ()=>{
+  searchCity = document.getElementById("qLocation").value;
+  const t = document.getElementById("qType").value;
+  searchBudget = document.getElementById("qBudget").value;
+  activeType = t;
+  document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("chip-active", c.dataset.type===t));
+  document.getElementById("properties").scrollIntoView({behavior:"smooth"});
+  renderProps();
+  toast(searchCity || t ? `Filtered: ${searchCity||"All areas"} · ${t||"Any type"}` : "Showing all verified listings");
+});
+document.querySelectorAll(".link-quick").forEach(b=>b.addEventListener("click", ()=>{
+  const q = b.dataset.q;
+  searchCity = /Mohali/.test(q) ? "Mohali" : /Panchkula/.test(q) ? "Panchkula" : "Chandigarh";
+  activeType = /Villa/.test(q) ? "Villa" : /Floor/.test(q) ? "Floor" : "";
+  document.getElementById("qLocation").value = searchCity;
+  document.getElementById("properties").scrollIntoView({behavior:"smooth"});
+  renderProps();
+}));
+document.getElementById("favBtn")?.addEventListener("click", ()=>openSaved());
+/* ENHANCED: full-page routing for Saved + Compare (hash-driven, back-button works) */
+let pageGuard = false;
+function showPage(name){
+  ["savedPage", "comparePage"].forEach(id=>document.getElementById(id).classList.add("hidden"));
+  if (name){
+    document.getElementById(name).classList.remove("hidden");
+    document.getElementById(name).scrollTop = 0;
+    document.body.style.overflow = "hidden";
+    if (name === "savedPage") renderSavedPage(); else renderComparePage();
+    /* ENHANCED (harden): focus the page heading for keyboard/screen-reader users */
+    const hp = document.getElementById(name).querySelector("h2");
+    if (hp){ hp.setAttribute("tabindex", "-1"); if (window.__kb) hp.focus({ preventScroll: true }); }
+    const h = "#" + name.replace("Page", "");
+    if (location.hash !== h){ pageGuard = true; location.hash = h; }
+  } else {
+    document.body.style.overflow = "";
+    if (location.hash){ pageGuard = true; history.replaceState(null, "", location.pathname + location.search); }
+  }
+}
+window.addEventListener("hashchange", ()=>{
+  if (pageGuard){ pageGuard = false; return; }
+  const h = location.hash.replace("#", "");
+  if (h === "saved") showPage("savedPage");
+  else if (h === "compare") showPage("comparePage");
+  else showPage(null);
+});
+function closePage(){ showPage(null); }
+function openSaved(){ closeModal(); showPage("savedPage"); }
+function closeSaved(){
+  if (!document.getElementById("savedPage").classList.contains("hidden")) showPage(null);
+}
+function renderSavedPage(){
+  const favs = PROPERTIES.filter(p=>favorites.has(p.id));
+  document.getElementById("savedTitle").textContent = `Saved homes (${favs.length})`;
+  document.getElementById("savedList").innerHTML = favs.length ? favs.map(p=>`
+    <div class="luxe bg-white rounded-2xl overflow-hidden flex flex-col sm:flex-row">
+      <img src="${p.img}" alt="${p.title} — ${p.sector}" loading="lazy" decoding="async" width="400" height="260" class="sm:w-64 h-44 sm:h-auto object-cover shrink-0" />
+      <div class="p-5 flex-1 min-w-0">
+        <div class="flex items-start justify-between gap-2">
+          <p class="font-serif text-2xl font-bold text-navy">${p.priceLbl}</p>
+          <button onclick="toggleFav(${p.id});renderSavedPage();" class="text-[12px] font-bold text-red-600 hover:underline shrink-0" aria-label="Remove ${p.title}">Remove ✕</button>
+        </div>
+        <p class="font-bold text-[16px]">${p.title}</p>
+        <p class="text-[13px] text-graphite/60">${p.sector}, ${p.city} · ${p.posted <= 5 ? "New this week" : p.posted + " days on market"}</p>
+        <p class="text-[13px] text-graphite/70 mt-1">${specLine(p)}</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button onclick="showPage(null);openModal(${p.id})" class="bg-navy text-white text-[13px] font-bold rounded-lg px-4 py-2">View dossier →</button>
+          <a class="border border-teal/40 text-teal-dark text-[13px] font-bold rounded-lg px-4 py-2" target="_blank" rel="noopener" href="https://wa.me/919876543210?text=${encodeURIComponent("Hi, I saved " + p.title + ", " + p.sector + " (" + p.priceLbl + ") — please contact me.")}">Contact agent</a>
+          <label class="inline-flex items-center gap-2 text-[13px] font-semibold text-navy/70 cursor-pointer border border-navy/15 rounded-lg px-3 py-2">
+            <input type="checkbox" ${compareSet.has(p.id) ? "checked" : ""} onchange="toggleCompare(${p.id});renderSavedPage();" class="w-4 h-4 accent-[#1a365d]" /> Compare
+          </label>
+        </div>
+      </div>
+    </div>`).join("")
+    : `<div class="text-center py-12 border border-dashed border-navy/20 rounded-2xl bg-white">
+         <p class="font-serif text-2xl text-navy">Nothing saved yet.</p>
+         <p class="text-graphite/60 text-sm mt-1">Tap ♡ on any property and it will wait for you here.</p>
+         <button onclick="closePage();document.getElementById('properties').scrollIntoView({behavior:'smooth'})" class="mt-4 bg-navy text-white font-bold rounded-full px-6 py-2.5 text-sm">Browse homes →</button>
+       </div>`;
+  const n = compareSet.size;
+  const acts = document.getElementById("savedActions");
+  acts.classList.toggle("hidden", !favs.length);
+  acts.classList.toggle("flex", !!favs.length);
+  document.getElementById("savedCompareBtn").textContent = n >= 2 ? `Compare selected (${n}) →` : "Compare selected →";
+}
+function savedWhatsApp(){
+  const favs = PROPERTIES.filter(p=>favorites.has(p.id));
+  if (!favs.length) return;
+  const msg = "Hi, my saved shortlist from Chandigarh Realty:\n" + favs.map((p,i)=>`${i+1}. ${p.title}, ${p.sector}, ${p.city} — ${p.priceLbl} (CR-2026-0${p.id})`).join("\n") + "\nPlease arrange visits.";
+  window.open("https://wa.me/919876543210?text=" + encodeURIComponent(msg), "_blank");
+}
+/* ENHANCED: feature comparison table — every compare-ticked property, judged alike */
+function emiOf(p){ return Math.round(p.price*100000*0.8*0.00725*Math.pow(1.00725,240)/(Math.pow(1.00725,240)-1)); }
+function renderComparePage(){
+  const el = document.getElementById("compareTable");
+  const items = [...compareSet].map(id=>PROPERTIES.find(p=>p.id===id)).filter(Boolean);
+  if (items.length < 2){
+    el.innerHTML = `
+      <div class="luxe bg-white rounded-2xl p-6 sm:p-8">
+        <p class="font-serif font-bold text-navy text-2xl">Tick at least 2 homes to compare.</p>
+        <p class="text-graphite/60 text-sm mt-1">Use the checkboxes below — the table builds itself.</p>
+        <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          ${PROPERTIES.map(p=>`
+            <label class="flex items-center gap-3 border ${compareSet.has(p.id)?"border-gold bg-gold/10":"border-navy/15"} rounded-xl p-3 cursor-pointer hover:border-navy transition">
+              <input type="checkbox" ${compareSet.has(p.id)?"checked":""} onchange="toggleCompare(${p.id});renderComparePage();" class="w-5 h-5 accent-[#1a365d] shrink-0" />
+              <img src="${p.img}" alt="" loading="lazy" decoding="async" width="120" height="80" class="w-16 h-12 object-cover rounded-lg shrink-0" />
+              <span class="min-w-0"><span class="block font-bold text-navy text-sm">${p.priceLbl}</span><span class="block text-xs text-graphite/60 truncate">${p.title} · ${p.sector}</span></span>
+            </label>`).join("")}
+        </div>
+      </div>`;
+    return;
+  }
+  const perSqft = p => Math.round(p.price*100000/(p.area || 1));
+  const lowId = items.reduce((a,b)=>a.price<=b.price?a:b).id;
+  const bigId = items.reduce((a,b)=>a.area>=b.area?a:b).id;
+  const rows = [
+    ["Price", p=>`<b>${p.priceLbl}</b>${p.id===lowId?' <span class="text-[10px] font-bold bg-teal text-white rounded-full px-2 py-0.5 whitespace-nowrap">LOWEST</span>':""}`],
+    ["₹ / sq.ft", p=>"₹" + perSqft(p).toLocaleString("en-IN")],
+    ["Locality", p=>`${p.sector}, ${p.city}`],
+    ["Market growth", p=>(CITY_INFO[p.city]||{}).growth || "—"],
+    ["Type", p=>p.type],
+    ["Bedrooms", p=>p.beds || "—"],
+    ["Bathrooms", p=>p.baths || "—"],
+    ["Area", p=>`${p.area.toLocaleString("en-IN")} sq.ft${p.id===bigId?' <span class="text-[10px] font-bold bg-gold text-navy-deep rounded-full px-2 py-0.5 whitespace-nowrap">LARGEST</span>':""}`],
+    ["Facing", p=>p.facing],
+    ["Status", p=>p.status],
+    ["On market", p=>p.posted <= 5 ? "New this week" : p.posted + " days"],
+    ["Est. EMI / mo", p=>fmt(emiOf(p))],
+  ];
+  el.innerHTML = `
+    <div class="luxe bg-white rounded-2xl overflow-hidden">
+      <div class="overflow-x-auto">
+      <table class="w-full text-sm min-w-[640px]">
+        <thead><tr class="align-top">
+          <th class="text-left p-4 w-36 text-graphite/50 text-xs uppercase">Feature</th>
+          ${items.map(p=>`<th class="p-4 min-w-[180px]">
+            <img src="${p.img}" alt="${p.title}" loading="lazy" decoding="async" width="360" height="200" class="w-full h-28 object-cover rounded-xl" />
+            <p class="font-bold text-navy mt-2">${p.title}</p>
+            <p class="text-xs text-graphite/60 font-medium">${p.sector}, ${p.city}</p>
+          </th>`).join("")}
+        </tr></thead>
+        <tbody>
+          ${rows.map((r,ri)=>`<tr class="${ri%2?"bg-navy/[.03]":""} border-t border-navy/10">
+            <td class="p-4 font-bold text-navy text-[13px]">${r[0]}</td>
+            ${items.map(p=>`<td class="p-4 text-graphite/85">${r[1](p)}</td>`).join("")}
+          </tr>`).join("")}
+        </tbody>
+      </table>
+      </div>
+      <div class="p-4 flex flex-wrap gap-2 border-t border-navy/10">
+        ${items.map(p=>`<button onclick="showPage(null);openModal(${p.id})" class="border border-navy/25 text-navy font-bold rounded-full px-5 py-2 text-[13px]">Dossier: ${p.title.split(" ").slice(0,2).join(" ")} →</button>`).join("")}
+        <button onclick="compareWhatsApp()" class="bg-[#25D366] text-white font-bold rounded-full px-5 py-2 text-[13px]">WhatsApp this comparison →</button>
+      </div>
+    </div>`;
+}
+
+/* ───────── LOCALITIES ───────── */
+document.getElementById("localityGrid").innerHTML = LOCALITIES.map((l,i)=>`
+  <button onclick="filterLocality('${l.name.split("·")[0].split(",")[0].trim()}')" class="reveal text-left group rounded-2xl overflow-hidden relative min-h-[220px] border border-white/10 hover:border-gold/60 transition">
+    <img src="${l.img}" alt="${l.name}" loading="lazy" decoding="async" width="800" height="500" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700" />
+    <span class="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/45 to-transparent"></span>
+    <span class="absolute top-3 right-3 bg-gold text-navy-deep text-xs font-bold rounded-full px-3 py-1">${l.trend}</span>
+    <span class="absolute bottom-0 p-5">
+      <span class="block font-serif font-bold text-xl leading-tight">${l.name}</span>
+      <span class="block text-gold font-bold text-sm mt-1">${l.range}</span>
+      <span class="block text-white/65 text-[13px]">${l.note} · ${l.count} live listing${l.count>1?"s":""} →</span>
+    </span>
+  </button>`).join("");
+function filterLocality(key){
+  const map = {"Sector 17":"Chandigarh","Mohali":"Mohali","Panchkula":"Panchkula","Zirakpur":"Zirakpur","Kharar":"Kharar","Sector 22":"Chandigarh"};
+  searchCity = map[key] || ""; activeType = "";
+  document.getElementById("qLocation").value = searchCity;
+  document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("chip-active", c.dataset.type===""));
+  document.getElementById("properties").scrollIntoView({behavior:"smooth"});
+  renderProps();
+}
+
+/* ───────── MODAL ───────── */
+let modalGallery = [], gIdx = 0;
+/* ENHANCED: hyperlocal insight blurbs — Local Logic/Baird & Warner pattern (3× engagement) */
+const CITY_INFO = {
+  "Chandigarh": { rate: "₹11,500/sq.ft avg", growth: "▲ 6.2% YoY", note: "Heritage sectors, walk-to-everything planning. Inner-sector registry rates rarely dip — buy for stability, not speculation.", near: "Sector 17 Plaza · Elante Mall · PGIMER" },
+  "Mohali": { rate: "₹7,800/sq.ft avg", growth: "▲ 8.1% YoY", note: "IT City + airport corridor is Tricity's appreciation engine. Best rental demand from young professionals.", near: "IT City · Airport Rd · Bestech Square" },
+  "Panchkula": { rate: "₹9,400/sq.ft avg", growth: "▲ 5.4% YoY", note: "Greenest HUDA-planned blocks. Quiet, family-first sectors with strong resale on park-facing units.", near: "Nada Sahib · DAV Schools · NH-7" },
+  "Zirakpur": { rate: "₹5,900/sq.ft avg", growth: "▲ 9.3% YoY", note: "Highest rental yields in Tricity on the highway belt. Ideal first investment or starter home.", near: "VIP Road · Chandigarh border · Airport link" },
+  "Kharar": { rate: "₹5,200/sq.ft avg", growth: "▲ 7.6% YoY", note: "Greater Mohali's plot + township frontier. Buy land, build later — boundary-done options available.", near: "Sector 127 townships · Kharar bus stand" },
+};
+let lastViewed = null; /* ENHANCED: WhatsApp Concierge remembers context */
+function openModal(id){
+  const p = PROPERTIES.find(x=>x.id===id); if(!p) return;
+  lastViewed = p; updateConcierge();
+  modalGallery = p.gallery; gIdx = 0;
+  const emi = Math.round(p.price*100000*0.8*0.00725*Math.pow(1.00725,240)/(Math.pow(1.00725,240)-1));
+  const city = CITY_INFO[p.city] || CITY_INFO["Mohali"];
+  const similar = PROPERTIES.filter(s=>s.id!==p.id && (s.city===p.city || s.type===p.type)).slice(0,3);
+  const drop = PRICE_DROPS[p.id] ? `<span class="bg-red-600 text-white text-xs font-bold rounded-full px-3 py-1">↓ ${PRICE_DROPS[p.id]}</span>` : "";
+  /* ENHANCED: Compass 60/40 — gallery+tabs left, sticky CTA dossier right */
+  document.getElementById("modalBody").innerHTML = `
+    <div class="p-6 sm:p-8 pb-0 flex flex-col sm:flex-row sm:flex-wrap sm:items-start justify-between gap-3">
+      <div class="min-w-0">
+        <p class="eyebrow uppercase text-teal font-bold">Listing CR-2026-0${p.id} · ${p.status}</p>
+        <h3 class="font-serif font-bold text-navy display-lg mt-1">${p.title}</h3>
+        <p class="text-graphite/70 mt-1">${p.sector}, ${p.city} · ${p.facing} ${drop}</p>
+      </div>
+      <div class="flex items-start gap-3">
+        <div class="text-right"><p class="font-serif text-3xl font-bold text-navy">${p.priceLbl}</p><p class="text-xs text-slate-400">≈ ₹${Math.round(p.price*100000/(p.area||1)).toLocaleString("en-IN")}/sq.ft</p></div>
+        <button onclick="closeModal()" class="w-11 h-11 rounded-full bg-navy-deep/80 text-white text-xl hover:bg-navy-deep shrink-0" aria-label="Close">✕</button>
+      </div>
+    </div>
+    <div class="p-6 sm:p-8 grid lg:grid-cols-5 gap-6">
+      <div class="lg:col-span-3 lg:row-start-1">
+        <div class="relative dossier rounded-2xl overflow-hidden">
+          <img id="gMain" src="${modalGallery[0]}" alt="${p.title} — ${p.sector}, ${p.city}" decoding="async" width="1000" height="700" class="w-full h-64 sm:h-96 object-cover" />
+          <span class="absolute top-4 left-4 bg-gold text-navy-deep text-xs font-bold rounded-full px-3 py-1.5">${p.tag}</span>
+          ${modalGallery.length>1?`<button onclick="gNav(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 text-navy text-xl font-bold" aria-label="Previous photo">‹</button><button onclick="gNav(1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 text-navy text-xl font-bold" aria-label="Next photo">›</button>`:""}
+        </div>
+        ${modalGallery.length>1?`<div class="mt-3 grid grid-cols-3 gap-2">${modalGallery.map((g,gi)=>`<button onclick="gIdx=${gi};document.getElementById('gMain').src='${g}'" class="rounded-xl overflow-hidden border-2 ${gi===0?"border-gold":"border-transparent"} hover:border-gold transition" aria-label="Photo ${gi+1}"><img src="${g}" alt="${p.title} photo ${gi+1}" loading="lazy" decoding="async" width="300" height="200" class="w-full h-20 object-cover" /></button>`).join("")}</div>`:""}
+      </div>
+      <div class="lg:col-span-3 lg:row-start-2">
+        <div class="flex gap-2 border-b border-navy/10 overflow-x-auto" role="tablist" aria-label="Property details">
+          ${["overview","tour360","locality","emi"].map((t,ti)=>`<button role="tab" onclick="modalTab('${t}',${p.id})" data-tab="${t}" class="mtab px-4 py-2.5 text-sm font-bold rounded-t-xl ${ti===0?"bg-navy text-white":"text-navy/60 hover:text-navy"}">${{overview:"Overview",tour360:"360° Tour",locality:"Locality",emi:"EMI"}[t]}</button>`).join("")}
+        </div>
+        <div id="mtab-overview" class="mtab-pane pt-4">
+          ${p.beds?`<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
+            <div class="bg-[#FAF8F4] border border-navy/10 rounded-xl p-3"><p class="font-bold text-navy text-lg">${p.beds}</p><p class="text-[11px] text-graphite/60 font-bold uppercase">Bed</p></div>
+            <div class="bg-[#FAF8F4] border border-navy/10 rounded-xl p-3"><p class="font-bold text-navy text-lg">${p.baths}</p><p class="text-[11px] text-graphite/60 font-bold uppercase">Bath</p></div>
+            <div class="bg-[#FAF8F4] border border-navy/10 rounded-xl p-3"><p class="font-bold text-navy text-lg">${p.area.toLocaleString("en-IN")}</p><p class="text-[11px] text-graphite/60 font-bold uppercase">Sq.ft</p></div>
+            <div class="bg-[#FAF8F4] border border-navy/10 rounded-xl p-3"><p class="font-bold text-teal text-lg">✔</p><p class="text-[11px] text-graphite/60 font-bold uppercase">Verified</p></div>
+          </div>`:""}
+          <p class="mt-4 text-graphite/85 leading-relaxed">${p.desc}</p>
+          <div class="mt-4 flex flex-wrap gap-2">${p.amenities.map(a=>`<span class="bg-navy/5 border border-navy/10 text-navy text-[13px] font-semibold rounded-full px-3 py-1.5">✓ ${a}</span>`).join("")}</div>
+        </div>
+        <div id="mtab-tour360" class="mtab-pane pt-4 hidden">
+          <p class="text-graphite/80 text-[15px]">Walk every room on your phone before visiting. Properties with 3D tours get <b>3–4.5× more engagement</b> — shortlist faster, visit only finalists.</p>
+          <button onclick="openTour(${p.id})" class="mt-4 w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-3.5 transition text-[15px]">▶ Launch 360° Room Tour</button>
+          <button onclick="openTour(${p.id})" class="mt-2 w-full border border-navy/25 text-navy font-semibold rounded-xl py-3 text-sm">Open Interactive 3D Home →</button>
+        </div>
+        <div id="mtab-locality" class="mtab-pane pt-4 hidden">
+          <div class="bg-[#FAF8F4] border border-navy/10 rounded-2xl p-5">
+            <p class="font-serif font-bold text-navy text-xl">${p.sector}, ${p.city}</p>
+            <p class="mt-1 font-bold text-teal text-sm">${city.rate} · ${city.growth}</p>
+            <p class="mt-2 text-graphite/80 text-[15px]">${city.note}</p>
+            <p class="mt-2 text-sm text-graphite/60">Nearby: ${city.near}</p>
+          </div>
+        </div>
+        <div id="mtab-emi" class="mtab-pane pt-4 hidden">
+          <div class="bg-navy rounded-2xl text-white p-5 flex flex-wrap items-center justify-between gap-3">
+            <div><p class="text-xs uppercase tracking-widest text-white/60 font-bold">EMI @ 8.7% · 20% down</p><p class="font-serif text-2xl font-bold text-gold">${fmt(emi)}/mo</p></div>
+            <a href="#emi" onclick="closeModal()" class="bg-gold text-navy-deep font-bold rounded-full px-6 py-3 text-sm">Full calculator →</a>
+          </div>
+        </div>
+        ${similar.length?`<div class="mt-0 lg:mt-6"><p class="font-serif font-bold text-navy text-lg">Similar homes</p><div class="mt-2 grid sm:grid-cols-3 gap-3">${similar.map(s=>`<button onclick="openModal(${s.id})" class="text-left bg-white border border-navy/10 rounded-xl overflow-hidden hover:shadow-card transition"><img src="${s.img}" alt="${s.title}" loading="lazy" decoding="async" width="300" height="200" class="w-full h-24 object-cover" /><span class="block p-2.5"><span class="block font-bold text-navy text-sm">${s.priceLbl}</span><span class="block text-xs text-graphite/60">${s.title} · ${s.sector}</span></span></button>`).join("")}</div></div>`:""}
+      </div>
+      <aside class="lg:col-span-2 lg:row-span-2 lg:col-start-4 lg:row-start-1">
+        <div class="lg:sticky lg:top-4 bg-white border border-navy/10 rounded-2xl p-5 shadow-card luxe">
+          <p class="eyebrow uppercase text-graphite/50 font-bold">Your dossier</p>
+          <p class="font-serif text-2xl font-bold text-navy mt-1">${p.priceLbl}</p>
+          <!-- ENHANCED (clarify): one gold primary, one outline secondary, rest text links -->
+          <a href="#contact" onclick="closeModal()" class="mt-3 block text-center w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-3 text-sm transition">Book a free visit →</a>
+          <button onclick="openTour(${p.id})" class="mt-2 w-full bg-white border border-navy/30 hover:border-navy text-navy font-bold rounded-xl py-3 transition text-sm">▶ 360° Virtual Tour</button>
+          <div class="mt-3 pt-3 border-t border-navy/10 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold">
+            <button onclick="toggleFav(${p.id});openModal(${p.id})" class="text-navy hover:underline">${favorites.has(p.id)?"♥ Saved":"♡ Save this home"}</button>
+            <a class="text-teal-dark hover:underline" target="_blank" rel="noopener" href="https://wa.me/919876543210?text=${encodeURIComponent("Hi, I want to visit "+p.title+", "+p.sector)}">WhatsApp agent</a>
+            <a class="text-navy hover:underline" href="tel:+911724654321">Call: 172 465 4321</a>
+          </div>
+          <div class="mt-4 pt-4 border-t border-navy/10 flex items-center gap-3">
+            <span class="w-11 h-11 rounded-full bg-navy text-gold font-serif font-bold grid place-items-center">RS</span>
+            <div class="text-sm"><p class="font-bold text-navy">Rohit Sharma, Principal Broker</p><p class="text-graphite/60">15 yrs · RERA PBRERA-SAS79-CR0142 · <span class="demo-pill">Demo profile</span></p></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <p class="px-6 sm:px-8 pb-6 text-[11px] text-slate-400">Listing CR-2026-0${p.id} · Title &amp; RERA verified by panel lawyer · Photos actual unless marked.</p>`;
+  const m = document.getElementById("propModal");
+  m.classList.remove("hidden"); requestAnimationFrame(()=>m.classList.remove("opacity-0"));
+  document.body.style.overflow = "hidden";
+  /* ENHANCED (harden): move focus into the modal for keyboard users */
+  if (window.__kb) m.querySelector("button")?.focus({ preventScroll: true });
+}
+function modalTab(t, id){
+  document.querySelectorAll(".mtab-pane").forEach(el=>el.classList.add("hidden"));
+  const pane = document.getElementById("mtab-" + t);
+  if (pane) pane.classList.remove("hidden");
+  document.querySelectorAll(".mtab").forEach(b=>{
+    const on = b.dataset.tab === t;
+    b.classList.toggle("bg-navy", on); b.classList.toggle("text-white", on);
+    b.classList.toggle("text-navy/60", !on);
+  });
+}
+function gNav(d){ gIdx = (gIdx+d+modalGallery.length)%modalGallery.length; document.getElementById("gMain").src = modalGallery[gIdx]; }
+function closeModal(){
+  const m = document.getElementById("propModal");
+  m.classList.add("opacity-0"); setTimeout(()=>m.classList.add("hidden"), 220);
+  document.body.style.overflow = "";
+}
+document.addEventListener("keydown", e=>{ if(e.key==="Escape"){ closeTour(); closeModal(); closeSaved(); closeQuiz(); } });
+
+/* ───────── TESTIMONIALS ───────── */
+let tIdx = 0, tTimer;
+function renderTst(){
+  document.getElementById("tstWrap").innerHTML = TESTIMONIALS.map((t,i)=>`
+    <div class="tst-slide ${i===tIdx?"active":""} sm:grid-cols-[auto_1fr] gap-6 items-start">
+      <span class="w-14 h-14 rounded-full bg-navy text-gold font-serif font-bold text-lg grid place-items-center shrink-0">${t.img}</span>
+      <div><p class="font-serif text-lg sm:text-xl leading-relaxed text-navy">“${t.text}”</p>
+      <p class="mt-3 font-bold">${t.name}</p><p class="text-sm text-slate-500">${t.detail}</p>
+      <p class="text-gold-dark font-bold text-sm mt-1">★★★★★ Verified buyer</p></div>
+    </div>`).join("");
+  document.getElementById("tstDots").innerHTML = TESTIMONIALS.map((_,i)=>
+    `<button onclick="setTst(${i})" aria-label="Review ${i+1}" class="h-2.5 rounded-full transition ${i===tIdx?"w-8 bg-navy":"w-2.5 bg-navy/20"}"></button>`).join("");
+}
+function setTst(i){ tIdx = i; renderTst(); restartTst(); }
+function restartTst(){ clearInterval(tTimer); tTimer = setInterval(()=>{ tIdx=(tIdx+1)%TESTIMONIALS.length; renderTst(); }, 6000); }
+
+/* ───────── EMI CALC ───────── */
+function calcEmi(){
+  const price = +document.getElementById("emiPrice").value;
+  const downPct = +document.getElementById("emiDown").value;
+  const rate = +document.getElementById("emiRate").value;
+  const yrs = +document.getElementById("emiTen").value;
+  const loan = price*(1-downPct/100), r = rate/1200, n = yrs*12;
+  const emi = Math.round(loan*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1));
+  const total = emi*n, interest = total-loan;
+  document.getElementById("emiPriceLbl").textContent = inr(price/100000);
+  document.getElementById("emiDownLbl").textContent = `${downPct}% · ${inr(price*downPct/100/100000)}`;
+  document.getElementById("emiRateLbl").textContent = rate.toFixed(1)+"% p.a.";
+  document.getElementById("emiTenLbl").textContent = yrs+" yrs";
+  document.getElementById("emiOut").textContent = fmt(emi);
+  document.getElementById("emiLoan").textContent = inr(loan/100000);
+  document.getElementById("emiInt").textContent = inr(interest/100000);
+  document.getElementById("emiTot").textContent = inr((price+interest)/100000);
+  const ip = Math.round(loan/total*100);
+  document.getElementById("emiBarP").style.width = ip+"%";
+  document.getElementById("emiBarI").style.width = (100-ip)+"%";
+  /* ENHANCED: rent-vs-buy verdict */
+  const rt = document.getElementById("rentToggle"), ro = document.getElementById("rentOut");
+  if (rt && rt.checked && ro){
+    const rent = Math.round(price * 0.034 / 12);
+    ro.classList.remove("hidden");
+    ro.innerHTML = `Est. rent here: <b class="text-gold">${fmt(rent)}/mo</b> · owning costs ${fmt(Math.max(emi - rent, 0))}/mo more — before appreciation.`;
+  } else if (ro) ro.classList.add("hidden");
+}
+/* ENHANCED: pre-filled bank rates */
+function setBank(rate, name){
+  document.getElementById("emiRate").value = rate;
+  calcEmi();
+  toast(name + " " + rate.toFixed(2) + "% applied");
+}
+/* ENHANCED: printable EMI summary */
+function printEmi(){
+  const w = window.open("", "_blank", "width=640,height=720");
+  if (!w) return;
+  w.document.write(`<html><head><title>EMI Summary — Chandigarh Realty</title></head><body style="font-family:sans-serif;padding:32px;color:#1a365d"><h1>EMI Summary</h1><p>Chandigarh Realty · ${new Date().toLocaleDateString("en-IN")}</p><hr /><p>Property: <b>${document.getElementById("emiPriceLbl").textContent}</b> · Down payment: <b>${document.getElementById("emiDownLbl").textContent}</b></p><p>Rate: <b>${document.getElementById("emiRateLbl").textContent}</b> · Tenure: <b>${document.getElementById("emiTenLbl").textContent}</b></p><h2>EMI: ${document.getElementById("emiOut").textContent}/month</h2><p>Loan ${document.getElementById("emiLoan").textContent} · Interest ${document.getElementById("emiInt").textContent} · Total ${document.getElementById("emiTot").textContent}</p><p><small>Indicative only. Call +91 172 465 4321 for pre-approval in 48 hrs.</small></p></body></html>`);
+  w.document.close(); w.focus(); w.print();
+}
+["emiPrice","emiDown","emiRate","emiTen"].forEach(id=>document.getElementById(id).addEventListener("input", calcEmi));
+
+/* ───────── LEAD FORM ───────── */
+document.getElementById("leadForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  /* ENHANCED (harden): double-submit guard */
+  if (e.target.dataset.busy) return;
+  e.target.dataset.busy = "1"; setTimeout(()=>delete e.target.dataset.busy, 1200);
+  const name = document.getElementById("fName").value.trim();
+  const phone = document.getElementById("fPhone").value.replace(/\D/g,"");
+  const err = document.getElementById("formErr");
+  let msg = "";
+  if (name.length < 2) msg = "Please enter your full name.";
+  else if (!/^[6-9]\d{9}$/.test(phone.slice(-10))) msg = "Please enter a valid 10-digit mobile number.";
+  if (msg) { err.textContent = msg; err.classList.remove("hidden"); return; }
+  err.classList.add("hidden");
+  const id = "CR-" + Date.now().toString().slice(-6);
+  document.getElementById("leadId").textContent = id;
+  document.getElementById("formOk").classList.remove("hidden");
+  const leads = store.get("cr_leads", []);
+  leads.push({id, name, phone, at:new Date().toISOString()});
+  store.set("cr_leads", leads);
+  const tch = document.querySelector("#timeChips .chip-active");
+  toast("✔ Request received" + (tch ? " · " + tch.dataset.t + " call" : "") + " — within 2 working hours");
+  e.target.querySelectorAll("input,textarea").forEach(el=>{ if(el.id!=="fBudget") el.value=""; });
+});
+
+/* ───────── FX: reveal, counters, nav ───────── */
+const io = new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("visible"); io.unobserve(en.target);} }), {threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+const cio = new IntersectionObserver(es=>es.forEach(en=>{
+  if(!en.isIntersecting) return;
+  const el = en.target, target = +el.dataset.target, t0 = performance.now();
+  (function tick(t){ const p = Math.min((t-t0)/1400,1), e2 = 1-Math.pow(1-p,3);
+    el.textContent = Math.round(target*e2).toLocaleString("en-IN");
+    if(p<1) requestAnimationFrame(tick); })(t0);
+  cio.unobserve(el);
+}), {threshold:.5});
+document.querySelectorAll(".counter").forEach(el=>cio.observe(el));
+document.getElementById("menuBtn").addEventListener("click", ()=>document.getElementById("mobileMenu").classList.toggle("hidden"));
+document.querySelectorAll("#mobileMenu a").forEach(a=>a.addEventListener("click", ()=>document.getElementById("mobileMenu").classList.add("hidden")));
+window.addEventListener("scroll", ()=>{
+  document.getElementById("navbar").style.boxShadow = scrollY>10 ? "0 8px 24px rgba(26,54,93,.12)" : "none";
+  document.getElementById("topBtn").classList.toggle("hidden", scrollY<600);
+});
+document.getElementById("topBtn").addEventListener("click", ()=>scrollTo({top:0, behavior:"smooth"}));
+
+/* 360 drag teaser — drag swaps views; tap (no drag) enters the full 360° tour */
+(function(){
+  const stage = document.getElementById("tourStage"), frame = document.getElementById("tourFrame");
+  const shots = ["photo-1600607687939-ce8a6c25118c","photo-1600585154526-990dced4db0d","photo-1600210492486-724fe5c67fb0","photo-1600566753086-00f18fb6b3ea","photo-1600607687920-4e2a09cf159d"];
+  let x0=null, downX=0, dragged=false;
+  stage.addEventListener("pointerdown", e=>{
+    if (e.target.closest("button, a")) return; // let real buttons receive their clicks
+    x0=e.clientX; downX=e.clientX; dragged=false;
+    try { stage.setPointerCapture(e.pointerId); } catch(err){}
+  });
+  stage.addEventListener("pointermove", e=>{
+    if(x0===null) return;
+    const dx = e.clientX-x0;
+    if (Math.abs(e.clientX-downX) > 8) dragged = true;
+    if(Math.abs(dx)>40){ x0=e.clientX; const cur = shots.indexOf(shots.find(s=>frame.src.includes(s))??shots[0]);
+      const nxt = (cur + (dx>0?1:shots.length-1))%shots.length;
+      frame.src = IMG(shots[nxt]); frame.style.transform = `scale(1.04) rotateY(${dx>0?2:-2}deg)`; setTimeout(()=>frame.style.transform="",150); }
+  });
+  ["pointerup","pointercancel","pointerleave"].forEach(ev=>stage.addEventListener(ev, e=>{
+    if (ev === "pointerup" && x0 !== null && !dragged && !e.target.closest("button, a")) openTour(1);
+    x0=null;
+  }));
+})();
+
+/* Toast */
+let toastT;
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.opacity = "1"; t.style.transform = "translate(-50%, 0)";
+  clearTimeout(toastT);
+  toastT = setTimeout(()=>{ t.style.opacity="0"; t.style.transform="translate(-50%, 6rem)"; }, 2800);
+}
+
+/* ───────── 360° VIRTUAL TOUR (Pannellum, auto-probed panoramas + photo fallback) ───────── */
+const ROOM_CANDIDATES = [
+  { key: "living",  label: "Living Room",     ids: ["photo-1600607687939-ce8a6c25118c","photo-1522708323590-d24dbb6b0267","photo-1493809842364-78817add7ffb","photo-1616486338812-3dadae4b4ace"] },
+  { key: "bedroom", label: "Master Bedroom",  ids: ["photo-1505693416388-ac5ce068fe85","photo-1595526114035-0d45ed16cfbf","photo-1616594039964-ae9021a400a0"] },
+  { key: "kitchen", label: "Modular Kitchen", ids: ["photo-1556912167-f556f1f39fdf","photo-1600585154526-990dced4db0d"] },
+];
+let tourViewer = null, tourRot = true, fbImgs = [], fbIdx = 0;
+function probeRoom(id){
+  const url = IMG(id, 1600);
+  return new Promise(res=>{
+    let done = false;
+    const finish = v => { if(!done){ done = true; res(v); } };
+    const im = new Image();
+    im.crossOrigin = "anonymous";
+    im.onload = () => finish({ url: url, aspect: (im.naturalWidth || 3) / (im.naturalHeight || 2) });
+    im.onerror = () => finish(null);
+    im.src = url;
+    setTimeout(()=>finish(null), 9000);
+  });
+}
+async function resolveRooms(){
+  const out = {};
+  await Promise.all(ROOM_CANDIDATES.map(async c=>{
+    for (const id of c.ids){ const r = await probeRoom(id); if(r){ out[c.key] = r; break; } }
+  }));
+  return out;
+}
+function buildTourPills(keys, active){
+  const roomBtns = keys.map(k=>{
+    const c = ROOM_CANDIDATES.find(x=>x.key===k);
+    return `<button data-scene="${k}" onclick="tourGo('${k}')" class="tour-pill shrink-0 border rounded-full px-4 py-1.5 text-xs font-bold ${k===active?"tour-pill-active":"border-white/25 text-white/85"}">${c?c.label:k}</button>`;
+  }).join("");
+  /* ENHANCED (layout): one room-selector row — guided + share dock at its end, not a third bar */
+  document.getElementById("tourPills").innerHTML = roomBtns
+    + `<button onclick="guidedTour()" id="guidedBtn" class="shrink-0 border border-gold/70 text-gold rounded-full px-4 py-1.5 text-xs font-bold">▶ Guided</button>`
+    + `<button onclick="shareTour()" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5 text-xs font-bold">↗ Share</button>`;
+}
+function tourGo(k){
+  lastScene = k;
+  if (tourViewer) tourViewer.loadScene(k);
+  if (window._tourBounds && window._tourBounds[k]) driftLimit = window._tourBounds[k];
+  document.querySelectorAll(".tour-pill").forEach(b=>b.classList.toggle("tour-pill-active", b.dataset.scene===k));
+}
+/* Gentle cinematic drift (works on partial-room panoramas where full auto-rotate would stick at edges) */
+let driftRAF = null, driftDir = 1, driftLimit = 28;
+function driftStart(){
+  driftStop();
+  const step = ()=>{
+    if (!tourViewer){ driftRAF = null; return; }
+    try {
+      const y = tourViewer.getYaw();
+      if (y >= driftLimit) driftDir = -1; else if (y <= -driftLimit) driftDir = 1;
+      tourViewer.setYaw(y + driftDir * 0.15);
+    } catch(e){}
+    driftRAF = requestAnimationFrame(step);
+  };
+  driftRAF = requestAnimationFrame(step);
+}
+function driftStop(){ if (driftRAF) cancelAnimationFrame(driftRAF); driftRAF = null; }
+function tourToggleRotate(){
+  tourRot = !tourRot;
+  document.getElementById("rotBtn").textContent = tourRot ? "⟳ Auto-rotate: ON" : "⟳ Auto-rotate: OFF";
+  if (tourRot && !REDUCED) driftStart(); else driftStop();
+}
+function tourFullscreen(){
+  if (tourView === '3d'){
+    const ov = document.getElementById('tourOverlay');
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (ov.requestFullscreen) ov.requestFullscreen();
+  }
+  else if (tourViewer) tourViewer.toggleFullscreen();
+}
+async function openTour(id){
+  const p = PROPERTIES.find(x=>x.id===id) || PROPERTIES[0];
+  tourProp = p;
+  closeModal();
+  const ov = document.getElementById("tourOverlay");
+  ov.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  document.getElementById("tourTitle").textContent = p.title;
+  document.getElementById("tourSub").textContent = `${p.sector}, ${p.city} · ${p.priceLbl} · sample room tour (exact 360° of your listings shot at onboarding)`;
+  document.getElementById("tourLoading").classList.remove("hidden");
+  document.getElementById("tourViewer").classList.add("hidden");
+  document.getElementById("tourFallback").classList.add("hidden");
+  document.getElementById("tourPills").innerHTML = "";
+  document.getElementById("tourThumbs").classList.add("hidden");
+  document.getElementById("tourThumbs").classList.remove("flex");
+  document.getElementById("fbNote").textContent = "";
+  document.getElementById("tourHint").textContent = "Drag to look around · Scroll to zoom · Tap glowing dots to move rooms";
+  tourRot = true;
+  document.getElementById("rotBtn").textContent = "⟳ Auto-rotate: ON";
+  if (window.__kb) document.getElementById("tourDoneBtn")?.focus({ preventScroll: true });
+  maybeCoach();
+  lastRooms = {}; lastKeys = []; lastScene = null; tourView = 'pano';
+  if (window.pannellum){
+    const panos = await resolveRooms();
+    if (ov.classList.contains("hidden")) return; // user closed while loading
+    const keys = Object.keys(panos);
+    if (keys.length){ lastRooms = panos; lastKeys = keys; lastScene = keys[0]; buildTourPills(keys, keys[0]); }
+  }
+  if (window.THREE && window.THREE.OrbitControls){ setTourView('3d'); }
+  else if (lastKeys.length){ startPanoTour(lastRooms, lastKeys); }
+  else { startFallbackTour(p); }
+}
+const ROOM_INFO = {
+  living: "Spacious living · premium flooring (sample room tour)",
+  bedroom: "Master bedroom · wardrobes + attached bath",
+  kitchen: "Modular kitchen · chimney + utility area",
+};
+function hotspotsFor(key, rooms){
+  const others = Object.keys(rooms).filter(k=>k!==key);
+  const spots = others.slice(0,2).map((k,i)=>{
+    const c = ROOM_CANDIDATES.find(x=>x.key===k);
+    return { pitch: -4, yaw: (i === 0 ? 24 : -26), type: "scene", text: c?c.label:k, sceneId: k };
+  });
+  spots.push({ pitch: 9, yaw: 0, type: "info", text: ROOM_INFO[key] || "✔ Verified listing" });
+  return spots;
+}
+function startPanoTour(rooms, keys){
+  try { if (tourViewer) tourViewer.destroy(); } catch(e){}
+  tourViewer = null; driftStop();
+  const scenes = {};
+  window._tourBounds = {};
+  keys.forEach(k=>{
+    const c = ROOM_CANDIDATES.find(x=>x.key===k);
+    const r = rooms[k];
+    const vaov = 62;
+    const haov = Math.min(150, Math.max(80, vaov * (r.aspect || 1.5)));
+    window._tourBounds[k] = Math.max(12, haov / 2 - 12);
+    scenes[k] = { title: c?c.label:k, type: "equirectangular", panorama: r.url,
+      haov: haov, vaov: vaov, vOffset: 0, hotSpots: hotspotsFor(k, rooms) };
+  });
+  document.getElementById("tourLoading").classList.add("hidden");
+  const v = document.getElementById("tourViewer");
+  v.classList.remove("hidden");
+  v.innerHTML = "";
+  tourViewer = pannellum.viewer("tourViewer", {
+    default: { firstScene: keys[0], autoLoad: true, sceneFadeDuration: 800, hfov: 70 },
+    scenes: scenes,
+  });
+  buildTourPills(keys, keys[0]);
+  buildTourThumbs(keys);
+  driftLimit = window._tourBounds[keys[0]] || 28;
+  if (tourRot && !REDUCED) driftStart();
+  requestAnimationFrame(()=>{ try{ tourViewer.resize(); }catch(e){} });
+  toast("Room tour live — drag to explore");
+}
+/* ───────── INTERACTIVE 3D (Three.js + OrbitControls) ─────────
+   References:
+   - Loader + orbit + camera-preset pattern: kavyasenthamarai/3d-property-f (three UMD, GLTFLoader)
+   - Room/hotspot navigation concept: sumandeepb/OpenSpace
+   - JSON-driven tour config concept: cloudgoon/vr360
+   - Photo → 3D onboarding story (Tier-2): hekmon8/photo-to-3d-home
+   - Future photoreal tier: lukehollis/sphr (Gaussian splatting)
+   Sample model: 3d-property-f/models/home1.glb, served same-origin (no CORS risk).
+   Upgrade: export a listing (Blender / Sketchfab "Modern Apartment") → models/ → add entry below. */
+const GLB_MODELS = {
+  home:     { url: "models/home1.glb", label: "3D Home" },
+  stylised: null, // procedural 3BHK dollhouse layout (always available offline)
+};
+let currentModel = 'home';
+let tourView = 'pano', tourProp = null, lastRooms = {}, lastKeys = [], lastScene = null;
+const doll = { built: false, renderer: null, scene: null, cam: null, controls: null, floors: [], raf: null, clock: null, camAnim: null, spin: true };
+
+function setTourView(mode){
+  tourView = mode;
+  const is3d = mode === '3d';
+  document.getElementById('viewPanoBtn').classList.toggle('tour-pill-active', !is3d);
+  document.getElementById('view3DBtn').classList.toggle('tour-pill-active', is3d);
+  document.getElementById('rotBtn').style.display = is3d ? 'none' : '';
+  const pills = document.getElementById('tourPills'), tools = document.getElementById('dollTools');
+  pills.classList.toggle('hidden', is3d);
+  tools.classList.toggle('hidden', !is3d);
+  tools.classList.toggle('flex', is3d);
+  stopGuided();
+  if (is3d){
+    if (!window.THREE || !THREE.OrbitControls){ toast('3D engine still loading — showing 360° rooms'); setTourView('pano'); return false; }
+    driftStop();
+    document.getElementById('tourViewer').classList.add('hidden');
+    document.getElementById('tourFallback').classList.add('hidden');
+    document.getElementById('tourLoading').classList.add('hidden');
+    document.getElementById('tourThumbs').classList.add('hidden');
+    document.getElementById('tourThumbs').classList.remove('flex');
+    document.getElementById('dollhouseWrap').classList.remove('hidden');
+    document.getElementById('tourHint').textContent = 'Drag to orbit · Scroll to zoom · Hover or tap rooms for details';
+    document.getElementById('fbNote').textContent = 'Stylised 3D of a typical 3BHK · exact per-property models in Tier-2.';
+    try { initDollhouse(); dollResize(); startDollLoop(); }
+    catch(e){ document.getElementById('dollhouseWrap').classList.add('hidden'); toast('3D unavailable — showing 360° rooms'); setTourView('pano'); return false; }
+  } else {
+    stopDollLoop();
+    document.getElementById('dollhouseWrap').classList.add('hidden');
+    document.getElementById('tourFallback').classList.add('hidden');
+    document.getElementById('tourHint').textContent = '🖱 Drag to look around · Scroll to zoom · Click glowing dots to move rooms';
+    document.getElementById('fbNote').textContent = '';
+    if (lastKeys.length){
+      if (tourViewer){ document.getElementById('tourViewer').classList.remove('hidden'); if (tourRot && !REDUCED) driftStart(); }
+      else { startPanoTour(lastRooms, lastKeys); }
+    } else {
+      document.getElementById('tourLoading').classList.add('hidden');
+      startFallbackTour(tourProp || PROPERTIES[0]);
+    }
+  }
+  return true;
+}
+
+function initDollhouse(){
+  if (doll.built){ dollResize(); return; }
+  const holder = document.getElementById('dollhouse');
+  const W = holder.clientWidth || 800, H = holder.clientHeight || 600;
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(W, H);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  holder.appendChild(renderer.domElement);
+  doll.renderer = renderer;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xdfe6ee);
+  scene.fog = new THREE.Fog(0xdfe6ee, 45, 90);
+  doll.scene = scene;
+
+  const cam = new THREE.PerspectiveCamera(48, W / H, 0.1, 200);
+  cam.position.set(10, 8.5, 11.5);
+  doll.cam = cam;
+
+  const controls = new THREE.OrbitControls(cam, renderer.domElement);
+  controls.target.set(0, 0.4, 0.4);
+  controls.enableDamping = true; controls.dampingFactor = 0.06;
+  controls.minDistance = 4; controls.maxDistance = 42;
+  controls.maxPolarAngle = Math.PI / 2 - 0.04;
+  controls.autoRotate = doll.spin && !REDUCED; controls.autoRotateSpeed = 0.9;
+  doll.controls = controls;
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8a94a0, 0.5));
+  scene.add(new THREE.AmbientLight(0xffffff, 0.12));
+  const sun = new THREE.DirectionalLight(0xfff2df, 0.85);
+  sun.position.set(14, 20, 10);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.camera.left = -14; sun.shadow.camera.right = 14;
+  sun.shadow.camera.top = 14; sun.shadow.camera.bottom = -14;
+  scene.add(sun);
+
+  doll.floors = [];
+  doll.clock = new THREE.Clock();
+  doll.content = new THREE.Group(); scene.add(doll.content);
+  bindDollPicking(renderer);
+  ensureMeasureBind();
+
+  loadModel(currentModel);
+}
+
+function dollResize(){
+  if (!doll.renderer) return;
+  const holder = document.getElementById('dollhouse');
+  const W = holder.clientWidth || 800, H = holder.clientHeight || 600;
+  doll.renderer.setSize(W, H);
+  doll.cam.aspect = W / H; doll.cam.updateProjectionMatrix();
+}
+window.addEventListener('resize', ()=>{ if (tourView === '3d') dollResize(); });
+
+function startDollLoop(){
+  if (!doll.renderer || doll.raf) return;
+  const tick = ()=>{
+    doll.raf = requestAnimationFrame(tick);
+    const dt = Math.min(doll.clock.getDelta(), 0.05);
+    if (doll.camAnim){
+      const a = doll.camAnim; a.t += dt / 0.9;
+      const k = a.t >= 1 ? 1 : (1 - Math.pow(1 - a.t, 3));
+      doll.cam.position.lerpVectors(a.fp, a.tp, k);
+      doll.controls.target.lerpVectors(a.ft, a.tt, k);
+      if (a.t >= 1) doll.camAnim = null;
+    }
+    doll.controls.update();
+    doll.renderer.render(doll.scene, doll.cam);
+  };
+  tick();
+}
+function stopDollLoop(){ if (doll.raf) cancelAnimationFrame(doll.raf); doll.raf = null; }
+
+function showLoad(t){
+  const w = document.getElementById('dollLoading'); w.style.display = 'grid';
+  const p = document.getElementById('dollLoadTxt'); if (p && t) p.textContent = t;
+}
+function hideLoad(){ document.getElementById('dollLoading').style.display = 'none'; }
+function updateModelBtns(){
+  const h = document.getElementById('modelHomeBtn'), s = document.getElementById('modelDollBtn');
+  if (h) h.classList.toggle('tour-pill-active', currentModel === 'home');
+  if (s) s.classList.toggle('tour-pill-active', currentModel === 'stylised');
+}
+function loadModel(key){
+  currentModel = key; updateModelBtns();
+  if (!doll.scene || !window.THREE.GLTFLoader) return;
+  if (doll.content) doll.scene.remove(doll.content);
+  doll.content = new THREE.Group(); doll.scene.add(doll.content);
+  doll.floors = [];
+  measureGroup = null; measurePts = [];
+  document.getElementById('dollTip').classList.add('hidden');
+  const spec = GLB_MODELS[key];
+  document.getElementById('fbNote').textContent = spec
+    ? 'Real 3D model · drag to orbit — your exact listings, modelled like this in Tier-2.'
+    : 'Stylised 3D of a typical 3BHK · exact per-property models in Tier-2.';
+  if (!spec){ buildHome(); doll.built = true; hideLoad(); startDollLoop(); return; }
+  showLoad('Loading ' + spec.label + '… 0%');
+  startDollLoop();
+  const gltfLoader = new THREE.GLTFLoader();
+  if (window.THREE.DRACOLoader){ // home1.glb uses KHR_draco_mesh_compression (same as reference repo)
+    const draco = new THREE.DRACOLoader();
+    draco.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+    gltfLoader.setDRACOLoader(draco);
+  }
+  gltfLoader.load(spec.url, gltf=>{
+    const model = gltf.scene;
+    const box3 = new THREE.Box3().setFromObject(model);
+    const size = box3.getSize(new THREE.Vector3()), ctr = box3.getCenter(new THREE.Vector3());
+    const s = 11 / Math.max(size.x || 1, size.z || 1);
+    model.scale.setScalar(s);
+    model.position.set(-ctr.x*s, -box3.min.y*s, -ctr.z*s);
+    model.traverse(o=>{ if (o.isMesh){ o.castShadow = true; o.receiveShadow = true; } });
+    const g = new THREE.Mesh(new THREE.CircleGeometry(11, 48),
+      new THREE.MeshStandardMaterial({ color: 0xc3d2b2, roughness: 1 }));
+    g.rotation.x = -Math.PI/2; g.position.y = -0.02; g.receiveShadow = true;
+    doll.content.add(g); doll.content.add(model);
+    doll.built = true; hideLoad(); startDollLoop();
+    toast(spec.label + ' loaded — drag to explore');
+  }, xhr=>{
+    if (xhr.total) showLoad('Loading ' + spec.label + '… ' + Math.round(xhr.loaded / xhr.total * 100) + '%');
+  }, ()=>{
+    toast('3D model unavailable — showing stylised layout');
+    loadModel('stylised');
+  });
+}
+
+function dollSpin(){
+  doll.spin = !doll.spin;
+  document.getElementById('dollSpinBtn').textContent = doll.spin ? 'Spin: ON' : 'Spin: OFF';
+  if (doll.controls) doll.controls.autoRotate = doll.spin;
+}
+function dollView(which){
+  if (!doll.cam) return;
+  if (which === 'top') flyTo(0, 25, 0.7, 0, 0, 0.4);
+  else flyTo(10, 8.5, 11.5, 0, 0.4, 0.4);
+}
+function flyTo(px,py,pz,tx,ty,tz){
+  doll.camAnim = { t: 0, fp: doll.cam.position.clone(), tp: new THREE.Vector3(px,py,pz),
+    ft: doll.controls.target.clone(), tt: new THREE.Vector3(tx,ty,tz) };
+}
+
+/* Hover / tap room picking */
+function bindDollPicking(renderer){
+  const ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
+  const tip = document.getElementById('dollTip'), wrap = document.getElementById('dollhouseWrap');
+  let downX = 0, downY = 0;
+  const pick = e=>{
+    const r = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+    mouse.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+    ray.setFromCamera(mouse, doll.cam);
+    const hits = ray.intersectObjects(doll.floors);
+    return hits.length ? hits[0].object : null;
+  };
+  renderer.domElement.addEventListener('pointermove', e=>{
+    const m = pick(e);
+    doll.floors.forEach(f=>f.material.emissive.setHex(f === m ? 0x4a3d18 : 0x000000));
+    if (m && m.userData.room){
+      const r = m.userData.room;
+      tip.innerHTML = `<b>${r.name}</b> · ${r.sub}`;
+      tip.classList.remove('hidden');
+      const wr = wrap.getBoundingClientRect();
+      tip.style.left = Math.min(e.clientX - wr.left + 14, wr.width - 170) + 'px';
+      tip.style.top = (e.clientY - wr.top - 10) + 'px';
+      renderer.domElement.style.cursor = 'pointer';
+    } else { tip.classList.add('hidden'); renderer.domElement.style.cursor = ''; }
+  });
+  renderer.domElement.addEventListener('pointerdown', e=>{ downX = e.clientX; downY = e.clientY; });
+  renderer.domElement.addEventListener('click', e=>{
+    if (Math.hypot(e.clientX - downX, e.clientY - downY) > 6) return;
+    const m = pick(e);
+    if (m && m.userData.room && !measureOn) toast(`${m.userData.room.name} — ${m.userData.room.sub}`);
+  });
+  renderer.domElement.addEventListener('pointerleave', ()=>tip.classList.add('hidden'));
+}
+
+/* ── Dollhouse construction: stylised 3BHK, metres-ish units ── */
+function dadd(m){ (doll.content || doll.scene).add(m); return m; }
+function dbox(w,h,d,color,x,y,z,ry){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d),
+    new THREE.MeshStandardMaterial({ color: color, roughness: 0.85 }));
+  m.position.set(x,y,z); if (ry) m.rotation.y = ry;
+  m.castShadow = true; m.receiveShadow = true;
+  return dadd(m);
+}
+function dcyl(rt,rb,h,color,x,y,z,seg){
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg||20),
+    new THREE.MeshStandardMaterial({ color: color, roughness: 0.8 }));
+  m.position.set(x,y,z); m.castShadow = true; m.receiveShadow = true;
+  return dadd(m);
+}
+function dwall(x1,z1,x2,z2,h,color){
+  const t = 0.18, hh = h || 1.6, c = color || 0xe6dabd;
+  return Math.abs(x2-x1) > 0.01
+    ? dbox(Math.abs(x2-x1),hh,t,c,(x1+x2)/2,hh/2,(z1+z2)/2)
+    : dbox(t,hh,Math.abs(z2-z1),c,(x1+x2)/2,hh/2,(z1+z2)/2);
+}
+function textSprite(title, sub){
+  const c = document.createElement('canvas'); c.width = 512; c.height = 132;
+  const g = c.getContext('2d');
+  g.fillStyle = 'rgba(15,31,60,0.88)'; g.fillRect(0,0,512,132);
+  g.fillStyle = '#d4a574'; g.fillRect(0,0,10,132);
+  g.textAlign = 'center';
+  g.fillStyle = '#ffffff'; g.font = 'bold 46px Inter, sans-serif';
+  g.fillText(title, 266, 60);
+  g.fillStyle = 'rgba(255,255,255,0.72)'; g.font = '30px Inter, sans-serif';
+  g.fillText(sub || '', 266, 102);
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(c), transparent: true, depthWrite: false }));
+  s.scale.set(3.4, 0.88, 1); return s;
+}
+const ROOM3D = [
+  { id:'living',  name:'Living Room',    sub:'210 sq.ft · park-facing',  x:-3,   z:1.75,  w:6,   d:5.5, color:0xe9e2d4 },
+  { id:'foyer',   name:'Foyer',          sub:'70 sq.ft · entrance',      x:-4.5, z:-2.75, w:3,   d:3.5, color:0xded9cf },
+  { id:'kids',    name:'Kids Bedroom',   sub:'120 sq.ft',                x:-1.5, z:-2.75, w:3,   d:3.5, color:0xdfe8ef },
+  { id:'dining',  name:'Dining',         sub:'110 sq.ft',                x:1.25, z:2.5,   w:2.5, d:4,   color:0xe6ddcf },
+  { id:'kitchen', name:'Modular Kitchen',sub:'150 sq.ft',                x:4.25, z:2.5,   w:3.5, d:4,   color:0xd8e2e0 },
+  { id:'master',  name:'Master Bedroom', sub:'230 sq.ft · attached bath',x:2,    z:-2,    w:4,   d:5,   color:0xead9c8 },
+  { id:'master',  name:'Master Bedroom', sub:'230 sq.ft · attached bath',x:5,    z:-0.75, w:2,   d:2.5, color:0xead9c8 },
+  { id:'bath',    name:'Bath',           sub:'55 sq.ft',                 x:5,    z:-3.25, w:2,   d:2.5, color:0xd3e4ea },
+  { id:'balcony', name:'Balcony',        sub:'90 sq.ft · garden-facing', x:0,    z:5.15,  w:12.4,d:1.3, color:0xc9a06a },
+];
+function dfloor(r){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(r.w, 0.12, r.d),
+    new THREE.MeshStandardMaterial({ color: r.color, roughness: 0.95 }));
+  m.position.set(r.x, 0.06, r.z); m.receiveShadow = true;
+  m.userData.room = r; dadd(m); doll.floors.push(m);
+}
+function buildHome(){
+  const WOOD = 0x8a5a33, DARK = 0x2e4a62, GOLD = 0xd4a574, WHITE = 0xf7f5f0;
+  /* plot + compound */
+  dbox(34, 0.1, 27, 0xc4d6b4, 0, -0.28, 0).castShadow = false;
+  dbox(3.2, 0.14, 7, 0xbfbfbf, 6.3, -0.2, 6.2).castShadow = false;
+  [[-10,-8,10,-8],[ -10,-8,-10,9],[-10,9,5,9],[8,9,10,9],[10,-8,10,9]].forEach(w=>{
+    const len = Math.abs(w[2]-w[0]) > 0.01 ? Math.abs(w[2]-w[0]) : Math.abs(w[3]-w[1]);
+    const horiz = Math.abs(w[2]-w[0]) > 0.01;
+    dbox(horiz?len:0.22, 0.7, horiz?0.22:len, 0xd6cdb9, (w[0]+w[2])/2, 0.35, (w[1]+w[3])/2);
+  });
+  /* slab + floors */
+  dbox(12.7, 0.3, 9.7, 0xd9d4c9, 0, -0.15, 0);
+  ROOM3D.forEach(dfloor);
+  /* walls */
+  dwall(-6,-4.5, 6,-4.5); dwall(-6,-4.5, -6,4.5); dwall(6,-4.5, 6,4.5);
+  dwall(-6,4.5, 6,4.5, 0.95);
+  dwall(0,-4.5, 0,4.5); dwall(-6,-1, 0,-1); dwall(-3,-4.5, -3,-1);
+  dwall(0,0.5, 6,0.5); dwall(2.5,0.5, 2.5,4.5);
+  dwall(4,-4.5, 4,-2); dwall(4,-2, 6,-2);
+  /* windows (glass strips on outer walls) */
+  const glass = new THREE.MeshStandardMaterial({ color: 0xbfe0ee, transparent: true, opacity: 0.55, roughness: 0.2 });
+  const gw1 = new THREE.Mesh(new THREE.BoxGeometry(9, 0.75, 0.08), glass);
+  gw1.position.set(0, 1.0, -4.38); dadd(gw1);
+  const gw2 = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.75, 7), glass);
+  gw2.position.set(-5.88, 1.0, 0); dadd(gw2);
+  const gm = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.75, 7), glass);
+  gm.position.set(5.88, 1.0, 0); dadd(gm);
+  /* entrance door */
+  dbox(1.15, 2.1, 0.12, WOOD, -3, 1.05, 4.5);
+  /* balcony railing */
+  dbox(12.4, 0.85, 0.12, 0xeadfc6, 0, 0.55, 5.8);
+  dbox(0.12, 0.85, 1.4, 0xeadfc6, -6.2, 0.55, 5.15);
+  dbox(0.12, 0.85, 1.4, 0xeadfc6, 6.2, 0.55, 5.15);
+  /* LIVING */
+  dbox(3.4, 0.04, 2.4, GOLD, -3, 0.14, 2.2).castShadow = false;
+  dbox(2.6, 0.55, 1.0, DARK, -3, 0.42, 3.3);
+  dbox(2.6, 0.62, 0.25, DARK, -3, 0.98, 3.72);
+  dbox(0.25, 0.78, 1.0, DARK, -4.28, 0.55, 3.3);
+  dbox(0.25, 0.78, 1.0, DARK, -1.72, 0.55, 3.3);
+  dbox(1.2, 0.36, 0.6, WOOD, -3, 0.32, 2.1);
+  dbox(1.8, 0.45, 0.4, 0x3a3a3a, -3, 0.35, -0.68);
+  dbox(1.6, 0.9, 0.08, 0x111418, -3, 1.05, -0.85);
+  dbox(0.8, 0.55, 0.8, GOLD, -1.1, 0.4, 1.9, 0.5);
+  dcyl(0.18, 0.24, 0.4, 0xb0563a, -5.4, 0.32, -0.2);
+  dcyl(0.03, 0.5, 1.0, 0x5d8f5d, -5.4, 1.0, -0.2);
+  /* FOYER */
+  dbox(1.0, 0.85, 0.35, WOOD, -5.4, 0.55, -4.25);
+  dbox(1.3, 0.42, 0.45, DARK, -4.0, 0.33, -4.2);
+  /* KIDS */
+  dbox(2.0, 0.4, 1.05, 0x7fb3d5, -1.5, 0.32, -3.55);
+  dbox(0.12, 0.85, 1.05, WOOD, -2.56, 0.55, -3.55);
+  dbox(0.4, 0.16, 0.65, WHITE, -2.15, 0.6, -3.55);
+  dbox(1.2, 0.55, 0.55, WOOD, -1.5, 0.4, -1.55);
+  dbox(0.42, 0.55, 0.42, DARK, -1.5, 0.4, -2.25);
+  /* DINING */
+  dcyl(0.78, 0.78, 0.09, WOOD, 1.25, 0.78, 2.5);
+  dcyl(0.09, 0.09, 0.74, 0x3a3a3a, 1.25, 0.4, 2.5);
+  [[1.25,1.45],[1.25,3.55],[0.2,2.5],[2.3,2.5]].forEach(p=>dbox(0.42,0.55,0.42, DARK, p[0],0.4,p[1]));
+  /* KITCHEN */
+  dbox(3.0, 0.9, 0.62, 0xf5f2ea, 4.25, 0.57, 4.05);
+  dbox(3.1, 0.07, 0.68, 0x3f3f3f, 4.25, 1.06, 4.05);
+  [[3.7,3.95],[4.1,3.95],[3.7,4.2],[4.1,4.2]].forEach(p=>dcyl(0.09,0.09,0.04, 0x1c1c1c, p[0],1.1,p[1],12));
+  dbox(0.8, 1.9, 0.72, 0xcfd8dc, 5.45, 1.07, 1.15);
+  dbox(0.62, 0.9, 2.0, 0xf5f2ea, 2.85, 0.57, 2.4);
+  dbox(0.5, 0.14, 0.45, 0x9aa5b1, 2.85, 1.08, 2.4);
+  /* MASTER */
+  dbox(2.2, 0.45, 1.9, 0x9db8d2, 2, 0.35, -3.0);
+  dbox(1.15, 0.15, 1.9, GOLD, 2.55, 0.64, -3.0);
+  dbox(2.2, 1.0, 0.15, WOOD, 2, 0.62, -4.0);
+  dbox(0.55, 0.16, 0.4, WHITE, 1.45, 0.65, -3.7);
+  dbox(0.55, 0.16, 0.4, WHITE, 2.55, 0.65, -3.7);
+  dbox(0.6, 2.0, 1.8, WOOD, 0.42, 1.12, -1.4);
+  dbox(0.45, 0.45, 0.45, WOOD, 0.7, 0.35, -3.9);
+  dbox(0.45, 0.45, 0.45, WOOD, 3.3, 0.35, -3.9);
+  /* BATH */
+  dbox(1.6, 0.55, 0.78, WHITE, 5, 0.4, -3.85);
+  dbox(0.45, 0.42, 0.62, WHITE, 4.4, 0.33, -2.5);
+  dcyl(0.24, 0.3, 0.55, WHITE, 5.55, 0.4, -2.45);
+  /* BALCONY */
+  dbox(0.45, 0.5, 0.45, 0x0f766e, -1, 0.37, 5.15);
+  dbox(0.45, 0.5, 0.45, 0x0f766e, 1, 0.37, 5.15);
+  dcyl(0.32, 0.32, 0.06, WOOD, 0, 0.62, 5.15);
+  dcyl(0.16, 0.2, 0.35, 0xb0563a, -4.5, 0.3, 5.15);
+  dcyl(0.03, 0.4, 0.8, 0x5d8f5d, -4.5, 0.85, 5.15);
+  /* trees + car */
+  [[-8.5,-5.5],[8.5,-4.5],[-8.5,5]].forEach(p=>{
+    dcyl(0.13, 0.17, 1.3, 0x7a5230, p[0], 0.6, p[1]);
+    dcyl(0.06, 1.15, 2.3, 0x6fa86f, p[0], 2.3, p[1]);
+  });
+  dbox(1.7, 0.55, 3.4, 0x1a365d, 6.3, 0.55, 6.4);
+  dbox(1.5, 0.5, 1.7, 0x5f8fb4, 6.3, 1.05, 6.2);
+  [[5.4,5.3],[7.2,5.3],[5.4,7.5],[7.2,7.5]].forEach(p=>{
+    const w = dcyl(0.32, 0.32, 0.25, 0x222222, p[0], 0.32, p[1], 14);
+    w.rotation.z = Math.PI / 2;
+  });
+  /* room labels */
+  [['LIVING','210 sq.ft',-3,2.9,1.75],['KITCHEN','150 sq.ft',4.25,2.9,2.5],
+   ['MASTER BEDROOM','230 sq.ft',2,2.9,-2],['KIDS ROOM','120 sq.ft',-1.5,2.5,-2.75]].forEach(l=>{
+    const s = textSprite(l[0], l[1]); s.position.set(l[2], l[3], l[4]); dadd(s);
+  });
+}
+
+/* ───────── ONBOARD COACHMARKS: aha in 30 seconds, once ever ───────── */
+const COACH_STEPS = [
+  { t: "Drag to look around", x: "Orbit the 3D home or pan any 360° room. Scroll or pinch to zoom closer." },
+  { t: "Hop room to room", x: "Tap the glowing dots — or use the room pills and the 360° Rooms / 3D Home toggle." },
+  { t: "Found the one?", x: "Hit “Request live video visit” below and our agent walks you through live." },
+];
+let coachStep = 0;
+function maybeCoach(){
+  if (store.get("cr_coach", false)) return;
+  coachStep = 0; renderCoach();
+  document.getElementById("coach").classList.remove("hidden");
+}
+function renderCoach(){
+  const s = COACH_STEPS[coachStep];
+  document.getElementById("coachKicker").textContent = `Tour tips · ${coachStep+1} of ${COACH_STEPS.length}`;
+  document.getElementById("coachTitle").textContent = s.t;
+  document.getElementById("coachText").textContent = s.x;
+  document.getElementById("coachDots").innerHTML = COACH_STEPS.map((_,i)=>`<span class="w-2 h-2 rounded-full ${i===coachStep?"bg-gold":"bg-white/25"} inline-block"></span>`).join("");
+  document.getElementById("coachNext").textContent = coachStep === COACH_STEPS.length-1 ? "Start exploring →" : "Next →";
+}
+function coachNext(){
+  if (coachStep < COACH_STEPS.length-1){ coachStep++; renderCoach(); }
+  else coachDone();
+}
+function coachSkip(){ coachDone(); }
+function coachDone(){
+  store.set("cr_coach", true);
+  document.getElementById("coach").classList.add("hidden");
+}
+function replayCoach(){
+  coachStep = 0; renderCoach();
+  document.getElementById("coach").classList.remove("hidden");
+}
+
+/* ───────── TOUR TECH: guided mode, share links, room thumbs, 3D measure + day/night ───────── */
+/* ENHANCED: 8-second guided auto-tour (Zillow Showcase-style) */
+let guidedTimer = null;
+function stopGuided(){
+  if (guidedTimer) clearInterval(guidedTimer); guidedTimer = null;
+  const b = document.getElementById('guidedBtn');
+  if (b) b.textContent = '▶ Guided tour';
+}
+function guidedTour(){
+  if (guidedTimer){ stopGuided(); return; }
+  if (tourView !== 'pano' || !lastKeys.length){ toast('Open 360° Rooms first'); return; }
+  let gi = Math.max(0, lastKeys.indexOf(lastScene));
+  document.getElementById('guidedBtn').textContent = '⏸ Pause';
+  toast('Guided tour — a room every 8 seconds');
+  guidedTimer = setInterval(()=>{ gi = (gi + 1) % lastKeys.length; tourGo(lastKeys[gi]); }, 8000);
+}
+/* ENHANCED: shareable ?tour=CR-2026-XX deep-links (Piercies3sc pattern) */
+function shareTour(){
+  const id = (tourProp && tourProp.id) || (lastViewed && lastViewed.id) || 1;
+  const url = (location.origin === 'null' ? location.href.split('?')[0] : location.origin + location.pathname) + '?tour=CR-2026-0' + id;
+  const done = ()=>toast('Tour link copied — share it anywhere');
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, ()=>{ prompt('Copy tour link:', url); });
+  else prompt('Copy tour link:', url);
+}
+(function(){
+  try {
+    const q = new URLSearchParams(location.search).get('tour');
+    if (!q) return;
+    const m = q.match(/(\d+)\s*$/); if (!m) return;
+    const id = parseInt(m[1], 10);
+    if (!PROPERTIES.some(p=>p.id===id)) return;
+    setTimeout(()=>openTour(id), 1200);
+  } catch(e){}
+})();
+/* ENHANCED: open #saved / #compare directly on load */
+(function(){
+  try {
+    const h = (location.hash || "").replace("#", "");
+    if (h === "saved" || h === "compare") setTimeout(()=>showPage(h + "Page"), 600);
+  } catch(e){}
+})();
+/* ENHANCED: Matterport-style room thumbnail strip */
+function buildTourThumbs(keys){
+  const el = document.getElementById('tourThumbs');
+  el.innerHTML = keys.map(k=>{
+    const c = ROOM_CANDIDATES.find(x=>x.key===k);
+    const lbl = c ? c.label : k;
+    return `<button onclick="tourGo('${k}')" class="relative shrink-0 w-20 rounded-lg overflow-hidden border-2 border-white/20 hover:border-gold transition" aria-label="Go to ${lbl}"><img src="${IMG(c.ids[0], 400)}" alt="" loading="lazy" decoding="async" width="160" height="100" class="w-20 h-12 object-cover" /><span class="absolute bottom-0 inset-x-0 text-[9px] font-bold bg-navy-deep/80 text-white py-0.5">${lbl}</span></button>`;
+  }).join("");
+  el.classList.remove('hidden'); el.classList.add('flex');
+}
+/* ENHANCED: tape-measure via raycasting (drgy/property-viewer pattern) */
+let measureOn = false, measurePts = [], measureGroup = null;
+function dollMeasure(){
+  measureOn = !measureOn; measurePts = [];
+    document.getElementById('dollMeasureBtn').textContent = measureOn ? 'Measure: ON' : 'Measure: OFF';
+  ensureMeasureBind();
+  if (!measureOn && measureGroup && doll.content){ doll.content.remove(measureGroup); measureGroup = null; }
+  toast(measureOn ? 'Tap two points in 3D to measure' : 'Measure off');
+}
+function ensureMeasureBind(){
+  if (!doll.renderer || doll._mBound) return; doll._mBound = true;
+  const cv = doll.renderer.domElement;
+  let dx = 0, dy = 0;
+  cv.addEventListener('pointerdown', e=>{ dx = e.clientX; dy = e.clientY; });
+  cv.addEventListener('click', e=>{
+    if (!measureOn || !doll.content || Math.hypot(e.clientX - dx, e.clientY - dy) > 6) return;
+    const r = cv.getBoundingClientRect();
+    const mouse = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    const ray = new THREE.Raycaster(); ray.setFromCamera(mouse, doll.cam);
+    const hits = ray.intersectObjects(doll.content.children, true);
+    if (!hits.length) return;
+    const pt = hits[0].point.clone();
+    if (!measureGroup){ measureGroup = new THREE.Group(); doll.content.add(measureGroup); }
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 12), new THREE.MeshBasicMaterial({ color: 0xd4a574 }));
+    dot.position.copy(pt); measureGroup.add(dot);
+    measurePts.push(pt);
+    if (measurePts.length === 2){
+      const d = measurePts[0].distanceTo(measurePts[1]);
+      measureGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(measurePts), new THREE.LineBasicMaterial({ color: 0xd4a574 })));
+      toast(`≈ ${d.toFixed(1)} m (${Math.round(d * 3.281)} ft)`);
+      measurePts = [];
+    } else toast('First point set — tap a second point');
+  });
+}
+/* ENHANCED: day/night lighting for the dollhouse */
+let dollNight = false;
+function dollDayNight(){
+  dollNight = !dollNight;
+  document.getElementById('dollDayBtn').textContent = dollNight ? 'Day' : 'Night';
+  if (!doll.scene) return;
+  doll.scene.background.set(dollNight ? 0x0d1626 : 0xdfe6ee);
+  doll.scene.fog.color.set(dollNight ? 0x0d1626 : 0xdfe6ee);
+  doll.scene.traverse(o=>{
+    if (o.isDirectionalLight){ o.intensity = dollNight ? 0.12 : 0.85; o.color.set(dollNight ? 0x9db8dd : 0xfff2df); }
+    if (o.isHemisphereLight) o.intensity = dollNight ? 0.18 : 0.5;
+    if (o.isAmbientLight) o.intensity = dollNight ? 0.06 : 0.12;
+  });
+  toast(dollNight ? 'Night view — imagine the lights on' : 'Day view');
+}
+
+/* Photo fallback: swipeable room tour, always works offline */
+function startFallbackTour(p){
+  try { if (tourViewer) tourViewer.destroy(); } catch(e){}
+  tourViewer = null; driftStop();
+  fbImgs = (p.gallery && p.gallery.length ? p.gallery : [p.img]); fbIdx = 0;
+  document.getElementById("tourLoading").classList.add("hidden");
+  document.getElementById("tourViewer").classList.add("hidden");
+  document.getElementById("tourThumbs").classList.add("hidden");
+  document.getElementById("tourFallback").classList.remove("hidden");
+  document.getElementById("tourPills").innerHTML = "";
+  document.getElementById("fbNote").textContent = "Photo preview mode — full 360° of this exact home is shot at onboarding.";
+  document.getElementById("tourHint").textContent = "Swipe or use arrows for the photo walkthrough";
+  fbShow();
+}
+function fbShow(){
+  document.getElementById("fbImg").src = fbImgs[fbIdx];
+  document.getElementById("fbCount").textContent = (fbIdx+1) + " / " + fbImgs.length;
+}
+function fbNav(d){ if(!fbImgs.length) return; fbIdx = (fbIdx+d+fbImgs.length)%fbImgs.length; fbShow(); }
+(function(){
+  const fb = document.getElementById("tourFallback");
+  let x0 = null;
+  fb.addEventListener("pointerdown", e=>{ x0 = e.clientX; });
+  fb.addEventListener("pointerup", e=>{
+    if (x0 === null) return;
+    const dx = e.clientX - x0; x0 = null;
+    if (Math.abs(dx) > 50) fbNav(dx < 0 ? 1 : -1);
+  });
+})();
+function closeTour(){
+  const ov = document.getElementById("tourOverlay");
+  if (ov.classList.contains("hidden")) return;
+  driftStop(); stopDollLoop(); stopGuided();
+  try { if (tourViewer) tourViewer.destroy(); } catch(e){}
+  tourViewer = null;
+  ov.classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+/* ───────── MARKET PULSE SPARKLINES + LOCALITY QUIZ ───────── */
+const PULSE = [
+  { name: "Mohali Ph-10", pts: [6.9,7.1,7.0,7.4,7.7,8.1], up: "+8.1% YoY" },
+  { name: "Zirakpur VIP Rd", pts: [5.4,5.6,5.8,5.9,6.0,6.2], up: "+9.3% YoY" },
+  { name: "Sector 35", pts: [12.0,12.2,12.3,12.5,12.6,12.8], up: "+6.2% YoY" },
+  { name: "Panchkula S20", pts: [9.3,9.4,9.5,9.6,9.8,9.9], up: "+5.4% YoY" },
+];
+function spark(pts){
+  const w = 120, h = 36, min = Math.min(...pts), max = Math.max(...pts);
+  const p = pts.map((v,i)=>`${(i/(pts.length-1)*w).toFixed(1)},${(h-3-((v-min)/((max-min)||1))*(h-8)).toFixed(1)}`).join(" ");
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-hidden="true"><polyline points="${p}" fill="none" stroke="#d4a574" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+document.getElementById("pulseGrid").innerHTML = PULSE.map(s=>`
+  <div class="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <p class="font-bold text-sm">${s.name}</p>
+    <div class="mt-2">${spark(s.pts)}</div>
+    <p class="text-gold font-bold text-sm mt-1">${s.up} <span class="text-white/40 font-medium">· 6 mo</span></p>
+  </div>`).join("");
+
+const QUIZ = [
+  { q: "What's your budget?", opts: ["Under ₹1 Cr", "₹1 – ₹2.5 Cr", "₹2.5 Cr +"] },
+  { q: "Why are you buying?", opts: ["A home to live in", "Investment + rent", "Land / build later"] },
+  { q: "Pick your vibe", opts: ["Heritage calm", "New + buzzing", "Green + family"] },
+];
+const QUIZ_AREAS = [
+  { name: "Sector 35, Chandigarh", profile: [1,0,0], line: "Heritage calm with walk-to-market life — stability over speculation." },
+  { name: "Mohali Phase 10 / Airport Rd", profile: [1,1,1], line: "New, buzzing and appreciating fastest — the end-user engine." },
+  { name: "Zirakpur VIP Road", profile: [0,1,1], line: "Maximum yield per rupee — rented in a median 11 days." },
+  { name: "Panchkula Sec 20", profile: [2,0,2], line: "Green, planned, family-first — park-facing holds value." },
+  { name: "Kharar / Greater Mohali", profile: [0,2,1], line: "Land now, build later — the frontier discount." },
+  { name: "Sector 17 belt", profile: [2,1,0], line: "Blue-chip commercial and premium homes — the Tricity statement." },
+];
+let quizStep = 0, quizAns = [];
+function openQuiz(){
+  quizStep = 0; quizAns = [];
+  renderQuiz();
+  document.getElementById("quizModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+function closeQuiz(){
+  document.getElementById("quizModal").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+function renderQuiz(){
+  const q = QUIZ[quizStep];
+  document.getElementById("quizBody").innerHTML = `
+    <p class="eyebrow uppercase text-teal font-bold">Locality Match · ${quizStep+1} of 3</p>
+    <h3 class="font-serif font-bold text-navy text-2xl mt-1">${q.q}</h3>
+    <div class="mt-4 grid gap-2">${q.opts.map((o,i)=>`<button onclick="quizPick(${i})" class="text-left border border-navy/15 rounded-xl px-4 py-3.5 font-semibold text-navy hover:border-navy hover:bg-navy/5 transition">${o}</button>`).join("")}</div>
+    <div class="mt-3 h-1.5 rounded-full bg-navy/10 overflow-hidden"><div class="h-full bg-gold rounded-full" style="width:${(quizStep/3)*100}%"></div></div>`;
+}
+function quizPick(i){ quizAns.push(i); quizStep++; quizStep < QUIZ.length ? renderQuiz() : quizResult(); }
+function quizResult(){
+  const ranked = QUIZ_AREAS.map(a=>({ ...a, score: a.profile.filter((v,d)=>v===quizAns[d]).length }))
+    .sort((a,b)=>b.score-a.score).slice(0,2);
+  document.getElementById("quizBody").innerHTML = `
+    <p class="eyebrow uppercase text-teal font-bold">Your matches</p>
+    <h3 class="font-serif font-bold text-navy text-2xl mt-1">Tricity, narrowed to two.</h3>
+    ${ranked.map((r,i)=>`<div class="mt-3 border ${i===0?"border-gold":"border-navy/15"} rounded-2xl p-4 ${i===0?"bg-gold/10":""}">
+      <p class="font-bold text-navy">${i===0?"◉":"○"} ${r.name}</p>
+      <p class="text-sm text-graphite/70 mt-1">${r.line}</p></div>`).join("")}
+    <a class="mt-4 block text-center bg-[#25D366] text-white font-bold rounded-xl py-3.5 text-sm" target="_blank" rel="noopener"
+       href="https://wa.me/919876543210?text=${encodeURIComponent("Hi! My locality matches: " + ranked.map(r=>r.name).join(" & ") + ". Please send matching listings.")}">WhatsApp me matching listings →</a>
+    <button onclick="openQuiz()" class="mt-2 w-full text-sm font-semibold text-navy/60 hover:text-navy">Retake quiz</button>`;
+}
+
+/* ───────── SITE CHROME: intro, slideshow, progress, concierge, i18n ───────── */
+const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ENHANCED (harden): venue-wifi fallbacks — images + CDN */
+document.addEventListener("error", e=>{
+  const t = e.target;
+  if (t && t.tagName === "IMG" && !t.dataset.fb){
+    t.dataset.fb = "1";
+    t.src = "data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a365d"/><stop offset="1" stop-color="#0f1f3c"/></linearGradient></defs><rect width="800" height="600" fill="url(#g)"/><text x="400" y="290" text-anchor="middle" font-family="Georgia" font-size="44" fill="#d4a574">Chandigarh Realty</text><text x="400" y="330" text-anchor="middle" font-family="sans-serif" font-size="20" fill="#ffffff" opacity="0.7">Photo unavailable offline</text></svg>');
+  }
+}, true);
+if (!window.tailwind){ const w = document.getElementById("cdnWarn"); if (w) w.classList.remove("hidden"); }
+/* ENHANCED: intro — once per session, skippable */
+(function(){
+  const intro = document.getElementById('intro');
+  if (!intro) return;
+  try {
+    if (sessionStorage.getItem('cr_intro')){ intro.remove(); return; }
+    sessionStorage.setItem('cr_intro', '1');
+  } catch(e){ /* private mode: show briefly, still skippable */ }
+  const hide = ()=>{ intro.style.opacity = '0'; setTimeout(()=>intro.remove(), 650); };
+  intro.addEventListener('click', hide);
+  setTimeout(hide, 1600);
+})();
+/* ENHANCED: hero crossfade slideshow (7s) */
+(function(){
+  if (REDUCED) return;
+  const layers = document.querySelectorAll('#heroSlides .slide-layer');
+  if (layers.length < 2) return;
+  let si = 0;
+  setInterval(()=>{
+    layers[si].classList.remove('on');
+    si = (si + 1) % layers.length;
+    const n = layers[si];
+    n.classList.remove('on'); void n.offsetWidth; n.classList.add('on');
+  }, 7000);
+})();
+/* ENHANCED (polish): focus overlays only for keyboard users — no stray rings on tap/click */
+window.addEventListener('keydown', e=>{ if (e.key === 'Tab') window.__kb = true; }, true);
+window.addEventListener('pointerdown', ()=>{ window.__kb = false; }, true);
+/* ENHANCED: scroll progress bar */
+window.addEventListener('scroll', ()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop / ((h.scrollHeight - h.clientHeight) || 1)) * 100;
+  const bar = document.getElementById('progressBar');
+  if (bar) bar.style.width = pct + '%';
+}, { passive: true });
+/* ENHANCED: WhatsApp Concierge — deep-link follows last-viewed property (special pick) */
+function updateConcierge(){
+  const btn = document.getElementById('conciergeBtn');
+  if (!btn) return;
+  const msg = lastViewed
+    ? `Hi, I'm looking at ${lastViewed.title}, ${lastViewed.sector} (${lastViewed.priceLbl}, CR-2026-0${lastViewed.id}) — please send details and a video-walkthrough slot.`
+    : "Hi, I want property options in Tricity.";
+  btn.href = "https://wa.me/919876543210?text=" + encodeURIComponent(msg);
+}
+/* ENHANCED: EN / हिंदी / ਪੰਜਾਬੀ hero switcher */
+const I18N = {
+  hi: {
+    heroH1: 'चंडीगढ़ में अपना <span class="text-gold italic">सपनों का घर</span> पाएं।',
+    heroLine: '— जहाँ कागज़ात संगमरमर जैसे साफ़।',
+    searchBtn: 'घर खोजें ⌕',
+  },
+  pa: {
+    heroH1: 'ਚੰਡੀਗੜ੍ਹ ਵਿੱਚ ਆਪਣਾ <span class="text-gold italic">ਸੁਪਨਿਆਂ ਦਾ ਘਰ</span> ਲੱਭੋ।',
+    heroLine: '— ਜਿੱਥੇ ਕਾਗਜ਼ਾਤ ਸੰਗਮਰਮਰ ਵਰਗੇ ਸਾਫ਼।',
+    searchBtn: 'ਘਰ ਲੱਭੋ ⌕',
+  },
+};
+function setLang(l){
+  document.querySelectorAll('.lang-btn').forEach(b=>{
+    const on = b.dataset.lang === l;
+    b.classList.toggle('border-gold', on); b.classList.toggle('text-gold', on);
+    b.classList.toggle('border-white/25', !on); b.classList.toggle('text-white/70', !on);
+  });
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k = el.dataset.i18n;
+    if (!el.dataset.orig) el.dataset.orig = el.innerHTML;
+    el.innerHTML = (l === 'en' || !I18N[l] || !I18N[l][k]) ? el.dataset.orig : I18N[l][k];
+  });
+  document.documentElement.lang = l;
+  store.set("cr_lang", l);
+}
+/* ENHANCED: newsletter mini-form */
+document.getElementById('newsForm').addEventListener('submit', e=>{
+  e.preventDefault();
+  if (e.target.dataset.busy) return;
+  e.target.dataset.busy = "1"; setTimeout(()=>delete e.target.dataset.busy, 1200);
+  const v = document.getElementById('newsEmail').value.trim();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)){ toast('Please enter a valid email'); return; }
+  try {
+    const n = store.get("cr_news", []);
+    n.push({ email: v, at: new Date().toISOString() });
+    store.set("cr_news", n);
+  } catch(err){}
+  document.getElementById('newsEmail').value = '';
+  toast('✔ Subscribed — one email a month, only what we\'d buy');
+});
+const savedL = store.get("cr_lang", "en"); if (savedL && savedL !== "en") setLang(savedL);
+/* ENHANCED: best-time-to-call chips */
+document.querySelectorAll('#timeChips .tchip').forEach(b=>b.addEventListener('click', ()=>{
+  document.querySelectorAll('#timeChips .tchip').forEach(x=>x.classList.remove('chip-active'));
+  b.classList.add('chip-active');
+}));
+
+/* Init */
+renderProps(); renderTst(); restartTst(); calcEmi();
+</script>
+</body>
+</html>
