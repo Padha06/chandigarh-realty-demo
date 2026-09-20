@@ -31,7 +31,7 @@ fallback photo tour, all 9 listings-data, filters, EMI engine, lead validation.
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Chandigarh Realty — Premium Properties in Tricity | Buy, Sell, Rent</title>
+<title>Chandigarh Realty - Premium Properties in Tricity | Buy, Sell, Rent</title>
 <meta name="description" content="Chandigarh's trusted real estate firm. Verified villas, apartments, floors & plots in Sector 17, Mohali, Panchkula, Zirakpur. RERA-registered. 15+ years, 1200+ happy families." />
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -40,7 +40,7 @@ tailwind.config = {
     extend: {
       colors: {
         navy: { DEFAULT: '#1a365d', deep: '#0f1f3c', light: '#2c5282' },
-        gold: { DEFAULT: '#d4a574', dark: '#b8894f', light: '#f3e3cb' },
+        gold: { DEFAULT: '#d4a574', dark: '#8a6530', light: '#f3e3cb' }, /* ENHANCED (polish): darkened to 5.27:1 on white for AA small text */
         teal: { DEFAULT: '#0f766e', dark: '#0b5a54' },
         cream: '#f8f7f5',
         paper: '#FAF8F4', /* ENHANCED: quiet warm off-white page base (DiverseKit) */
@@ -99,7 +99,10 @@ tailwind.config = {
   /* ENHANCED: gold focus ring */
   :focus-visible { outline: 2px solid #d4a574; outline-offset: 2px; border-radius: 4px; }
   /* ENHANCED: scroll progress */
-  #progressBar { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, #d4a574, #f3e3cb); z-index: 80; }
+  #progressBar { position: fixed; top: 0; left: 0; height: 3px; width: 100%; transform: scaleX(0); transform-origin: 0 50%; background: linear-gradient(90deg, #d4a574, #f3e3cb); z-index: 80; animation: pbar linear both; animation-timeline: scroll(root); }
+  @keyframes pbar { to { transform: scaleX(1); } }
+  @supports not (animation-timeline: scroll()) { #progressBar { display: none; } }
+  @media (prefers-reduced-motion: reduce) { #progressBar { display: none; } }
   /* ENHANCED: hero slideshow */
   .slide-layer { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.6s ease; }
   .slide-layer.on { opacity: 1; }
@@ -146,12 +149,22 @@ tailwind.config = {
   ::selection { background: #d4a574; color: #0f1f3c; }
   /* ENHANCED (layout): touch targets + safe-area docking */
   @media (pointer: coarse) {
-    #tourOverlay button, .mtab, .chip, #timeChips .tchip { min-height: 44px; }
+    #tourOverlay button, .mtab, .chip, #timeChips .tchip,
+    .link-quick, #propGrid button, #propGrid a, #propGrid select,
+    #savedList button, #savedList a, #compareTable button,
+    #leadForm button, #quizBody button, #compareBar button, #emi button, select { min-height: 44px; }
+    input[type="checkbox"] { width: 24px; height: 24px; }
+    #tstDots button { position: relative; }
+    #tstDots button::after { content: ""; position: absolute; inset: -14px; }
+    input:not([type="checkbox"]):not([type="range"]), select, textarea { font-size: 16px; }
   }
   #conciergeBtn { bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); right: calc(1.25rem + env(safe-area-inset-right, 0px)); }
   #topBtn { bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px)); }
   #toast { bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px)); }
   #compareBar { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  /* ENHANCED (layout): FABs yield to focused fields on touch devices */
+  #conciergeBtn, #topBtn { transition: opacity .2s ease; }
+  body.kb-focus #conciergeBtn, body.kb-focus #topBtn { opacity: 0; pointer-events: none; }
   /* ENHANCED (harden): honest sample labeling — dashed = illustrative, not fact */
   .demo-pill { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; border: 1px dashed currentColor; border-radius: 999px; padding: 2px 8px; opacity: .8; font-weight: 700; white-space: nowrap; }
   /* ENHANCED (harden): long-text toast resilience */
@@ -174,15 +187,16 @@ tailwind.config = {
     <p class="eyebrow uppercase text-white/50 font-semibold mt-1">Tricity Property Experts</p>
   </div>
 </div>
-<noscript><div style="background:#1a365d;color:#fff;padding:16px;text-align:center;font-family:sans-serif">Chandigarh Realty — please enable JavaScript for search, tours &amp; calculators. Browse: <a style="color:#d4a574" href="#properties">Properties</a> · <a style="color:#d4a574" href="#localities">Localities</a> · <a style="color:#d4a574" href="#contact">Contact +91 172 465 4321</a></div></noscript>
+<noscript><div style="background:#1a365d;color:#fff;padding:16px;text-align:center;font-family:sans-serif">Chandigarh Realty: please enable JavaScript for search, tours and calculators. Browse <a style="color:#d4a574" href="#properties">Properties</a>, <a style="color:#d4a574" href="#localities">Localities</a>, <a style="color:#d4a574" href="#contact">Contact</a>, or call +91 172 465 4321</div></noscript>
 
 <!-- ══════════ TOP BAR ══════════ -->
 <div class="bg-navy-deep text-white/90 text-xs sm:text-[13px]">
   <div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
-    <p class="truncate">✔ RERA Registered: PBRERA-SAS79-CR0142 &nbsp;·&nbsp; Serving Chandigarh · Mohali · Panchkula · Zirakpur &nbsp;·&nbsp; <span class="demo-pill">Demo</span></p>
+    <p class="truncate"><span class="demo-pill">Sample figures</span> Serving Chandigarh, Mohali, Panchkula and Zirakpur</p>
     <div class="hidden sm:flex items-center gap-4 shrink-0">
       <a href="tel:+911724654321" class="hover:text-gold inline-flex items-center gap-1.5"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg>+91 172 465 4321</a>
       <a href="#contact" class="hover:text-gold inline-flex items-center gap-1.5"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6L22 7"/></svg>hello@chandigarhrealty.in</a>
+      <a href="https://wa.me/919780018319" target="_blank" rel="noopener" class="text-gold font-bold">WhatsApp: 97800 18319</a>
     </div>
   </div>
 </div>
@@ -209,7 +223,7 @@ tailwind.config = {
       <button id="favBtn" class="relative hidden sm:inline-flex items-center gap-2 border border-navy/20 rounded-full px-4 py-2 text-sm font-semibold text-navy hover:border-navy" aria-label="Saved properties">
         ♥ Saved <span id="favCount" class="min-w-[22px] h-[22px] px-1 rounded-full bg-gold text-navy-deep text-xs grid place-items-center font-bold">0</span>
       </button>
-      <a href="#contact" class="hidden sm:inline-flex bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm transition">Book Free Visit →</a>
+      <a href="#contact" class="hidden sm:inline-flex bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm transition">Book a free visit →</a>
       <button id="menuBtn" class="lg:hidden w-11 h-11 grid place-items-center rounded-xl border border-navy/20 text-navy text-xl" aria-label="Menu">☰</button>
     </div>
   </div>
@@ -220,7 +234,7 @@ tailwind.config = {
       <a href="#tour" class="py-2 border-b border-navy/5">Virtual Tour</a>
       <a href="#emi" class="py-2 border-b border-navy/5">EMI Calculator</a>
       <a href="#testimonials" class="py-2 border-b border-navy/5">Reviews</a>
-      <a href="#contact" class="py-2">Contact · Book Free Visit</a>
+      <a href="#contact" class="py-2">Book a free visit</a>
     </nav>
   </div>
 </header>
@@ -237,15 +251,15 @@ tailwind.config = {
   <div class="max-w-7xl mx-auto px-4 pt-14 pb-10 sm:pt-20 sm:pb-14 relative">
     <div class="max-w-3xl">
       <p class="reveal inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-[13px] font-semibold tracking-wide">
-        <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span> 15+ YEARS · 1,200+ FAMILIES SETTLED IN TRICITY <span class="demo-pill">Demo</span>
+        <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span> 15+ YEARS · 1,200+ FAMILIES SETTLED IN TRICITY <span class="demo-pill">Sample</span>
       </p>
       <h1 class="reveal reveal-d1 font-serif font-bold display-xl mt-5" data-i18n="heroH1">
         Find a home in Chandigarh<br class="hidden sm:block" /> you'll <span class="text-gold italic">love to live in.</span>
       </h1>
       <!-- ENHANCED: unforgettable italic gold line (brand voice) -->
-      <p class="reveal reveal-d1 font-accent italic text-gold text-2xl sm:text-[28px] mt-3" data-i18n="heroLine">— where the paperwork is as clean as the marble.</p>
+      <p class="reveal reveal-d1 font-accent italic text-gold text-2xl sm:text-[28px] mt-3" data-i18n="heroLine">Where the paperwork is as clean as the marble.</p>
       <p class="reveal reveal-d2 mt-4 text-white/85 text-base sm:text-lg max-w-xl">
-        Verified homes across Tricity — clear titles, fair prices, legal help included.
+        Verified homes across Tricity. Clear titles, fair prices, legal help included.
       </p>
     </div>
 
@@ -272,8 +286,8 @@ tailwind.config = {
           <select id="qBudget" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 font-medium focus:outline-none focus:ring-2 focus:ring-navy/40">
             <option value="">Any budget</option>
             <option value="100">Under ₹1 Cr</option>
-            <option value="100-250">₹1 – ₹2.5 Cr</option>
-            <option value="250-500">₹2.5 – ₹5 Cr</option>
+            <option value="100-250">₹1 to ₹2.5 Cr</option>
+            <option value="250-500">₹2.5 to ₹5 Cr</option>
             <option value="500">₹5 Cr+</option>
           </select>
         </label>
@@ -281,14 +295,14 @@ tailwind.config = {
           <button id="searchBtn" data-i18n="searchBtn" class="w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl px-2 sm:px-4 py-3.5 transition text-sm sm:text-[15px] whitespace-nowrap">Search Homes ⌕</button>
         </div>
       </div>
-      <p class="mt-3 text-[13px] text-slate-500">Popular right now: <button class="link-quick text-navy font-semibold hover:underline" data-q="3BHK Mohali">3BHK in Mohali</button> · <button class="link-quick text-navy font-semibold hover:underline" data-q="Villa Panchkula">Villa in Panchkula</button> · <button class="link-quick text-navy font-semibold hover:underline" data-q="Floor Sector 35">Floor in Sector 35</button></p>
+      <p class="mt-3 text-[13px] text-slate-500">Popular right now: <button class="link-quick inline-block py-2 text-navy font-semibold hover:underline" data-q="3BHK Mohali">3BHK in Mohali</button>, <button class="link-quick inline-block py-2 text-navy font-semibold hover:underline" data-q="Villa Panchkula">Villa in Panchkula</button>, <button class="link-quick inline-block py-2 text-navy font-semibold hover:underline" data-q="Floor Sector 35">Floor in Sector 35</button></p>
     </div>
     <!-- ENHANCED (distill): regions collapse to one scroll strip, not a grid -->
-    <div class="reveal mt-4 flex gap-3 max-w-4xl overflow-x-auto pb-1 snap-x" id="regionCards">
-      <button onclick="filterLocality('Sector 17')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 snap-start"><span class="block font-serif font-bold text-lg">Chandigarh</span><span class="block text-white/65 text-[13px]">Sectors 17 · 35 · 22 — from ₹2.1 Cr</span></button>
-      <button onclick="filterLocality('Mohali')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 snap-start"><span class="block font-serif font-bold text-lg">Mohali</span><span class="block text-white/65 text-[13px]">Phase 10 · Airport Rd — from ₹68 L</span></button>
-      <button onclick="filterLocality('Panchkula')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 snap-start"><span class="block font-serif font-bold text-lg">Panchkula</span><span class="block text-white/65 text-[13px]">Sec 12 · 20 — from ₹1.9 Cr</span></button>
-      <button onclick="filterLocality('Zirakpur')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 snap-start"><span class="block font-serif font-bold text-lg">Zirakpur</span><span class="block text-white/65 text-[13px]">VIP Road — from ₹68 L</span></button>
+    <div class="reveal mt-4 flex sm:grid sm:grid-cols-4 gap-3 max-w-4xl overflow-x-auto sm:overflow-visible pb-1 snap-x" id="regionCards">
+      <button onclick="filterLocality('Sector 17')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 sm:w-auto sm:shrink snap-start"><span class="block font-serif font-bold text-lg">Chandigarh</span><span class="block text-white/65 text-[13px]">Sectors 17, 35 and 22, from ₹2.1 Cr</span></button>
+      <button onclick="filterLocality('Mohali')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 sm:w-auto sm:shrink snap-start"><span class="block font-serif font-bold text-lg">Mohali</span><span class="block text-white/65 text-[13px]">Phase 10, Airport Rd, from ₹68 L</span></button>
+      <button onclick="filterLocality('Panchkula')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 sm:w-auto sm:shrink snap-start"><span class="block font-serif font-bold text-lg">Panchkula</span><span class="block text-white/65 text-[13px]">Sec 12 and 20, from ₹1.9 Cr</span></button>
+      <button onclick="filterLocality('Zirakpur')" class="text-left bg-white/10 hover:bg-white/15 border border-white/15 rounded-2xl p-4 backdrop-blur transition shrink-0 w-60 sm:w-auto sm:shrink snap-start"><span class="block font-serif font-bold text-lg">Zirakpur</span><span class="block text-white/65 text-[13px]">VIP Road, from ₹68 L</span></button>
     </div>
 
   </div>
@@ -296,7 +310,7 @@ tailwind.config = {
 
 <!-- ENHANCED (distill): proof bar lives below the fold — the hero keeps one job -->
 <section class="cinematic" aria-label="Track record">
-  <p class="text-center pt-8"><span class="demo-pill text-gold">Demo figures — replace with client numbers</span></p>
+  <p class="text-center pt-8"><span class="demo-pill text-gold">Sample figures, replaced at onboarding</span></p>
   <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
       <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold"><span class="counter" data-target="15">0</span>+</p><p class="text-[13px] text-white/80 mt-1">Years in Tricity market</p></div>
       <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold"><span class="counter" data-target="1200">0</span>+</p><p class="text-[13px] text-white/80 mt-1">Happy families settled</p></div>
@@ -305,7 +319,7 @@ tailwind.config = {
   </div>
   <div class="border-t border-white/10 bg-white/5 backdrop-blur overflow-hidden">
     <div class="flex whitespace-nowrap marquee-track py-2.5 text-[13px] text-white/80 font-medium">
-      <span class="px-6">SECTOR 17 · From ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">MOHALI PHASE 10 · From ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">PANCHKULA SEC 20 · From ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">ZIRAKPUR VIP ROAD · From ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">SECTOR 17 · From ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">MOHALI PHASE 10 · From ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">PANCHKULA SEC 20 · From ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">ZIRAKPUR VIP ROAD · From ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span>
+      <span class="px-6">SECTOR 17: ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">MOHALI PHASE 10: ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">PANCHKULA SEC 20: ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">ZIRAKPUR VIP ROAD: ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">SECTOR 17: ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">MOHALI PHASE 10: ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">PANCHKULA SEC 20: ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">ZIRAKPUR VIP ROAD: ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span>
     </div>
   </div>
 </section>
@@ -314,12 +328,12 @@ tailwind.config = {
 <section id="properties" class="max-w-7xl mx-auto px-4 py-14 sm:py-20">
   <div class="reveal flex flex-wrap items-end justify-between gap-4">
     <div>
-      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Handpicked · Verified · RERA-checked</p>
+      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Handpicked, verified, RERA-checked</p>
       <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">Featured <span class="gold-underline">properties</span></h2>
       <p class="text-slate-600 mt-2 max-w-xl">Every listing is physically visited, title-checked and price-benchmarked by our team before it appears here.</p>
     </div>
     <label class="text-sm font-medium text-slate-600">Sort:
-      <select id="sortSel" class="ml-1 border border-slate-200 rounded-lg px-3 py-2 font-semibold text-navy bg-white">
+          <select id="sortSel" class="ml-1 border border-slate-200 rounded-lg px-3 py-3 font-semibold text-navy bg-white">
         <option value="new">Newest first</option>
         <option value="lo">Price: low → high</option>
         <option value="hi">Price: high → low</option>
@@ -348,11 +362,11 @@ tailwind.config = {
       <p class="eyebrow uppercase text-teal font-bold">The Tricity Letter · Q3 2026 <span class="demo-pill">Sample</span></p>
       <h2 class="font-serif font-bold text-navy display-lg mt-2">Airport Road is doing what Sector 17 did in 2012.</h2>
       <p class="font-accent italic text-xl text-gold-dark mt-3">Our market letter, read by 4,000 Tricity families.</p>
-      <p class="text-graphite/80 mt-4 leading-relaxed">Registry data from 214 Mohali transactions shows 8.1% YoY growth along the airport corridor — driven by IT City possession and genuine end-user demand, not investor flipping. Zirakpur's rental market tightened to 11-day median letting times.</p>
+      <p class="text-graphite/80 mt-4 leading-relaxed">Registry data from 214 Mohali transactions shows 8.1% YoY growth along the airport corridor, driven by IT City possession and genuine end-user demand rather than investor flipping. Zirakpur's rental market now lets in a median 11 days.</p>
       <ul class="mt-5 space-y-2 text-[15px] font-semibold text-navy">
-        <li>— 214 registries analysed, street by street</li>
-        <li>— Rental yields mapped across 9 sectors</li>
-        <li>— 3 micro-markets we'd buy in this quarter</li>
+        <li>✓ 214 registries analysed, street by street</li>
+        <li>✓ Rental yields mapped across 9 sectors</li>
+        <li>✓ 3 micro-markets we'd buy in this quarter</li>
       </ul>
       <a href="#contact" class="mt-6 inline-block border border-navy/25 text-navy font-semibold rounded-full px-6 py-3 hover:border-navy transition text-sm">Get the full letter →</a>
     </div>
@@ -382,7 +396,7 @@ tailwind.config = {
     <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5" id="localityGrid"></div>
     <!-- ENHANCED: price heatmap by ₹/sq.ft (hyperlocal insight pattern) -->
     <div class="reveal mt-10">
-      <p class="eyebrow uppercase text-gold font-bold">Sector heat map · asking ₹/sq.ft <span class="demo-pill">Demo</span></p>
+      <p class="text-gold font-bold text-sm">Sector heat map · asking ₹/sq.ft <span class="demo-pill">Sample</span></p>
       <div class="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-sm font-bold">
         <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.95)">Sector 17<br /><span class="font-serif text-xl">₹14.2k</span></div>
         <div class="rounded-xl p-4 text-navy-deep" style="background:rgba(212,165,116,.8)">Sector 35<br /><span class="font-serif text-xl">₹12.8k</span></div>
@@ -397,7 +411,7 @@ tailwind.config = {
     <!-- ENHANCED: market pulse sparklines (6-month trend) -->
     <div class="reveal mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4" id="pulseGrid"></div>
     <div class="reveal mt-8 text-center">
-      <button onclick="openQuiz()" class="bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full px-8 py-3.5 transition">Find my locality match — 3 questions →</button>
+      <button onclick="openQuiz()" class="bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full px-8 py-3.5 transition">Find my locality match: 3 questions →</button>
       <p class="mt-2 text-white/50 text-sm">Shareable, takes 30 seconds. No spam.</p>
     </div>
   </div>
@@ -416,19 +430,19 @@ tailwind.config = {
         <li>✔ 3D floor-plan previews for under-construction projects</li>
       </ul>
       <div class="mt-6 flex flex-wrap gap-3">
-        <button class="bg-navy text-white font-semibold rounded-full px-6 py-3 hover:bg-navy-deep" onclick="openTour(1)">Try a sample tour →</button>
+        <button class="bg-navy text-white font-semibold rounded-full px-6 py-3 hover:bg-navy-deep" onclick="openTour(1)">Take the 360° tour →</button>
         <a href="#contact" class="border border-navy/25 text-navy font-semibold rounded-full px-6 py-3 hover:border-navy">Request live video visit</a>
       </div>
-      <p class="mt-4 text-xs text-slate-400">Live working demo — drag to look around. After onboarding we shoot <b>your actual listings</b> in 360°.</p>
+      <p class="mt-4 text-xs text-slate-400">Live working demo. Drag to look around. After onboarding, we shoot <b>your actual listings</b> in 360°.</p>
     </div>
     <div class="relative bg-navy-deep min-h-[320px] sm:min-h-[420px] grid place-items-center overflow-hidden select-none" id="tourStage" title="Drag to rotate">
       <img id="tourFrame" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80" alt="360 tour preview" decoding="async" width="1200" height="800" class="w-full h-full object-cover absolute inset-0 opacity-90" draggable="false" />
       <div class="absolute inset-0 bg-gradient-to-t from-navy-deep/80 via-transparent"></div>
-      <div class="absolute top-4 left-4 bg-white/90 rounded-full px-4 py-1.5 text-xs font-bold text-navy">● 360° PREVIEW — DRAG ⟷ · TAP TO ENTER</div>
+      <div class="absolute top-4 left-4 bg-white/90 rounded-full px-4 py-1.5 text-xs font-bold text-navy">360° PREVIEW: DRAG OR TAP</div>
       <button onclick="openTour(1)" aria-label="Enter 360 degree tour" class="absolute inset-0 m-auto w-20 h-20 rounded-full bg-gold text-navy-deep text-3xl grid place-items-center shadow-lift hover:scale-110 transition">▶</button>
       <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white">
-        <div><p class="font-serif font-bold text-lg leading-tight">4BHK Villa · Sector 20, Panchkula</p><p class="text-white/70 text-sm">₹3.8 Cr · 3,200 sq.ft · Park-facing</p></div>
-        <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm" onclick="openTour(1)">Enter tour</button>
+        <div><p class="font-serif font-bold text-lg leading-tight">4BHK Villa, Sector 20, Panchkula</p><p class="text-white/70 text-sm">₹3.8 Cr, 3,200 sq.ft, park-facing</p></div>
+        <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm" onclick="openTour(1)">Take the 360° tour</button>
       </div>
     </div>
   </div>
@@ -438,33 +452,32 @@ tailwind.config = {
 <section id="emi" class="bg-cream border-y border-navy/10">
   <div class="max-w-7xl mx-auto px-4 py-14 sm:py-20 grid lg:grid-cols-2 gap-10 items-start">
     <div class="reveal">
-      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Plan your budget honestly</p>
       <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">What will it cost <span class="italic text-gold-dark">per month?</span></h2>
-      <p class="text-slate-600 mt-3 max-w-md">Move the sliders. We arrange pre-approved loans from HDFC, SBI &amp; ICICI at 8.4–9.1% with same-week disbursal for salaried buyers.</p>
+      <p class="text-slate-600 mt-3 max-w-md">Move the sliders. We arrange pre-approved loans from HDFC, SBI &amp; ICICI at 8.4-9.1% with same-week disbursal for salaried buyers.</p>
       <div class="mt-6 space-y-5 bg-white rounded-2xl border border-navy/10 p-6 shadow-card luxe">
         <!-- ENHANCED: pre-filled bank rate chips -->
         <div class="grid grid-cols-3 items-center gap-2">
-          <span class="eyebrow uppercase text-navy/50 font-bold col-span-3">Bank rates:</span>
+          <span class="text-xs font-bold text-navy/50 col-span-3">Bank rates:</span>
           <button onclick="setBank(8.55,'HDFC')" class="border border-navy/20 rounded-full px-3.5 py-1.5 text-[13px] font-bold text-navy hover:border-navy">HDFC 8.55%</button>
           <button onclick="setBank(8.40,'SBI')" class="border border-navy/20 rounded-full px-3.5 py-1.5 text-[13px] font-bold text-navy hover:border-navy">SBI 8.40%</button>
           <button onclick="setBank(8.75,'ICICI')" class="border border-navy/20 rounded-full px-3.5 py-1.5 text-[13px] font-bold text-navy hover:border-navy">ICICI 8.75%</button>
         </div>
         <div>
           <div class="flex justify-between text-sm font-semibold text-navy"><span>Property price</span><span id="emiPriceLbl">₹1.5 Cr</span></div>
-          <input id="emiPrice" type="range" min="3000000" max="50000000" step="500000" value="15000000" class="w-full mt-2" />
+          <input id="emiPrice" type="range" aria-label="Property price" min="3000000" max="50000000" step="500000" value="15000000" class="w-full mt-2" />
         </div>
         <div>
           <div class="flex justify-between text-sm font-semibold text-navy"><span>Down payment</span><span id="emiDownLbl">20% · ₹30 L</span></div>
-          <input id="emiDown" type="range" min="10" max="60" step="5" value="20" class="w-full mt-2" />
+          <input id="emiDown" type="range" aria-label="Down payment percent" min="10" max="60" step="5" value="20" class="w-full mt-2" />
         </div>
         <div class="grid sm:grid-cols-2 gap-4">
           <div>
             <div class="flex justify-between text-sm font-semibold text-navy"><span>Interest</span><span id="emiRateLbl">8.7% p.a.</span></div>
-            <input id="emiRate" type="range" min="8" max="11" step="0.1" value="8.7" class="w-full mt-2" />
+            <input id="emiRate" type="range" aria-label="Interest rate percent per year" min="8" max="11" step="0.1" value="8.7" class="w-full mt-2" />
           </div>
           <div>
             <div class="flex justify-between text-sm font-semibold text-navy"><span>Tenure</span><span id="emiTenLbl">20 yrs</span></div>
-            <input id="emiTen" type="range" min="5" max="30" step="1" value="20" class="w-full mt-2" />
+            <input id="emiTen" type="range" aria-label="Loan tenure in years" min="5" max="30" step="1" value="20" class="w-full mt-2" />
           </div>
         </div>
       </div>
@@ -473,7 +486,7 @@ tailwind.config = {
       <div class="bg-navy text-white rounded-3xl p-7 sm:p-9 shadow-lift">
         <p class="text-white/70 text-sm font-semibold uppercase tracking-widest">Estimated EMI</p>
         <p class="font-serif text-5xl font-bold text-gold mt-1"><span id="emiOut">₹1,06,245</span><span class="text-lg text-white/70 font-sans font-medium">/mo</span></p>
-        <div class="mt-5 h-3 rounded-full bg-white/15 overflow-hidden flex"><div id="emiBarP" class="bg-gold" style="width:55%"></div><div id="emiBarI" class="bg-teal" style="width:45%"></div></div>
+        <div class="mt-5 h-3 rounded-full overflow-hidden flex"><div id="emiBarP" class="bg-gold" style="width:55%"></div><div id="emiBarI" class="bg-teal" style="width:45%"></div></div>
         <div class="mt-4 grid grid-cols-3 gap-3 text-center">
           <div class="bg-white/10 rounded-xl p-3"><p class="text-[11px] text-white/60 uppercase font-bold">Loan</p><p id="emiLoan" class="font-bold">₹1.2 Cr</p></div>
           <div class="bg-white/10 rounded-xl p-3"><p class="text-[11px] text-white/60 uppercase font-bold">Interest</p><p id="emiInt" class="font-bold">₹1.35 Cr</p></div>
@@ -496,14 +509,13 @@ tailwind.config = {
 <!-- ══════════ WHY US + SERVICES ══════════ -->
 <section class="max-w-7xl mx-auto px-4 py-14 sm:py-20">
   <div class="reveal text-center max-w-2xl mx-auto">
-    <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Why families choose us</p>
     <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">A broker who acts like <span class="italic text-gold-dark">your family CA</span></h2>
   </div>
   <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
     <div class="reveal bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg><h3 class="font-bold text-navy mt-3">Title-first verification</h3><p class="text-sm text-slate-600 mt-1">Registry, CLU, GPA chain &amp; loan-history checked by an independent lawyer before we list.</p></div>
-    <div class="reveal reveal-d1 bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><h3 class="font-bold text-navy mt-3">Fair-price benchmarking</h3><p class="text-sm text-slate-600 mt-1">We show last 6 months of registry rates on the same street — you never overpay.</p></div>
+    <div class="reveal reveal-d1 bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></svg><h3 class="font-bold text-navy mt-3">Fair-price benchmarking</h3><p class="text-sm text-slate-600 mt-1">We show last 6 months of registry rates on the same street. You never overpay.</p></div>
     <div class="reveal reveal-d2 bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9l-6-6z"/><path d="M14 3v6h6"/><path d="M9 14h6M9 17h4"/></svg><h3 class="font-bold text-navy mt-3">Loan + legal desk</h3><p class="text-sm text-slate-600 mt-1">Pre-approval in 48 hrs, stamp-duty guidance and registration-day support included.</p></div>
-    <div class="reveal reveal-d3 bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="2" y="13" width="4" height="7" rx="1.5"/><rect x="18" y="13" width="4" height="7" rx="1.5"/><path d="M20 20a4 4 0 0 1-4 2h-1"/></svg><h3 class="font-bold text-navy mt-3">After-handover support</h3><p class="text-sm text-slate-600 mt-1">Society NOC, meter transfer, interiors &amp; resale valuation — free for 1 year.</p></div>
+    <div class="reveal reveal-d3 bg-white rounded-2xl border border-navy/10 p-6 shadow-card"><svg class="w-8 h-8 text-navy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 13a8 8 0 0 1 16 0"/><rect x="2" y="13" width="4" height="7" rx="1.5"/><rect x="18" y="13" width="4" height="7" rx="1.5"/><path d="M20 20a4 4 0 0 1-4 2h-1"/></svg><h3 class="font-bold text-navy mt-3">After-handover support</h3><p class="text-sm text-slate-600 mt-1">Society NOC, meter transfer, interiors &amp; resale valuation, free for 1 year.</p></div>
   </div>
 </section>
 
@@ -511,7 +523,6 @@ tailwind.config = {
 <section id="testimonials" class="bg-white border-y border-navy/10">
   <div class="max-w-5xl mx-auto px-4 py-14 sm:py-20">
     <div class="reveal text-center">
-      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">480+ Google reviews · 4.9★ <span class="demo-pill">Demo</span></p>
       <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">Families we've settled</h2>
     </div>
     <div class="reveal mt-8 bg-cream rounded-3xl border border-navy/10 p-7 sm:p-10 min-h-[240px]" id="tstWrap"></div>
@@ -523,17 +534,16 @@ tailwind.config = {
 <section id="contact" class="max-w-7xl mx-auto px-4 py-14 sm:py-20">
   <div class="reveal grid lg:grid-cols-5 gap-8">
     <div class="lg:col-span-2">
-      <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Book a free site visit</p>
       <h2 class="font-serif font-bold text-navy text-3xl sm:text-5xl mt-2">Talk to a Tricity expert <span class="italic text-gold-dark">today.</span></h2>
-      <p class="text-slate-600 mt-3">Tell us your budget and preferred sectors — we'll send 3 matching verified options on WhatsApp within 2 working hours.</p>
+      <p class="text-slate-600 mt-3">Tell us your budget and preferred sectors. We'll send 3 matching verified options on WhatsApp within 2 working hours.</p>
       <div class="mt-6 space-y-3 text-[15px]">
         <p class="bg-white border border-navy/10 rounded-xl px-4 py-3 shadow-card"><a class="font-bold text-navy hover:underline" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Shop+No.+123-124+Main+Market%2C+Badheri%2C+Sector+41D%2C+Chandigarh+160036">Shop No. 123-124 Main Market, Badheri, Sector 41D, Chandigarh 160036</a> <span class="block text-[13px] mt-1"><a class="text-teal-dark font-semibold hover:underline" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Shop+No.+123-124+Main+Market%2C+Badheri%2C+Sector+41D%2C+Chandigarh+160036">View on Google Maps →</a></span></p>
         <p class="bg-white border border-navy/10 rounded-xl px-4 py-3 shadow-card"><a class="font-bold text-navy" href="tel:+911724654321">+91 172 465 4321</a> · <a class="font-bold text-navy" href="https://wa.me/919780018319">WhatsApp: 98765 43210</a></p>
-        <p class="bg-white border border-navy/10 rounded-xl px-4 py-3 shadow-card">Open all days · 9:30 AM – 7:30 PM</p>
+        <p class="bg-white border border-navy/10 rounded-xl px-4 py-3 shadow-card">Open all days, 9:30 AM to 7:30 PM</p>
       </div>
       <!-- ENHANCED: live location map — tap through to Google Maps -->
       <div class="mt-4 rounded-2xl overflow-hidden border border-navy/10 shadow-card luxe">
-        <iframe title="Office location — Shop No. 123-124 Main Market, Badheri, Sector 41D, Chandigarh 160036" src="https://maps.google.com/maps?q=Shop%20No.%20123-124%20Main%20Market%2C%20Badheri%2C%20Sector%2041D%2C%20Chandigarh%20160036&t=&z=16&ie=UTF8&iwloc=&output=embed" class="w-full h-64" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <iframe title="Office location: Shop No. 123-124 Main Market, Badheri, Sector 41D, Chandigarh 160036" src="https://maps.google.com/maps?q=Shop%20No.%20123-124%20Main%20Market%2C%20Badheri%2C%20Sector%2041D%2C%20Chandigarh%20160036&t=&z=16&ie=UTF8&iwloc=&output=embed" class="w-full h-64" style="border:0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
         <a class="block text-center bg-navy text-white font-bold py-3 text-sm hover:bg-navy-deep transition" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Shop+No.+123-124+Main+Market%2C+Badheri%2C+Sector+41D%2C+Chandigarh+160036">Get directions on Google Maps →</a>
       </div>
     </div>
@@ -549,7 +559,7 @@ tailwind.config = {
           <div id="leadMore" class="hidden sm:col-span-2 grid sm:grid-cols-2 gap-4">
           <label class="block"><span class="text-sm font-bold text-navy">Email</span><input id="fEmail" type="email" autocomplete="email" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 focus:outline-none focus:ring-2 focus:ring-navy/40" placeholder="you@email.com" /></label>
           <label class="block"><span class="text-sm font-bold text-navy">Budget</span>
-            <select id="fBudget" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 bg-white"><option>Under ₹1 Cr</option><option selected>₹1 – ₹2.5 Cr</option><option>₹2.5 – ₹5 Cr</option><option>₹5 Cr+</option></select></label>
+            <select id="fBudget" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 bg-white"><option>Under ₹1 Cr</option><option selected>₹1 to ₹2.5 Cr</option><option>₹2.5 to ₹5 Cr</option><option>₹5 Cr+</option></select></label>
           <label class="block sm:col-span-2"><span class="text-sm font-bold text-navy">Message</span><textarea id="fMsg" rows="3" class="mt-1 w-full border border-slate-200 rounded-xl px-3 py-3 focus:outline-none focus:ring-2 focus:ring-navy/40" placeholder="e.g. 3BHK near good schools in Mohali, ready-to-move, budget ₹1.4 Cr"></textarea></label>
           </div>
           <div class="sm:col-span-2">
@@ -583,7 +593,7 @@ tailwind.config = {
     <div>
       <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gold text-navy-deep font-serif font-bold text-lg grid place-items-center">CR</span><span class="font-serif font-bold text-white text-lg">Chandigarh Realty</span></div>
       <p class="text-sm mt-3 text-white/60">Tricity's title-first property advisory. Buy, sell &amp; rent with verified listings and honest pricing since 2011.</p>
-      <p class="text-xs mt-3 text-white/40">RERA: PBRERA-SAS79-CR0142 (demo number)</p>
+      <p class="text-xs mt-3 text-white/40">RERA sample: PBRERA-SAS79-CR0142 · real number at onboarding</p>
     </div>
     <div><p class="font-bold text-white mb-3">Explore</p><ul class="space-y-2 text-sm"><li><a href="#properties" class="hover:text-gold">Featured properties</a></li><li><a href="#localities" class="hover:text-gold">Localities</a></li><li><a href="#tour" class="hover:text-gold">Virtual tours</a></li><li><a href="#emi" class="hover:text-gold">EMI calculator</a></li></ul></div>
     <div><p class="font-bold text-white mb-3">Services</p><ul class="space-y-2 text-sm"><li>Home buying &amp; selling</li><li>Rental management</li><li>Home loans &amp; legal</li><li>NRI property desk</li></ul></div>
@@ -607,7 +617,7 @@ tailwind.config = {
       </div>
     </div>
   </div>
-  <div class="border-t border-white/10"><div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-2 items-center justify-between text-xs text-white/40"><span>© 2026 Chandigarh Realty (demo). Prices indicative; verify RERA &amp; title before purchase.</span><span>Made for client preview · v1.0</span></div></div>
+  <div class="border-t border-white/10"><div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-2 items-center justify-between text-xs text-white/40"><span>© 2026 Chandigarh Realty (demo). Prices indicative; verify RERA &amp; title before purchase.</span><span>Made for client preview</span></div></div>
 </footer>
 
 <!-- Floating buttons -->
@@ -648,18 +658,16 @@ tailwind.config = {
     </div>
     <div id="tourPills" class="flex gap-2 px-4 sm:px-6 py-2.5 overflow-x-auto border-b border-white/10"></div>
     <div id="dollTools" class="hidden gap-2 px-4 sm:px-6 py-2.5 overflow-x-auto border-b border-white/10 text-xs font-bold items-center">
-      <span class="text-gold shrink-0">INTERACTIVE 3D · DRAG TO ORBIT</span>
-      <button onclick="dollSpin()" id="dollSpinBtn" class="shrink-0 border border-gold/70 text-gold rounded-full px-4 py-1.5">Spin: ON</button>
       <button onclick="dollView('iso')" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">3D View</button>
       <button onclick="dollView('top')" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">Floor Plan</button>
-      <!-- ENHANCED (layout): grouped 3D tools — views | instruments | models -->
-      <span class="self-center text-white/25 shrink-0" aria-hidden="true">|</span>
-      <!-- ENHANCED: measure tool (raycasting) + day/night (drgy/property-viewer pattern) -->
+      <button onclick="toggleToolExtras('dollExtras', this)" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5" aria-expanded="false">⋯ Tools</button>
+      <span id="dollExtras" class="hidden contents">
+      <button onclick="dollSpin()" id="dollSpinBtn" class="shrink-0 border border-gold/70 text-gold rounded-full px-4 py-1.5">Spin: ON</button>
       <button onclick="dollMeasure()" id="dollMeasureBtn" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">Measure: OFF</button>
       <button onclick="dollDayNight()" id="dollDayBtn" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">Night</button>
-      <span class="self-center text-white/25 shrink-0" aria-hidden="true">|</span>
       <button onclick="loadModel('home')" id="modelHomeBtn" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">3D Home</button>
-      <button onclick="loadModel('stylised')" id="modelDollBtn" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">3BHK Layout</button>
+      <button onclick="loadModel('stylized')" id="modelDollBtn" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5">3BHK Layout</button>
+      </span>
     </div>
     <div class="relative flex-1 min-h-0">
       <div id="tourViewer" class="absolute inset-0 hidden"></div>
@@ -672,7 +680,7 @@ tailwind.config = {
         <div class="text-center"><p class="text-4xl animate-pulse">🌀</p><p class="mt-2 font-semibold">Loading 360° tour…</p></div>
       </div>
       <div id="tourFallback" class="absolute inset-0 hidden bg-black">
-        <img id="fbImg" class="w-full h-full object-cover" alt="Property photo tour" draggable="false" />
+        <img id="fbImg" class="w-full h-full object-cover" alt="Property photo tour" decoding="async" width="1200" height="800" draggable="false" />
         <span class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent pointer-events-none"></span>
         <button onclick="fbNav(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 text-navy text-xl font-bold" aria-label="Previous">‹</button>
         <button onclick="fbNav(1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 text-navy text-xl font-bold" aria-label="Next">›</button>
@@ -695,7 +703,7 @@ tailwind.config = {
       <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-navy-deep/95 to-transparent pointer-events-none">
         <div id="tourThumbs" class="hidden gap-2 overflow-x-auto pointer-events-auto mb-3"></div>
         <div class="flex flex-wrap items-end justify-between gap-3">
-        <p class="text-white/85 text-[13px] font-medium pointer-events-auto"><span id="tourHint">Drag to look around · Scroll to zoom · Tap glowing dots to move rooms</span><br /><span id="fbNote" class="text-white/50 text-xs"></span></p>
+        <p class="text-white/85 text-[13px] font-medium pointer-events-auto"><span id="tourHint">Drag to look around, scroll to zoom, tap the glowing dots to move rooms</span><br /><span id="fbNote" class="text-white/50 text-xs"></span></p>
         <a href="#contact" onclick="closeTour()" class="pointer-events-auto bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Request live video visit →</a>
         </div>
       </div>
@@ -720,13 +728,13 @@ tailwind.config = {
     </div>
     <div class="max-w-5xl mx-auto px-4 py-6">
       <h2 class="font-serif font-bold display-lg" id="savedTitle">Saved homes (0)</h2>
-      <p class="text-white/60 mt-1">View dossiers, contact the agent, or tick compare — then pit them against each other.</p>
+      <p class="text-white/60 mt-1">View dossiers, contact the agent, or tick compare. Then pit them against each other.</p>
     </div>
   </div>
   <div class="max-w-5xl mx-auto px-4 py-8">
     <div id="savedList" class="grid gap-3"></div>
     <div id="savedActions" class="mt-5 hidden flex-wrap gap-2">
-      <button onclick="showPage('comparePage')" id="savedCompareBtn" class="flex-1 min-w-[200px] bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-3 text-sm">Compare selected →</button>
+      <button onclick="showPage('comparePage')" id="savedCompareBtn" class="flex-1 min-w-[200px] bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-3 text-sm">Compare table →</button>
       <button onclick="savedWhatsApp()" class="flex-1 min-w-[200px] bg-[#25D366] text-white font-bold rounded-xl py-3 text-sm">Send shortlist on WhatsApp →</button>
     </div>
   </div>
@@ -768,26 +776,26 @@ const IMG = (id, w=1200) => `https://images.unsplash.com/${id}?auto=format&fit=c
 const PROPERTIES = [
   { id:1, title:"4BHK Park-Facing Villa", city:"Panchkula", sector:"Sector 20", type:"Villa", price:380, priceLbl:"₹3.8 Cr", beds:4, baths:5, area:3200, facing:"Park-facing", status:"Ready to move", tag:"Featured", img:IMG("photo-1600596542815-ffad4c1539a9"), gallery:[IMG("photo-1600596542815-ffad4c1539a9"),IMG("photo-1600607687939-ce8a6c25118c"),IMG("photo-1600585154526-990dced4db0d")], desc:"Independent villa on a 500 sq.yd plot with modular kitchen, home theatre, terrace garden and 2-car stilt parking. Clear title, loan-ready, 5-min from NH-7.", amenities:["Modular kitchen","Home theatre","Terrace garden","2-car parking","Power backup","CCTV"], posted:9 },
   { id:2, title:"3BHK Premium Apartment", city:"Mohali", sector:"Phase 10, Airport Rd", type:"Apartment", price:142, priceLbl:"₹1.42 Cr", beds:3, baths:3, area:1850, facing:"East-facing", status:"Ready to move", tag:"High demand", img:IMG("photo-1545324418-cc1a3fa10c00"), gallery:[IMG("photo-1545324418-cc1a3fa10c00"),IMG("photo-1560448204-e02f11c3d0e2"),IMG("photo-1600210492486-724fe5c67fb0")], desc:"Gated-society 3BHK with clubhouse, pool and 80% open greens. Top floor available with terrace rights. Ideal for families near IT City & airport.", amenities:["Clubhouse","Swimming pool","Kids play area","Covered parking","Lift + backup","Gated security"], posted:4 },
-  { id:3, title:"Independent Builder Floor", city:"Chandigarh", sector:"Sector 35-D", type:"Floor", price:235, priceLbl:"₹2.35 Cr", beds:3, baths:4, area:2100, facing:"North-East", status:"Ready to move", tag:"Rare listing", img:IMG("photo-1600585154340-be6161a56a0c"), gallery:[IMG("photo-1600585154340-be6161a56a0c"),IMG("photo-1600607687920-4e2a09cf159d"),IMG("photo-1600566753086-00f18fb6b3ea")], desc:"Stilt + 4 independent floor in the heart of Sector 35 — walk to market, schools and Sector 34 offices. Separate gate, mumty + store, registry-ready.", amenities:["Stilt parking","Separate gate","Mumty + store","Near market","Registry-ready","Vastu aligned"], posted:2 },
-  { id:4, title:"2BHK Smart Investment Flat", city:"Zirakpur", sector:"VIP Road", type:"Apartment", price:89, priceLbl:"₹89 L", beds:2, baths:2, area:1150, facing:"West-facing", status:"Ready to move", tag:"Best rental yield", img:IMG("photo-1568605114967-8130f3a36994"), gallery:[IMG("photo-1568605114967-8130f3a36994"),IMG("photo-1600047509807-ba8f99d2cdde")], desc:"High-rental-demand 2BHK on VIP Road — currently fetching ₹18–20k/month. Perfect first investment or starter home with easy highway access.", amenities:["High rental yield","Highway access","Lift","Visitor parking","Loan eligible","Low maintenance"], posted:12 },
+  { id:3, title:"Independent Builder Floor", city:"Chandigarh", sector:"Sector 35-D", type:"Floor", price:235, priceLbl:"₹2.35 Cr", beds:3, baths:4, area:2100, facing:"North-East", status:"Ready to move", tag:"Rare listing", img:IMG("photo-1600585154340-be6161a56a0c"), gallery:[IMG("photo-1600585154340-be6161a56a0c"),IMG("photo-1600607687920-4e2a09cf159d"),IMG("photo-1600566753086-00f18fb6b3ea")], desc:"Stilt + 4 independent floor in the heart of Sector 35, walk to market, schools and Sector 34 offices. Separate gate, mumty + store, registry-ready.", amenities:["Stilt parking","Separate gate","Mumty + store","Near market","Registry-ready","Vastu aligned"], posted:2 },
+  { id:4, title:"2BHK Smart Investment Flat", city:"Zirakpur", sector:"VIP Road", type:"Apartment", price:89, priceLbl:"₹89 L", beds:2, baths:2, area:1150, facing:"West-facing", status:"Ready to move", tag:"Best rental yield", img:IMG("photo-1568605114967-8130f3a36994"), gallery:[IMG("photo-1568605114967-8130f3a36994"),IMG("photo-1600047509807-ba8f99d2cdde")], desc:"High-rental-demand 2BHK on VIP Road, currently fetching ₹18-20k/month. Perfect first investment or starter home with easy highway access.", amenities:["High rental yield","Highway access","Lift","Visitor parking","Loan eligible","Low maintenance"], posted:12 },
   { id:5, title:"5BHK Luxury Duplex Villa", city:"Mohali", sector:"DLF Hyde Park, Sec 125", type:"Villa", price:465, priceLbl:"₹4.65 Cr", beds:5, baths:6, area:4100, facing:"Golf-facing", status:"Ready to move", tag:"Luxury", img:IMG("photo-1512917774080-9991f1c4c750"), gallery:[IMG("photo-1512917774080-9991f1c4c750"),IMG("photo-1613490493576-7fde63acd811"),IMG("photo-1600585154340-be6161a56a0c")], desc:"Signature duplex with double-height living, private lawn, Italian marble and smart-home automation. DLF-maintained estate with club & golf greens.", amenities:["Private lawn","Smart home","Italian marble","Club + golf","5-car parking","Servant quarter"], posted:6 },
-  { id:6, title:"250 sq.yd Residential Plot", city:"Kharar", sector:"Sector 127, Greater Mohali", type:"Plot", price:118, priceLbl:"₹1.18 Cr", beds:0, baths:0, area:2250, facing:"East-facing", status:"Immediate possession", tag:"Gated township", img:IMG("photo-1500382017468-9049fed747ef"), gallery:[IMG("photo-1500382017468-9049fed747ef")], desc:"East-facing 250 gaj plot in a gated township with 40-ft roads, street lights and park on the block. Build when ready — boundary wall done.", amenities:["Gated township","40-ft road","Park-facing block","Clear title","Loan eligible","Boundary done"], posted:15 },
+  { id:6, title:"250 sq.yd Residential Plot", city:"Kharar", sector:"Sector 127, Greater Mohali", type:"Plot", price:118, priceLbl:"₹1.18 Cr", beds:0, baths:0, area:2250, facing:"East-facing", status:"Immediate possession", tag:"Gated township", img:IMG("photo-1500382017468-9049fed747ef"), gallery:[IMG("photo-1500382017468-9049fed747ef")], desc:"East-facing 250 gaj plot in a gated township with 40-ft roads, street lights and park on the block. Build when ready. Boundary wall done.", amenities:["Gated township","40-ft road","Park-facing block","Clear title","Loan eligible","Boundary done"], posted:15 },
   { id:7, title:"Showroom on High-Street", city:"Chandigarh", sector:"Sector 17-E Piazza", type:"Commercial", price:520, priceLbl:"₹5.2 Cr", beds:0, baths:2, area:1800, facing:"Piazza-facing", status:"Leased @ ₹2.1L/mo", tag:"Pre-leased", img:IMG("photo-1486406146926-c627a92ad1ab"), gallery:[IMG("photo-1486406146926-c627a92ad1ab")], desc:"Pre-leased showroom in Sector 17 piazza belt with national-brand tenant till 2031 + 15% escalation every 3 years. 4.8% assured yield.", amenities:["Pre-leased","National tenant","4.8% yield","Escalation clause","Clear title","High footfall"], posted:8 },
-  { id:8, title:"3BHK Family Floor", city:"Panchkula", sector:"Sector 12", type:"Floor", price:198, priceLbl:"₹1.98 Cr", beds:3, baths:3, area:1950, facing:"Park-facing", status:"Ready to move", tag:"Family pick", img:IMG("photo-1580587771525-78b9dba3b914"), gallery:[IMG("photo-1580587771525-78b9dba3b914"),IMG("photo-1600566753086-00f18fb6b3ea")], desc:"First-floor with terrace rights in peaceful Sector 12 — opposite park, near DAV school & Nada Sahib road. Fresh paint, new wardrobes, ready papers.", amenities:["Terrace rights","Park-facing","Near school","New wardrobes","Registry-ready","Peaceful block"], posted:5 },
+  { id:8, title:"3BHK Family Floor", city:"Panchkula", sector:"Sector 12", type:"Floor", price:198, priceLbl:"₹1.98 Cr", beds:3, baths:3, area:1950, facing:"Park-facing", status:"Ready to move", tag:"Family pick", img:IMG("photo-1580587771525-78b9dba3b914"), gallery:[IMG("photo-1580587771525-78b9dba3b914"),IMG("photo-1600566753086-00f18fb6b3ea")], desc:"First-floor with terrace rights in peaceful Sector 12, opposite the park and near DAV school and Nada Sahib road. Fresh paint, new wardrobes, ready papers.", amenities:["Terrace rights","Park-facing","Near school","New wardrobes","Registry-ready","Peaceful block"], posted:5 },
   { id:9, title:"1BHK Starter + Study", city:"Mohali", sector:"Sector 71, near ISB Rd", type:"Apartment", price:68, priceLbl:"₹68 L", beds:1, baths:1, area:750, facing:"Balcony garden", status:"Ready to move", tag:"First-home", img:IMG("photo-1502672260266-1c1ef2d93688"), gallery:[IMG("photo-1502672260266-1c1ef2d93688")], desc:"Compact 1BHK+study loved by young professionals near Sohana hospital & Bestech Square. Low EMI (~₹48k), easy resale, society with gym.", amenities:["Low EMI","Near hospital","Gym","Power backup","Easy resale","Loan eligible"], posted:3 },
 ];
 const LOCALITIES = [
-  { name:"Sector 17 & 35, Chandigarh", img:IMG("photo-1449824913935-59a10b8d2000",800), range:"₹2.1 – ₹5.2 Cr", trend:"▲ 6.2% YoY", count:3, note:"Heritage sectors · walk-to-everything" },
-  { name:"Mohali · Phase 10 / Airport Rd", img:IMG("photo-1449844908441-8829872d2607",800), range:"₹68 L – ₹1.6 Cr", trend:"▲ 8.1% YoY", count:3, note:"IT City spillover · best appreciation" },
-  { name:"Panchkula · Sec 12 / 20", img:IMG("photo-1477959858617-67f85cf4f1df",800), range:"₹1.9 – ₹3.8 Cr", trend:"▲ 5.4% YoY", count:2, note:"Greenest blocks · HUDA planning" },
-  { name:"Zirakpur · VIP Road", img:IMG("photo-1480714378408-67cf0d13bc1b",800), range:"₹68 – ₹95 L", trend:"▲ 9.3% YoY", count:1, note:"Highest rental yield · highway belt" },
-  { name:"Kharar · Greater Mohali", img:IMG("photo-1444723121867-7a241cacace9",800), range:"₹1.1 – ₹1.5 Cr", trend:"▲ 7.6% YoY", count:1, note:"Plots + new townships" },
+  { name:"Sector 17 & 35, Chandigarh", img:IMG("photo-1449824913935-59a10b8d2000",800), range:"₹2.1-₹5.2 Cr", trend:"▲ 6.2% YoY", count:3, note:"Heritage sectors · walk-to-everything" },
+  { name:"Mohali · Phase 10 / Airport Rd", img:IMG("photo-1449844908441-8829872d2607",800), range:"₹68 L to ₹1.6 Cr", trend:"▲ 8.1% YoY", count:3, note:"IT City spillover · best appreciation" },
+  { name:"Panchkula · Sec 12 / 20", img:IMG("photo-1477959858617-67f85cf4f1df",800), range:"₹1.9 to ₹3.8 Cr", trend:"▲ 5.4% YoY", count:2, note:"Greenest blocks · HUDA planning" },
+  { name:"Zirakpur · VIP Road", img:IMG("photo-1480714378408-67cf0d13bc1b",800), range:"₹68 to ₹95 L", trend:"▲ 9.3% YoY", count:1, note:"Highest rental yield · highway belt" },
+  { name:"Kharar · Greater Mohali", img:IMG("photo-1444723121867-7a241cacace9",800), range:"₹1.1 to ₹1.5 Cr", trend:"▲ 7.6% YoY", count:1, note:"Plots + new townships" },
   { name:"Sector 22 · Office & Retail", img:IMG("photo-1486406146926-c627a92ad1ab",800), range:"₹4.5 Cr+", trend:"▲ 4.1% YoY", count:1, note:"Pre-leased commercial" },
 ];
 const TESTIMONIALS = [
-  { name:"Col. R. Bedi (Retd.)", detail:"Bought 3BHK · Sector 35, Chandigarh", text:"They rejected two houses I had almost finalised — title issues I would never have caught. The third one they found was better and ₹9 lakh cheaper than the dealer's quote. That honesty is rare.", img:"RB" },
-  { name:"Simran & Harpreet Gill", detail:"Bought Villa · Panchkula Sec 20", text:"We were in Toronto through the whole purchase. Video walkthroughs, lawyer verification on call, and registry done in one India trip. Settled in 40 days flat.", img:"SG" },
-  { name:"Ankit Verma, IT Professional", detail:"Invested 2BHK · Zirakpur VIP Road", text:"Showed me actual rent agreements on the same tower before I paid a rupee. My flat rented in 11 days at the exact rent they predicted. Numbers-first people.", img:"AV" },
+  { name:"Col. R. Bedi (Retd.)", detail:"Bought 3BHK · Sector 35, Chandigarh", text:"They rejected two houses I had almost finalised over title issues I would never have caught. The third was better and ₹9 lakh cheaper.", img:"RB" },
+  { name:"Simran & Harpreet Gill", detail:"Bought Villa · Panchkula Sec 20", text:"We were in Toronto through the whole purchase. Video walkthroughs, lawyer verification on call, registry in one India trip.", img:"SG" },
+  { name:"Ankit Verma, IT Professional", detail:"Invested 2BHK · Zirakpur VIP Road", text:"Showed me actual rent agreements on the same tower before I paid a rupee. My flat rented in 11 days at the predicted rent.", img:"AV" },
 ];
 
 /* ───────── STATE ───────── */
@@ -834,34 +842,29 @@ function renderProps(){
   document.getElementById("propGrid").innerHTML = list.map((p,i)=>{
   /* ENHANCED: masonry hero-listing — first card spans 2 cols, horizontal (Compass/SERHANT. editorial priority) */
   const hero = (i === 0 && list.length > 2);
-  const dom = p.posted <= 5 ? "● New this week" : `${p.posted} days on market`;
-  const drop = PRICE_DROPS[p.id] ? `<span class="bg-red-600 text-white text-xs font-bold rounded-full px-3 py-1.5">↓ ${PRICE_DROPS[p.id]}</span>` : "";
-  const tour = TOUR_HOMES.has(p.id) ? `<span class="bg-teal text-white text-xs font-bold rounded-full px-3 py-1.5">▶ 360° tour</span>` : "";
+  /* ENHANCED (quieter): badge signals demoted to the meta line + corner icon */
   return `
     <article class="prop-card reveal bg-white rounded-2xl overflow-hidden border border-navy/10 shadow-card luxe flex ${hero ? "sm:col-span-2 flex-col sm:grid sm:grid-cols-2" : "flex-col"}">
       <div class="relative ${hero ? "h-60 sm:h-full sm:min-h-[340px]" : "h-60"} overflow-hidden dossier">
-        <img class="ph w-full h-full object-cover" src="${p.img}" alt="${p.title} — ${p.sector}, ${p.city}" loading="lazy" decoding="async" width="800" height="600" />
-        <span class="absolute top-3 left-3 bg-navy-deep/90 text-gold text-xs font-bold rounded-full px-3 py-1.5">${p.tag}</span>
-        <button onclick="toggleFav(${p.id})" aria-label="Save ${p.title}" class="absolute top-3 right-3 w-10 h-10 rounded-full grid place-items-center text-lg shadow ${favorites.has(p.id)?"bg-gold text-navy-deep":"bg-white/90 text-navy"}">${favorites.has(p.id)?"♥":"♡"}</button>
-        <span class="absolute bottom-3 left-3 bg-white/95 text-navy text-xs font-bold rounded-full px-3 py-1.5">${p.status}</span>
+        <img class="ph w-full h-full object-cover" src="${p.img}" alt="${p.title}, ${p.sector}, ${p.city}" loading="lazy" decoding="async" width="800" height="600" />
+        <button onclick="toggleFav(${p.id})" aria-label="Save ${p.title}" class="absolute top-3 right-3 w-11 h-11 rounded-full grid place-items-center text-lg shadow ${favorites.has(p.id)?"bg-gold text-navy-deep":"bg-white/90 text-navy"}">${favorites.has(p.id)?"♥":"♡"}</button>
+        ${TOUR_HOMES.has(p.id) ? `<button onclick="openTour(${p.id})" aria-label="Take the 360° tour of ${p.title}" class="absolute bottom-3 right-3 w-11 h-11 rounded-full bg-teal/90 hover:bg-teal grid place-items-center shadow transition"><svg class="w-5 h-5 text-white ml-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></button>` : ""}
       </div>
+      <p class="px-5 pt-3 text-[11px] font-bold text-navy/60">${p.tag} · ${p.status}</p>
       <div class="p-5 flex flex-col flex-1">
         <div class="flex items-start justify-between gap-2">
           <p class="font-serif text-2xl font-bold text-navy">${p.priceLbl}</p>
           <p class="text-[11px] font-bold text-teal bg-teal/10 rounded-full px-2.5 py-1 whitespace-nowrap">${p.type.toUpperCase()}</p>
         </div>
         <h3 class="font-bold text-[17px] mt-1">${p.title}</h3>
-        <p class="text-sm text-graphite/70">${p.sector}, ${p.city}</p>
-        <div class="flex flex-wrap gap-2 mt-2">
-          <span class="text-[11px] font-bold text-navy/70 bg-navy/5 rounded-full px-2.5 py-1">${dom}</span>${drop}${tour}
-        </div>
+        <p class="text-sm text-graphite/70">${p.sector}, ${p.city} (${p.posted <= 5 ? "New this week" : p.posted + " days on market"}${PRICE_DROPS[p.id] ? `, ↓ ${PRICE_DROPS[p.id]}` : ""})</p>
         <div class="flex flex-wrap gap-x-4 gap-y-1 text-[13px] text-graphite/80 mt-3 pb-3 border-b border-slate-100">${specLine(p)}</div>
         <div class="flex flex-col sm:flex-row gap-2 mt-4">
-          <button onclick="openModal(${p.id})" class="flex-1 bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-2.5 text-sm transition">View Dossier →</button>
-          <a href="https://wa.me/919780018319?text=${encodeURIComponent("Hi, I'm interested in "+p.title+", "+p.sector+", "+p.city+" ("+p.priceLbl+")")}" target="_blank" rel="noopener" class="border border-teal/40 text-teal-dark font-semibold rounded-xl px-4 py-2.5 text-sm hover:bg-teal hover:text-white transition">WhatsApp</a>
+          <button onclick="openModal(${p.id})" class="flex-1 bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-3 text-sm transition">View dossier →</button>
+          <a href="https://wa.me/919780018319?text=${encodeURIComponent("Hi, I'm interested in "+p.title+", "+p.sector+", "+p.city+" ("+p.priceLbl+")")}" target="_blank" rel="noopener" class="border border-teal/40 text-teal-dark font-semibold rounded-xl px-4 py-3 text-sm hover:bg-teal hover:text-white transition">WhatsApp agent</a>
         </div>
-        <label class="mt-3 inline-flex items-center gap-2 text-[13px] font-semibold text-navy/70 cursor-pointer">
-          <input type="checkbox" ${compareSet.has(p.id)?"checked":""} onchange="toggleCompare(${p.id})" class="w-4 h-4 accent-[#1a365d]" /> Compare this home
+        <label class="mt-3 inline-flex items-center gap-2 py-2 text-[13px] font-semibold text-navy/70 cursor-pointer">
+          <input type="checkbox" ${compareSet.has(p.id)?"checked":""} onchange="toggleCompare(${p.id})" class="w-5 h-5 accent-[#1a365d]" /> Compare this home
         </label>
       </div>
     </article>`; }).join("");
@@ -874,14 +877,14 @@ function renderProps(){
 /* ENHANCED: compare drawer logic */
 function toggleCompare(id){
   if (compareSet.has(id)) compareSet.delete(id);
-  else { if (compareSet.size >= 3){ toast("Compare up to 3 homes — uncheck one first"); return; } compareSet.add(id); }
+  else { if (compareSet.size >= 4){ toast("Compare up to 4 homes. Uncheck one first."); return; } compareSet.add(id); }
   store.set("cr_cmp", [...compareSet]);
   renderProps();
 }
 function renderCompare(){
   const bar = document.getElementById("compareBar");
   const items = [...compareSet].map(id=>PROPERTIES.find(p=>p.id===id)).filter(Boolean);
-  document.getElementById("compareTitle").textContent = `Compare (${items.length})`;
+  document.getElementById("compareTitle").textContent = `Compare (${items.length}/4)`;
   document.getElementById("compareItems").innerHTML = items.map(p=>
     `<span class="bg-white/10 rounded-full pl-3 pr-2 py-1.5 text-[13px] font-semibold flex items-center gap-2">${p.title.split(" ").slice(0,2).join(" ")} · ${p.priceLbl}<button onclick="toggleCompare(${p.id})" aria-label="Remove" class="w-5 h-5 rounded-full bg-white/20 grid place-items-center text-xs">✕</button></span>`).join("")
     || `<span class="text-white/50 text-sm">Tick “Compare this home” on up to 3 listings.</span>`;
@@ -893,7 +896,7 @@ function renderCompare(){
 function compareWhatsApp(){
   const items = [...compareSet].map(id=>PROPERTIES.find(p=>p.id===id)).filter(Boolean);
   if (!items.length) return;
-  const msg = "Hi, please compare these homes for me:\n" + items.map((p,i)=>`${i+1}. ${p.title}, ${p.sector}, ${p.city} — ${p.priceLbl}`).join("\n");
+  const msg = "Hi, please compare these homes for me:\n" + items.map((p,i)=>`${i+1}. ${p.title}, ${p.sector}, ${p.city}: ${p.priceLbl}`).join("\n");
   window.open("https://wa.me/919780018319?text=" + encodeURIComponent(msg), "_blank");
 }
 function clearCompare(){ compareSet.clear(); store.set("cr_cmp", []); renderProps(); }
@@ -921,7 +924,7 @@ function resetFilters(){
   document.getElementById("sortSel").value = "new";
   document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("chip-active", c.dataset.type===""));
   renderProps();
-  toast("Filters cleared — showing everything");
+  toast("Filters cleared. Showing everything");
 }
 document.getElementById("searchBtn").addEventListener("click", ()=>{
   searchCity = document.getElementById("qLocation").value;
@@ -978,7 +981,7 @@ function renderSavedPage(){
   document.getElementById("savedTitle").textContent = `Saved homes (${favs.length})`;
   document.getElementById("savedList").innerHTML = favs.length ? favs.map(p=>`
     <div class="luxe bg-white rounded-2xl overflow-hidden flex flex-col sm:flex-row">
-      <img src="${p.img}" alt="${p.title} — ${p.sector}" loading="lazy" decoding="async" width="400" height="260" class="sm:w-64 h-44 sm:h-auto object-cover shrink-0" />
+      <img src="${p.img}" alt="${p.title}, ${p.sector}" loading="lazy" decoding="async" width="400" height="260" class="sm:w-64 h-44 sm:h-auto object-cover shrink-0" />
       <div class="p-5 flex-1 min-w-0">
         <div class="flex items-start justify-between gap-2">
           <p class="font-serif text-2xl font-bold text-navy">${p.priceLbl}</p>
@@ -989,7 +992,7 @@ function renderSavedPage(){
         <p class="text-[13px] text-graphite/70 mt-1">${specLine(p)}</p>
         <div class="mt-3 flex flex-wrap gap-2">
           <button onclick="showPage(null);openModal(${p.id})" class="bg-navy text-white text-[13px] font-bold rounded-lg px-4 py-2">View dossier →</button>
-          <a class="border border-teal/40 text-teal-dark text-[13px] font-bold rounded-lg px-4 py-2" target="_blank" rel="noopener" href="https://wa.me/919780018319?text=${encodeURIComponent("Hi, I saved " + p.title + ", " + p.sector + " (" + p.priceLbl + ") — please contact me.")}">Contact agent</a>
+          <a class="border border-teal/40 text-teal-dark text-[13px] font-bold rounded-lg px-4 py-2" target="_blank" rel="noopener" href="https://wa.me/919780018319?text=${encodeURIComponent("Hi, I saved " + p.title + ", " + p.sector + " (" + p.priceLbl + "). Please contact me.")}">WhatsApp agent</a>
           <label class="inline-flex items-center gap-2 text-[13px] font-semibold text-navy/70 cursor-pointer border border-navy/15 rounded-lg px-3 py-2">
             <input type="checkbox" ${compareSet.has(p.id) ? "checked" : ""} onchange="toggleCompare(${p.id});renderSavedPage();" class="w-4 h-4 accent-[#1a365d]" /> Compare
           </label>
@@ -1010,7 +1013,7 @@ function renderSavedPage(){
 function savedWhatsApp(){
   const favs = PROPERTIES.filter(p=>favorites.has(p.id));
   if (!favs.length) return;
-  const msg = "Hi, my saved shortlist from Chandigarh Realty:\n" + favs.map((p,i)=>`${i+1}. ${p.title}, ${p.sector}, ${p.city} — ${p.priceLbl} (CR-2026-0${p.id})`).join("\n") + "\nPlease arrange visits.";
+  const msg = "Hi, my saved shortlist from Chandigarh Realty:\n" + favs.map((p,i)=>`${i+1}. ${p.title}, ${p.sector}, ${p.city}: ${p.priceLbl} (CR-2026-0${p.id})`).join("\n") + "\nPlease arrange visits.";
   window.open("https://wa.me/919780018319?text=" + encodeURIComponent(msg), "_blank");
 }
 /* ENHANCED: feature comparison table — every compare-ticked property, judged alike */
@@ -1022,7 +1025,7 @@ function renderComparePage(){
     el.innerHTML = `
       <div class="luxe bg-white rounded-2xl p-6 sm:p-8">
         <p class="font-serif font-bold text-navy text-2xl">Tick at least 2 homes to compare.</p>
-        <p class="text-graphite/60 text-sm mt-1">Use the checkboxes below — the table builds itself.</p>
+        <p class="text-graphite/60 text-sm mt-1">Use the checkboxes below. The table builds itself.</p>
         <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           ${PROPERTIES.map(p=>`
             <label class="flex items-center gap-3 border ${compareSet.has(p.id)?"border-gold bg-gold/10":"border-navy/15"} rounded-xl p-3 cursor-pointer hover:border-navy transition">
@@ -1041,10 +1044,10 @@ function renderComparePage(){
     ["Price", p=>`<b>${p.priceLbl}</b>${p.id===lowId?' <span class="text-[10px] font-bold bg-teal text-white rounded-full px-2 py-0.5 whitespace-nowrap">LOWEST</span>':""}`],
     ["₹ / sq.ft", p=>"₹" + perSqft(p).toLocaleString("en-IN")],
     ["Locality", p=>`${p.sector}, ${p.city}`],
-    ["Market growth", p=>(CITY_INFO[p.city]||{}).growth || "—"],
+    ["Market growth", p=>(CITY_INFO[p.city]||{}).growth || "-"],
     ["Type", p=>p.type],
-    ["Bedrooms", p=>p.beds || "—"],
-    ["Bathrooms", p=>p.baths || "—"],
+    ["Bedrooms", p=>p.beds || "-"],
+    ["Bathrooms", p=>p.baths || "-"],
     ["Area", p=>`${p.area.toLocaleString("en-IN")} sq.ft${p.id===bigId?' <span class="text-[10px] font-bold bg-gold text-navy-deep rounded-full px-2 py-0.5 whitespace-nowrap">LARGEST</span>':""}`],
     ["Facing", p=>p.facing],
     ["Status", p=>p.status],
@@ -1071,6 +1074,8 @@ function renderComparePage(){
         </tbody>
       </table>
       </div>
+      <!-- ENHANCED (clarify): growth provenance — numbers-first means showing the source -->
+      <p class="px-4 pt-3 text-[11px] text-graphite/50">Market growth: 90-day closed-deal sample (n=214) · indicative, not advice.</p>
       <div class="p-4 flex flex-wrap gap-2 border-t border-navy/10">
         ${items.map(p=>`<button onclick="showPage(null);openModal(${p.id})" class="border border-navy/25 text-navy font-bold rounded-full px-5 py-2 text-[13px]">Dossier: ${p.title.split(" ").slice(0,2).join(" ")} →</button>`).join("")}
         <button onclick="compareWhatsApp()" class="bg-[#25D366] text-white font-bold rounded-full px-5 py-2 text-[13px]">WhatsApp this comparison →</button>
@@ -1083,10 +1088,9 @@ document.getElementById("localityGrid").innerHTML = LOCALITIES.map((l,i)=>`
   <button onclick="filterLocality('${l.name.split("·")[0].split(",")[0].trim()}')" class="reveal text-left group rounded-2xl overflow-hidden relative min-h-[220px] border border-white/10 hover:border-gold/60 transition">
     <img src="${l.img}" alt="${l.name}" loading="lazy" decoding="async" width="800" height="500" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700" />
     <span class="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/45 to-transparent"></span>
-    <span class="absolute top-3 right-3 bg-gold text-navy-deep text-xs font-bold rounded-full px-3 py-1">${l.trend}</span>
     <span class="absolute bottom-0 p-5">
       <span class="block font-serif font-bold text-xl leading-tight">${l.name}</span>
-      <span class="block text-gold font-bold text-sm mt-1">${l.range}</span>
+      <span class="block text-gold font-bold text-sm mt-1">${l.range} (${l.trend})</span>
       <span class="block text-white/65 text-[13px]">${l.note} · ${l.count} live listing${l.count>1?"s":""} →</span>
     </span>
   </button>`).join("");
@@ -1103,11 +1107,11 @@ function filterLocality(key){
 let modalGallery = [], gIdx = 0;
 /* ENHANCED: hyperlocal insight blurbs — Local Logic/Baird & Warner pattern (3× engagement) */
 const CITY_INFO = {
-  "Chandigarh": { rate: "₹11,500/sq.ft avg", growth: "▲ 6.2% YoY", note: "Heritage sectors, walk-to-everything planning. Inner-sector registry rates rarely dip — buy for stability, not speculation.", near: "Sector 17 Plaza · Elante Mall · PGIMER" },
-  "Mohali": { rate: "₹7,800/sq.ft avg", growth: "▲ 8.1% YoY", note: "IT City + airport corridor is Tricity's appreciation engine. Best rental demand from young professionals.", near: "IT City · Airport Rd · Bestech Square" },
-  "Panchkula": { rate: "₹9,400/sq.ft avg", growth: "▲ 5.4% YoY", note: "Greenest HUDA-planned blocks. Quiet, family-first sectors with strong resale on park-facing units.", near: "Nada Sahib · DAV Schools · NH-7" },
-  "Zirakpur": { rate: "₹5,900/sq.ft avg", growth: "▲ 9.3% YoY", note: "Highest rental yields in Tricity on the highway belt. Ideal first investment or starter home.", near: "VIP Road · Chandigarh border · Airport link" },
-  "Kharar": { rate: "₹5,200/sq.ft avg", growth: "▲ 7.6% YoY", note: "Greater Mohali's plot + township frontier. Buy land, build later — boundary-done options available.", near: "Sector 127 townships · Kharar bus stand" },
+  "Chandigarh": { rate: "₹11,500/sq.ft avg", growth: "▲ 6.2% YoY", note: "Heritage sectors, walk-to-everything planning. Inner-sector registry rates rarely dip. Buy for stability, not speculation.", near: "Sector 17 Plaza, Elante Mall, PGIMER" },
+  "Mohali": { rate: "₹7,800/sq.ft avg", growth: "▲ 8.1% YoY", note: "IT City + airport corridor is Tricity's appreciation engine. Best rental demand from young professionals.", near: "IT City, Airport Rd, Bestech Square" },
+  "Panchkula": { rate: "₹9,400/sq.ft avg", growth: "▲ 5.4% YoY", note: "Greenest HUDA-planned blocks. Quiet, family-first sectors with strong resale on park-facing units.", near: "Nada Sahib, DAV Schools, NH-7" },
+  "Zirakpur": { rate: "₹5,900/sq.ft avg", growth: "▲ 9.3% YoY", note: "Highest rental yields in Tricity on the highway belt. Ideal first investment or starter home.", near: "VIP Road, Chandigarh border, Airport link" },
+  "Kharar": { rate: "₹5,200/sq.ft avg", growth: "▲ 7.6% YoY", note: "Greater Mohali's plot + township frontier. Buy land, build later. Boundary-done options available.", near: "Sector 127 townships, Kharar bus stand" },
 };
 let lastViewed = null; /* ENHANCED: WhatsApp Concierge remembers context */
 function openModal(id){
@@ -1124,7 +1128,7 @@ function openModal(id){
       <div class="min-w-0">
         <p class="eyebrow uppercase text-teal font-bold">Listing CR-2026-0${p.id} · ${p.status}</p>
         <h3 class="font-serif font-bold text-navy display-lg mt-1">${p.title}</h3>
-        <p class="text-graphite/70 mt-1">${p.sector}, ${p.city} · ${p.facing} ${drop}</p>
+        <p class="text-graphite/70 mt-1">${p.sector}, ${p.city} (${p.tag}), ${p.facing} ${drop}</p>
       </div>
       <div class="flex items-start gap-3">
         <div class="text-right"><p class="font-serif text-3xl font-bold text-navy">${p.priceLbl}</p><p class="text-xs text-slate-400">≈ ₹${Math.round(p.price*100000/(p.area||1)).toLocaleString("en-IN")}/sq.ft</p></div>
@@ -1134,15 +1138,14 @@ function openModal(id){
     <div class="p-6 sm:p-8 grid lg:grid-cols-5 gap-6">
       <div class="lg:col-span-3 lg:row-start-1">
         <div class="relative dossier rounded-2xl overflow-hidden">
-          <img id="gMain" src="${modalGallery[0]}" alt="${p.title} — ${p.sector}, ${p.city}" decoding="async" width="1000" height="700" class="w-full h-64 sm:h-96 object-cover" />
-          <span class="absolute top-4 left-4 bg-gold text-navy-deep text-xs font-bold rounded-full px-3 py-1.5">${p.tag}</span>
+          <img id="gMain" src="${modalGallery[0]}" alt="${p.title}, ${p.sector}, ${p.city}" decoding="async" width="1000" height="700" class="w-full h-64 sm:h-96 object-cover" />
           ${modalGallery.length>1?`<button onclick="gNav(-1)" class="absolute left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 text-navy text-xl font-bold" aria-label="Previous photo">‹</button><button onclick="gNav(1)" class="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white/90 text-navy text-xl font-bold" aria-label="Next photo">›</button>`:""}
         </div>
-        ${modalGallery.length>1?`<div class="mt-3 grid grid-cols-3 gap-2">${modalGallery.map((g,gi)=>`<button onclick="gIdx=${gi};document.getElementById('gMain').src='${g}'" class="rounded-xl overflow-hidden border-2 ${gi===0?"border-gold":"border-transparent"} hover:border-gold transition" aria-label="Photo ${gi+1}"><img src="${g}" alt="${p.title} photo ${gi+1}" loading="lazy" decoding="async" width="300" height="200" class="w-full h-20 object-cover" /></button>`).join("")}</div>`:""}
+        ${modalGallery.length>1?`<div id="gThumbs" class="mt-3 grid grid-cols-3 gap-2">${modalGallery.map((g,gi)=>`<button onclick="gNavThumb(${gi})" class="rounded-xl overflow-hidden border-2 ${gi===0?"border-gold":"border-transparent"} hover:border-gold transition" aria-label="Photo ${gi+1}"><img src="${g}" alt="${p.title} photo ${gi+1}" loading="lazy" decoding="async" width="300" height="200" class="w-full h-20 object-cover" /></button>`).join("")}</div>`:""}
       </div>
       <div class="lg:col-span-3 lg:row-start-2">
         <div class="flex gap-2 border-b border-navy/10 overflow-x-auto" role="tablist" aria-label="Property details">
-          ${["overview","tour360","locality","emi"].map((t,ti)=>`<button role="tab" onclick="modalTab('${t}',${p.id})" data-tab="${t}" class="mtab px-4 py-2.5 text-sm font-bold rounded-t-xl ${ti===0?"bg-navy text-white":"text-navy/60 hover:text-navy"}">${{overview:"Overview",tour360:"360° Tour",locality:"Locality",emi:"EMI"}[t]}</button>`).join("")}
+          ${["overview","tour360","locality","emi"].map((t,ti)=>`<button role="tab" aria-selected="${ti===0}" onclick="modalTab('${t}',${p.id})" data-tab="${t}" class="mtab px-4 py-2.5 text-sm font-bold rounded-t-xl ${ti===0?"bg-navy text-white":"text-navy/60 hover:text-navy"}">${{overview:"Overview",tour360:"360° Tour",locality:"Locality",emi:"EMI"}[t]}</button>`).join("")}
         </div>
         <div id="mtab-overview" class="mtab-pane pt-4">
           ${p.beds?`<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center">
@@ -1155,8 +1158,8 @@ function openModal(id){
           <div class="mt-4 flex flex-wrap gap-2">${p.amenities.map(a=>`<span class="bg-navy/5 border border-navy/10 text-navy text-[13px] font-semibold rounded-full px-3 py-1.5">✓ ${a}</span>`).join("")}</div>
         </div>
         <div id="mtab-tour360" class="mtab-pane pt-4 hidden">
-          <p class="text-graphite/80 text-[15px]">Walk every room on your phone before visiting. Properties with 3D tours get <b>3–4.5× more engagement</b> — shortlist faster, visit only finalists.</p>
-          <button onclick="openTour(${p.id})" class="mt-4 w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-3.5 transition text-[15px]">▶ Launch 360° Room Tour</button>
+          <p class="text-graphite/80 text-[15px]">Walk every room on your phone before visiting. Properties with 3D tours get <b>3-4.5× more engagement</b>. Shortlist faster, visit only finalists.</p>
+          <button onclick="openTour(${p.id})" class="mt-4 w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-3.5 transition text-[15px]">▶ Take the 360° tour</button>
           <button onclick="openTour(${p.id})" class="mt-2 w-full border border-navy/25 text-navy font-semibold rounded-xl py-3 text-sm">Open Interactive 3D Home →</button>
         </div>
         <div id="mtab-locality" class="mtab-pane pt-4 hidden">
@@ -1181,7 +1184,7 @@ function openModal(id){
           <p class="font-serif text-2xl font-bold text-navy mt-1">${p.priceLbl}</p>
           <!-- ENHANCED (clarify): one gold primary, one outline secondary, rest text links -->
           <a href="#contact" onclick="closeModal()" class="mt-3 block text-center w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl py-3 text-sm transition">Book a free visit →</a>
-          <button onclick="openTour(${p.id})" class="mt-2 w-full bg-white border border-navy/30 hover:border-navy text-navy font-bold rounded-xl py-3 transition text-sm">▶ 360° Virtual Tour</button>
+          <button onclick="openTour(${p.id})" class="mt-2 w-full bg-white border border-navy/30 hover:border-navy text-navy font-bold rounded-xl py-3 transition text-sm">▶ Take the 360° tour</button>
           <div class="mt-3 pt-3 border-t border-navy/10 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm font-semibold">
             <button onclick="toggleFav(${p.id});openModal(${p.id})" class="text-navy hover:underline">${favorites.has(p.id)?"♥ Saved":"♡ Save this home"}</button>
             <a class="text-teal-dark hover:underline" target="_blank" rel="noopener" href="https://wa.me/919780018319?text=${encodeURIComponent("Hi, I want to visit "+p.title+", "+p.sector)}">WhatsApp agent</a>
@@ -1189,12 +1192,12 @@ function openModal(id){
           </div>
           <div class="mt-4 pt-4 border-t border-navy/10 flex items-center gap-3">
             <span class="w-11 h-11 rounded-full bg-navy text-gold font-serif font-bold grid place-items-center">RS</span>
-            <div class="text-sm"><p class="font-bold text-navy">Rohit Sharma, Principal Broker</p><p class="text-graphite/60">15 yrs · RERA PBRERA-SAS79-CR0142 · <span class="demo-pill">Demo profile</span></p></div>
+            <div class="text-sm"><p class="font-bold text-navy">Rohit Sharma, Principal Broker</p>  <p class="text-graphite/60">15 yrs, RERA sample PBRERA-SAS79-CR0142 (real number at onboarding)</p></div>
           </div>
         </div>
       </aside>
     </div>
-    <p class="px-6 sm:px-8 pb-6 text-[11px] text-slate-400">Listing CR-2026-0${p.id} · Title &amp; RERA verified by panel lawyer · Photos actual unless marked.</p>`;
+            <p class="px-6 sm:px-8 pb-6 text-[11px] text-slate-400">Listing CR-2026-0${p.id}. Title and RERA verified by panel lawyer. Photos actual unless marked.</p>`;
   const m = document.getElementById("propModal");
   m.classList.remove("hidden"); requestAnimationFrame(()=>m.classList.remove("opacity-0"));
   document.body.style.overflow = "hidden";
@@ -1209,9 +1212,19 @@ function modalTab(t, id){
     const on = b.dataset.tab === t;
     b.classList.toggle("bg-navy", on); b.classList.toggle("text-white", on);
     b.classList.toggle("text-navy/60", !on);
+    b.setAttribute("aria-selected", on ? "true" : "false");
   });
 }
-function gNav(d){ gIdx = (gIdx+d+modalGallery.length)%modalGallery.length; document.getElementById("gMain").src = modalGallery[gIdx]; }
+function gNav(d){
+  gIdx = (gIdx+d+modalGallery.length)%modalGallery.length;
+  document.getElementById("gMain").src = modalGallery[gIdx];
+  const tw = document.getElementById("gThumbs");
+  if (tw) [...tw.children].forEach((b,bi)=>{
+    b.classList.toggle("border-gold", bi===gIdx);
+    b.classList.toggle("border-transparent", bi!==gIdx);
+  });
+}
+function gNavThumb(gi){ gIdx = gi; gNav(0); }
 function closeModal(){
   const m = document.getElementById("propModal");
   m.classList.add("opacity-0"); setTimeout(()=>m.classList.add("hidden"), 220);
@@ -1260,7 +1273,7 @@ function calcEmi(){
   if (rt && rt.checked && ro){
     const rent = Math.round(price * 0.034 / 12);
     ro.classList.remove("hidden");
-    ro.innerHTML = `Est. rent here: <b class="text-gold">${fmt(rent)}/mo</b> · owning costs ${fmt(Math.max(emi - rent, 0))}/mo more — before appreciation.`;
+    ro.innerHTML = `Est. rent here: <b class="text-gold">${fmt(rent)}/mo</b>. Owning costs ${fmt(Math.max(emi - rent, 0))}/mo more, before appreciation.`;
   } else if (ro) ro.classList.add("hidden");
 }
 /* ENHANCED: pre-filled bank rates */
@@ -1273,7 +1286,7 @@ function setBank(rate, name){
 function printEmi(){
   const w = window.open("", "_blank", "width=640,height=720");
   if (!w) return;
-  w.document.write(`<html><head><title>EMI Summary — Chandigarh Realty</title></head><body style="font-family:sans-serif;padding:32px;color:#1a365d"><h1>EMI Summary</h1><p>Chandigarh Realty · ${new Date().toLocaleDateString("en-IN")}</p><hr /><p>Property: <b>${document.getElementById("emiPriceLbl").textContent}</b> · Down payment: <b>${document.getElementById("emiDownLbl").textContent}</b></p><p>Rate: <b>${document.getElementById("emiRateLbl").textContent}</b> · Tenure: <b>${document.getElementById("emiTenLbl").textContent}</b></p><h2>EMI: ${document.getElementById("emiOut").textContent}/month</h2><p>Loan ${document.getElementById("emiLoan").textContent} · Interest ${document.getElementById("emiInt").textContent} · Total ${document.getElementById("emiTot").textContent}</p><p><small>Indicative only. Call +91 172 465 4321 for pre-approval in 48 hrs.</small></p></body></html>`);
+  w.document.write(`<html><head><title>EMI Summary - Chandigarh Realty</title></head><body style="font-family:sans-serif;padding:32px;color:#1a365d"><h1>EMI Summary</h1><p>Chandigarh Realty, ${new Date().toLocaleDateString("en-IN")}</p><hr /><p>Property <b>${document.getElementById("emiPriceLbl").textContent}</b> with down payment <b>${document.getElementById("emiDownLbl").textContent}</b></p><p>Rate <b>${document.getElementById("emiRateLbl").textContent}</b> with tenure <b>${document.getElementById("emiTenLbl").textContent}</b></p><h2>EMI: ${document.getElementById("emiOut").textContent}/month</h2><p>Loan ${document.getElementById("emiLoan").textContent}, interest ${document.getElementById("emiInt").textContent}, total ${document.getElementById("emiTot").textContent}</p><p><small>Indicative only. Call +91 172 465 4321 for pre-approval in 48 hrs.</small></p></body></html>`);
   w.document.close(); w.focus(); w.print();
 }
 ["emiPrice","emiDown","emiRate","emiTen"].forEach(id=>document.getElementById(id).addEventListener("input", calcEmi));
@@ -1299,7 +1312,7 @@ document.getElementById("leadForm").addEventListener("submit", e=>{
   leads.push({id, name, phone, at:new Date().toISOString()});
   store.set("cr_leads", leads);
   const tch = document.querySelector("#timeChips .chip-active");
-  toast("✔ Request received" + (tch ? " · " + tch.dataset.t + " call" : "") + " — within 2 working hours");
+  toast("✔ Request received" + (tch ? " (" + tch.dataset.t + " call)" : "") + ". Our expert calls within 2 working hours");
   e.target.querySelectorAll("input,textarea").forEach(el=>{ if(el.id!=="fBudget") el.value=""; });
 });
 
@@ -1317,10 +1330,16 @@ const cio = new IntersectionObserver(es=>es.forEach(en=>{
 document.querySelectorAll(".counter").forEach(el=>cio.observe(el));
 document.getElementById("menuBtn").addEventListener("click", ()=>document.getElementById("mobileMenu").classList.toggle("hidden"));
 document.querySelectorAll("#mobileMenu a").forEach(a=>a.addEventListener("click", ()=>document.getElementById("mobileMenu").classList.add("hidden")));
-window.addEventListener("scroll", ()=>{
-  document.getElementById("navbar").style.boxShadow = scrollY>10 ? "0 8px 24px rgba(26,54,93,.12)" : "none";
-  document.getElementById("topBtn").classList.toggle("hidden", scrollY<600);
-});
+/* ENHANCED (taste): scroll-free chrome — IntersectionObserver replaces scroll listeners */
+(function(){
+  const heroEl = document.getElementById('top');
+  if (!('IntersectionObserver' in window) || !heroEl) return;
+  new IntersectionObserver(es=>es.forEach(en=>{
+    const past = !en.isIntersecting && en.boundingClientRect.top < 0;
+    document.getElementById('navbar').style.boxShadow = past ? '0 8px 24px rgba(26,54,93,.12)' : 'none';
+    document.getElementById('topBtn').classList.toggle('hidden', !past);
+  }), { threshold: 0 }).observe(heroEl);
+})();
 document.getElementById("topBtn").addEventListener("click", ()=>scrollTo({top:0, behavior:"smooth"}));
 
 /* 360 drag teaser — drag swaps views; tap (no drag) enters the full 360° tour */
@@ -1389,10 +1408,22 @@ function buildTourPills(keys, active){
     const c = ROOM_CANDIDATES.find(x=>x.key===k);
     return `<button data-scene="${k}" onclick="tourGo('${k}')" class="tour-pill shrink-0 border rounded-full px-4 py-1.5 text-xs font-bold ${k===active?"tour-pill-active":"border-white/25 text-white/85"}">${c?c.label:k}</button>`;
   }).join("");
-  /* ENHANCED (layout): one room-selector row — guided + share dock at its end, not a third bar */
+  /* ENHANCED (distill): rooms stay direct; Guided + Share live behind one Tools sheet */
   document.getElementById("tourPills").innerHTML = roomBtns
+    + `<button onclick="toggleToolExtras('panoExtras', this)" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5 text-xs font-bold" aria-expanded="false">⋯ Tools</button>`
+    + `<span id="panoExtras" class="hidden contents">`
     + `<button onclick="guidedTour()" id="guidedBtn" class="shrink-0 border border-gold/70 text-gold rounded-full px-4 py-1.5 text-xs font-bold">▶ Guided</button>`
-    + `<button onclick="shareTour()" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5 text-xs font-bold">↗ Share</button>`;
+    + `<button onclick="shareTour()" class="shrink-0 border border-white/25 text-white/85 rounded-full px-4 py-1.5 text-xs font-bold">↗ Share</button>`
+    + `</span>`;
+}
+/* ENHANCED (distill): one tools sheet per mode — extras flow inline when opened */
+function toggleToolExtras(id, btn){
+  const el = document.getElementById(id);
+  if (!el) return;
+  const show = el.classList.contains("hidden");
+  el.classList.toggle("hidden", !show);
+  el.classList.toggle("contents", show);
+  if (btn) btn.setAttribute("aria-expanded", show ? "true" : "false");
 }
 function tourGo(k){
   lastScene = k;
@@ -1437,7 +1468,7 @@ async function openTour(id){
   ov.classList.remove("hidden");
   document.body.style.overflow = "hidden";
   document.getElementById("tourTitle").textContent = p.title;
-  document.getElementById("tourSub").textContent = `${p.sector}, ${p.city} · ${p.priceLbl} · sample room tour (exact 360° of your listings shot at onboarding)`;
+  document.getElementById("tourSub").textContent = `${p.sector}, ${p.city} · ${p.priceLbl} (sample tour)`;
   document.getElementById("tourLoading").classList.remove("hidden");
   document.getElementById("tourViewer").classList.add("hidden");
   document.getElementById("tourFallback").classList.add("hidden");
@@ -1445,7 +1476,7 @@ async function openTour(id){
   document.getElementById("tourThumbs").classList.add("hidden");
   document.getElementById("tourThumbs").classList.remove("flex");
   document.getElementById("fbNote").textContent = "";
-  document.getElementById("tourHint").textContent = "Drag to look around · Scroll to zoom · Tap glowing dots to move rooms";
+  document.getElementById("tourHint").textContent = "Drag to look around, scroll to zoom, tap the glowing dots to move rooms";
   tourRot = true;
   document.getElementById("rotBtn").textContent = "⟳ Auto-rotate: ON";
   if (window.__kb) document.getElementById("tourDoneBtn")?.focus({ preventScroll: true });
@@ -1502,7 +1533,7 @@ function startPanoTour(rooms, keys){
   driftLimit = window._tourBounds[keys[0]] || 28;
   if (tourRot && !REDUCED) driftStart();
   requestAnimationFrame(()=>{ try{ tourViewer.resize(); }catch(e){} });
-  toast("Room tour live — drag to explore");
+  toast("Room tour live. Drag to explore");
 }
 /* ───────── INTERACTIVE 3D (Three.js + OrbitControls) ─────────
    References:
@@ -1515,12 +1546,22 @@ function startPanoTour(rooms, keys){
    Upgrade: export a listing (Blender / Sketchfab "Modern Apartment") → models/ → add entry below. */
 const GLB_MODELS = {
   home:     { url: "models/home1.glb", label: "3D Home" },
-  stylised: null, // procedural 3BHK dollhouse layout (always available offline)
+  stylized: null, // procedural 3BHK dollhouse layout (always available offline)
 };
 let currentModel = 'home';
 let tourView = 'pano', tourProp = null, lastRooms = {}, lastKeys = [], lastScene = null;
+/* ENHANCED (polish): one token map for repeated scene values */
+const TOKENS = { gold: 0xd4a574, paper: 0xdfe6ee, night: 0x0d1626 };
 const doll = { built: false, renderer: null, scene: null, cam: null, controls: null, floors: [], raf: null, clock: null, camAnim: null, spin: true };
 
+/* ENHANCED (distill-fix): caption always matches the active model, even on re-entry */
+function syncModelCaption(){
+  const el = document.getElementById('fbNote');
+  if (!el) return;
+  el.textContent = GLB_MODELS[currentModel]
+  ? 'Real 3D model: drag to orbit. Your exact listings, modelled like this in Tier-2.'
+  : 'Stylized 3D of a typical 3BHK (exact per-property models in Tier-2).';
+}
 function setTourView(mode){
   tourView = mode;
   const is3d = mode === '3d';
@@ -1533,7 +1574,7 @@ function setTourView(mode){
   tools.classList.toggle('flex', is3d);
   stopGuided();
   if (is3d){
-    if (!window.THREE || !THREE.OrbitControls){ toast('3D engine still loading — showing 360° rooms'); setTourView('pano'); return false; }
+    if (!window.THREE || !THREE.OrbitControls){ toast('3D engine still loading. Showing 360° rooms.'); setTourView('pano'); return false; }
     driftStop();
     document.getElementById('tourViewer').classList.add('hidden');
     document.getElementById('tourFallback').classList.add('hidden');
@@ -1541,15 +1582,15 @@ function setTourView(mode){
     document.getElementById('tourThumbs').classList.add('hidden');
     document.getElementById('tourThumbs').classList.remove('flex');
     document.getElementById('dollhouseWrap').classList.remove('hidden');
-    document.getElementById('tourHint').textContent = 'Drag to orbit · Scroll to zoom · Hover or tap rooms for details';
-    document.getElementById('fbNote').textContent = 'Stylised 3D of a typical 3BHK · exact per-property models in Tier-2.';
+    document.getElementById('tourHint').textContent = 'Drag to orbit, scroll to zoom, hover or tap rooms for details';
+    syncModelCaption();
     try { initDollhouse(); dollResize(); startDollLoop(); }
-    catch(e){ document.getElementById('dollhouseWrap').classList.add('hidden'); toast('3D unavailable — showing 360° rooms'); setTourView('pano'); return false; }
+    catch(e){ document.getElementById('dollhouseWrap').classList.add('hidden'); toast('3D unavailable. Showing 360° rooms.'); setTourView('pano'); return false; }
   } else {
     stopDollLoop();
     document.getElementById('dollhouseWrap').classList.add('hidden');
     document.getElementById('tourFallback').classList.add('hidden');
-    document.getElementById('tourHint').textContent = '🖱 Drag to look around · Scroll to zoom · Click glowing dots to move rooms';
+    document.getElementById('tourHint').textContent = 'Drag to look around · Scroll to zoom · Tap glowing dots to move rooms';
     document.getElementById('fbNote').textContent = '';
     if (lastKeys.length){
       if (tourViewer){ document.getElementById('tourViewer').classList.remove('hidden'); if (tourRot && !REDUCED) driftStart(); }
@@ -1576,8 +1617,8 @@ function initDollhouse(){
   doll.renderer = renderer;
 
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xdfe6ee);
-  scene.fog = new THREE.Fog(0xdfe6ee, 45, 90);
+  scene.background = new THREE.Color(TOKENS.paper);
+  scene.fog = new THREE.Fog(TOKENS.paper, 45, 90);
   doll.scene = scene;
 
   const cam = new THREE.PerspectiveCamera(48, W / H, 0.1, 200);
@@ -1647,7 +1688,7 @@ function hideLoad(){ document.getElementById('dollLoading').style.display = 'non
 function updateModelBtns(){
   const h = document.getElementById('modelHomeBtn'), s = document.getElementById('modelDollBtn');
   if (h) h.classList.toggle('tour-pill-active', currentModel === 'home');
-  if (s) s.classList.toggle('tour-pill-active', currentModel === 'stylised');
+  if (s) s.classList.toggle('tour-pill-active', currentModel === 'stylized');
 }
 function loadModel(key){
   currentModel = key; updateModelBtns();
@@ -1658,9 +1699,7 @@ function loadModel(key){
   measureGroup = null; measurePts = [];
   document.getElementById('dollTip').classList.add('hidden');
   const spec = GLB_MODELS[key];
-  document.getElementById('fbNote').textContent = spec
-    ? 'Real 3D model · drag to orbit — your exact listings, modelled like this in Tier-2.'
-    : 'Stylised 3D of a typical 3BHK · exact per-property models in Tier-2.';
+  syncModelCaption();
   if (!spec){ buildHome(); doll.built = true; hideLoad(); startDollLoop(); return; }
   showLoad('Loading ' + spec.label + '… 0%');
   startDollLoop();
@@ -1683,12 +1722,12 @@ function loadModel(key){
     g.rotation.x = -Math.PI/2; g.position.y = -0.02; g.receiveShadow = true;
     doll.content.add(g); doll.content.add(model);
     doll.built = true; hideLoad(); startDollLoop();
-    toast(spec.label + ' loaded — drag to explore');
+    toast(spec.label + ' loaded. Drag to explore');
   }, xhr=>{
     if (xhr.total) showLoad('Loading ' + spec.label + '… ' + Math.round(xhr.loaded / xhr.total * 100) + '%');
   }, ()=>{
-    toast('3D model unavailable — showing stylised layout');
-    loadModel('stylised');
+    toast('3D model unavailable. Showing stylized layout');
+    loadModel('stylized');
   });
 }
 
@@ -1737,12 +1776,12 @@ function bindDollPicking(renderer){
   renderer.domElement.addEventListener('click', e=>{
     if (Math.hypot(e.clientX - downX, e.clientY - downY) > 6) return;
     const m = pick(e);
-    if (m && m.userData.room && !measureOn) toast(`${m.userData.room.name} — ${m.userData.room.sub}`);
+    if (m && m.userData.room && !measureOn) toast(`${m.userData.room.name}: ${m.userData.room.sub}`);
   });
   renderer.domElement.addEventListener('pointerleave', ()=>tip.classList.add('hidden'));
 }
 
-/* ── Dollhouse construction: stylised 3BHK, metres-ish units ── */
+/* ── Dollhouse construction: stylized 3BHK, metres-ish units ── */
 function dadd(m){ (doll.content || doll.scene).add(m); return m; }
 function dbox(w,h,d,color,x,y,z,ry){
   const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d),
@@ -1898,7 +1937,7 @@ function buildHome(){
 /* ───────── ONBOARD COACHMARKS: aha in 30 seconds, once ever ───────── */
 const COACH_STEPS = [
   { t: "Drag to look around", x: "Orbit the 3D home or pan any 360° room. Scroll or pinch to zoom closer." },
-  { t: "Hop room to room", x: "Tap the glowing dots — or use the room pills and the 360° Rooms / 3D Home toggle." },
+  { t: "Hop room to room", x: "Tap the glowing dots, or use the room pills and the 360° Rooms / 3D Home toggle." },
   { t: "Found the one?", x: "Hit “Request live video visit” below and our agent walks you through live." },
 ];
 let coachStep = 0;
@@ -1942,14 +1981,14 @@ function guidedTour(){
   if (tourView !== 'pano' || !lastKeys.length){ toast('Open 360° Rooms first'); return; }
   let gi = Math.max(0, lastKeys.indexOf(lastScene));
   document.getElementById('guidedBtn').textContent = '⏸ Pause';
-  toast('Guided tour — a room every 8 seconds');
+  toast('Guided tour. A room every 8 seconds.');
   guidedTimer = setInterval(()=>{ gi = (gi + 1) % lastKeys.length; tourGo(lastKeys[gi]); }, 8000);
 }
 /* ENHANCED: shareable ?tour=CR-2026-XX deep-links (Piercies3sc pattern) */
 function shareTour(){
   const id = (tourProp && tourProp.id) || (lastViewed && lastViewed.id) || 1;
   const url = (location.origin === 'null' ? location.href.split('?')[0] : location.origin + location.pathname) + '?tour=CR-2026-0' + id;
-  const done = ()=>toast('Tour link copied — share it anywhere');
+  const done = ()=>toast('Tour link copied. Share it anywhere');
   if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, ()=>{ prompt('Copy tour link:', url); });
   else prompt('Copy tour link:', url);
 }
@@ -2003,15 +2042,15 @@ function ensureMeasureBind(){
     if (!hits.length) return;
     const pt = hits[0].point.clone();
     if (!measureGroup){ measureGroup = new THREE.Group(); doll.content.add(measureGroup); }
-    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 12), new THREE.MeshBasicMaterial({ color: 0xd4a574 }));
+    const dot = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 12), new THREE.MeshBasicMaterial({ color: TOKENS.gold }));
     dot.position.copy(pt); measureGroup.add(dot);
     measurePts.push(pt);
     if (measurePts.length === 2){
       const d = measurePts[0].distanceTo(measurePts[1]);
-      measureGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(measurePts), new THREE.LineBasicMaterial({ color: 0xd4a574 })));
+      measureGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(measurePts), new THREE.LineBasicMaterial({ color: TOKENS.gold })));
       toast(`≈ ${d.toFixed(1)} m (${Math.round(d * 3.281)} ft)`);
       measurePts = [];
-    } else toast('First point set — tap a second point');
+    } else toast('First point set. Tap a second point');
   });
 }
 /* ENHANCED: day/night lighting for the dollhouse */
@@ -2020,14 +2059,14 @@ function dollDayNight(){
   dollNight = !dollNight;
   document.getElementById('dollDayBtn').textContent = dollNight ? 'Day' : 'Night';
   if (!doll.scene) return;
-  doll.scene.background.set(dollNight ? 0x0d1626 : 0xdfe6ee);
-  doll.scene.fog.color.set(dollNight ? 0x0d1626 : 0xdfe6ee);
+  doll.scene.background.set(dollNight ? TOKENS.night : TOKENS.paper);
+  doll.scene.fog.color.set(dollNight ? TOKENS.night : TOKENS.paper);
   doll.scene.traverse(o=>{
     if (o.isDirectionalLight){ o.intensity = dollNight ? 0.12 : 0.85; o.color.set(dollNight ? 0x9db8dd : 0xfff2df); }
     if (o.isHemisphereLight) o.intensity = dollNight ? 0.18 : 0.5;
     if (o.isAmbientLight) o.intensity = dollNight ? 0.06 : 0.12;
   });
-  toast(dollNight ? 'Night view — imagine the lights on' : 'Day view');
+  toast(dollNight ? 'Night view. Imagine the lights on.' : 'Day view');
 }
 
 /* Photo fallback: swipeable room tour, always works offline */
@@ -2040,7 +2079,7 @@ function startFallbackTour(p){
   document.getElementById("tourThumbs").classList.add("hidden");
   document.getElementById("tourFallback").classList.remove("hidden");
   document.getElementById("tourPills").innerHTML = "";
-  document.getElementById("fbNote").textContent = "Photo preview mode — full 360° of this exact home is shot at onboarding.";
+  document.getElementById("fbNote").textContent = "Photo preview mode. Full 360° of this exact home is shot at onboarding.";
   document.getElementById("tourHint").textContent = "Swipe or use arrows for the photo walkthrough";
   fbShow();
 }
@@ -2089,17 +2128,17 @@ document.getElementById("pulseGrid").innerHTML = PULSE.map(s=>`
   </div>`).join("");
 
 const QUIZ = [
-  { q: "What's your budget?", opts: ["Under ₹1 Cr", "₹1 – ₹2.5 Cr", "₹2.5 Cr +"] },
+  { q: "What's your budget?", opts: ["Under ₹1 Cr", "₹1 to ₹2.5 Cr", "₹2.5 Cr +"] },
   { q: "Why are you buying?", opts: ["A home to live in", "Investment + rent", "Land / build later"] },
   { q: "Pick your vibe", opts: ["Heritage calm", "New + buzzing", "Green + family"] },
 ];
 const QUIZ_AREAS = [
-  { name: "Sector 35, Chandigarh", profile: [1,0,0], line: "Heritage calm with walk-to-market life — stability over speculation." },
-  { name: "Mohali Phase 10 / Airport Rd", profile: [1,1,1], line: "New, buzzing and appreciating fastest — the end-user engine." },
-  { name: "Zirakpur VIP Road", profile: [0,1,1], line: "Maximum yield per rupee — rented in a median 11 days." },
-  { name: "Panchkula Sec 20", profile: [2,0,2], line: "Green, planned, family-first — park-facing holds value." },
-  { name: "Kharar / Greater Mohali", profile: [0,2,1], line: "Land now, build later — the frontier discount." },
-  { name: "Sector 17 belt", profile: [2,1,0], line: "Blue-chip commercial and premium homes — the Tricity statement." },
+  { name: "Sector 35, Chandigarh", profile: [1,0,0], line: "Heritage calm with walk-to-market life. Stability over speculation." },
+  { name: "Mohali Phase 10 / Airport Rd", profile: [1,1,1], line: "New, buzzing and appreciating fastest. The end-user engine." },
+  { name: "Zirakpur VIP Road", profile: [0,1,1], line: "Maximum yield per rupee. Rented in a median 11 days." },
+  { name: "Panchkula Sec 20", profile: [2,0,2], line: "Green, planned, family-first. Park-facing holds value." },
+  { name: "Kharar / Greater Mohali", profile: [0,2,1], line: "Land now, build later. The frontier discount." },
+  { name: "Sector 17 belt", profile: [2,1,0], line: "Blue-chip commercial and premium homes. The Tricity statement." },
 ];
 let quizStep = 0, quizAns = [];
 function openQuiz(){
@@ -2128,7 +2167,7 @@ function quizResult(){
     <p class="eyebrow uppercase text-teal font-bold">Your matches</p>
     <h3 class="font-serif font-bold text-navy text-2xl mt-1">Tricity, narrowed to two.</h3>
     ${ranked.map((r,i)=>`<div class="mt-3 border ${i===0?"border-gold":"border-navy/15"} rounded-2xl p-4 ${i===0?"bg-gold/10":""}">
-      <p class="font-bold text-navy">${i===0?"◉":"○"} ${r.name}</p>
+      <p class="font-bold text-navy">${i===0?"Top pick: ":"Also consider: "} ${r.name}</p>
       <p class="text-sm text-graphite/70 mt-1">${r.line}</p></div>`).join("")}
     <a class="mt-4 block text-center bg-[#25D366] text-white font-bold rounded-xl py-3.5 text-sm" target="_blank" rel="noopener"
        href="https://wa.me/919780018319?text=${encodeURIComponent("Hi! My locality matches: " + ranked.map(r=>r.name).join(" & ") + ". Please send matching listings.")}">WhatsApp me matching listings →</a>
@@ -2174,19 +2213,19 @@ if (!window.tailwind){ const w = document.getElementById("cdnWarn"); if (w) w.cl
 /* ENHANCED (polish): focus overlays only for keyboard users — no stray rings on tap/click */
 window.addEventListener('keydown', e=>{ if (e.key === 'Tab') window.__kb = true; }, true);
 window.addEventListener('pointerdown', ()=>{ window.__kb = false; }, true);
-/* ENHANCED: scroll progress bar */
-window.addEventListener('scroll', ()=>{
-  const h = document.documentElement;
-  const pct = (h.scrollTop / ((h.scrollHeight - h.clientHeight) || 1)) * 100;
-  const bar = document.getElementById('progressBar');
-  if (bar) bar.style.width = pct + '%';
-}, { passive: true });
+/* ENHANCED (layout): hide floating buttons while a field has focus on touch */
+if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches){
+  document.addEventListener('focusin', e=>{
+    if (e.target && e.target.matches && e.target.matches('input,select,textarea')) document.body.classList.add('kb-focus');
+  });
+  document.addEventListener('focusout', ()=>document.body.classList.remove('kb-focus'));
+}
 /* ENHANCED: WhatsApp Concierge — deep-link follows last-viewed property (special pick) */
 function updateConcierge(){
   const btn = document.getElementById('conciergeBtn');
   if (!btn) return;
   const msg = lastViewed
-    ? `Hi, I'm looking at ${lastViewed.title}, ${lastViewed.sector} (${lastViewed.priceLbl}, CR-2026-0${lastViewed.id}) — please send details and a video-walkthrough slot.`
+    ? `Hi, I'm looking at ${lastViewed.title}, ${lastViewed.sector} (${lastViewed.priceLbl}, CR-2026-0${lastViewed.id}). Please send details and a video-walkthrough slot.`
     : "Hi, I want property options in Tricity.";
   btn.href = "https://wa.me/919780018319?text=" + encodeURIComponent(msg);
 }
@@ -2194,12 +2233,12 @@ function updateConcierge(){
 const I18N = {
   hi: {
     heroH1: 'चंडीगढ़ में अपना <span class="text-gold italic">सपनों का घर</span> पाएं।',
-    heroLine: '— जहाँ कागज़ात संगमरमर जैसे साफ़।',
+    heroLine: 'जहाँ कागज़ात संगमरमर जैसे साफ़।',
     searchBtn: 'घर खोजें ⌕',
   },
   pa: {
     heroH1: 'ਚੰਡੀਗੜ੍ਹ ਵਿੱਚ ਆਪਣਾ <span class="text-gold italic">ਸੁਪਨਿਆਂ ਦਾ ਘਰ</span> ਲੱਭੋ।',
-    heroLine: '— ਜਿੱਥੇ ਕਾਗਜ਼ਾਤ ਸੰਗਮਰਮਰ ਵਰਗੇ ਸਾਫ਼।',
+    heroLine: 'ਜਿੱਥੇ ਕਾਗਜ਼ਾਤ ਸੰਗਮਰਮਰ ਵਰਗੇ ਸਾਫ਼।',
     searchBtn: 'ਘਰ ਲੱਭੋ ⌕',
   },
 };
@@ -2230,7 +2269,7 @@ document.getElementById('newsForm').addEventListener('submit', e=>{
     store.set("cr_news", n);
   } catch(err){}
   document.getElementById('newsEmail').value = '';
-  toast('✔ Subscribed — one email a month, only what we\'d buy');
+  toast('✔ Subscribed. One email a month, only what we buy ourselves.');
 });
 const savedL = store.get("cr_lang", "en"); if (savedL && savedL !== "en") setLang(savedL);
 /* ENHANCED: best-time-to-call chips */
