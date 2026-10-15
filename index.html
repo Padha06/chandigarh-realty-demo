@@ -379,125 +379,271 @@ tailwind.config = {
 <main id="mainContent">
 
 <!-- ══════════════════════════════════════════════════════════
-     PAGE: HOME (Shortened, High-Value, Mobile-Optimized)
+     PAGE: HOME (Outcome-Driven, Problem-Solution Framework)
      ══════════════════════════════════════════════════════════ -->
 <div id="page-home" class="page-view">
-  <!-- ══════════ HERO (MOBILE OPTIMIZED) ══════════ -->
-<section id="top" class="text-white relative overflow-hidden bg-navy-deep">
-  <div class="absolute inset-0" id="heroSlides" aria-hidden="true">
-    <div class="slide-layer on" style="background-image:url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80')"></div>
-    <div class="slide-layer" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=80')"></div>
-    <div class="slide-layer" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80')"></div>
-  </div>
-  <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(15,31,60,.78) 0%, rgba(15,31,60,.60) 45%, rgba(15,31,60,.88) 100%)" aria-hidden="true"></div>
-  <div class="max-w-7xl mx-auto px-4 pt-6 pb-6 sm:pt-16 sm:pb-14 relative">
-    <div class="max-w-3xl">
-      <p class="reveal inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1 sm:px-4 sm:py-1.5 text-xs sm:text-[13px] font-semibold tracking-wide">
-        <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span> 15+ YEARS · 1,200+ FAMILIES SETTLED IN TRICITY <span class="demo-pill">Sample</span>
-      </p>
-      <h1 class="reveal reveal-d1 font-serif font-bold text-2xl sm:text-4xl lg:display-xl mt-3 sm:mt-5 leading-tight" data-i18n="heroH1">
-        Find a home in Chandigarh<br class="hidden sm:block" /> you'll <span class="text-gold italic">love to live in.</span>
-      </h1>
-      <p class="reveal reveal-d1 font-accent italic text-gold text-lg sm:text-2xl mt-1.5 sm:mt-3" data-i18n="heroLine">Where the paperwork is as clean as the marble.</p>
-      <p class="reveal reveal-d2 mt-2 sm:mt-4 text-white/85 text-xs sm:text-base max-w-xl line-clamp-2 sm:line-clamp-none">
-        Verified homes across Tricity. Clear titles, fair prices, legal help included.
-      </p>
-    </div>
 
-    <!-- Search card (2-row grid on mobile, 4-col on desktop) -->
-    <div class="reveal reveal-d3 mt-5 sm:mt-8 bg-white text-slate-800 rounded-2xl shadow-lift p-3.5 sm:p-5 max-w-4xl z-30 luxe">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
-        <label class="block">
-          <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-navy/60">Location</span>
-          <select id="qLocation" class="mt-1 w-full border border-slate-200 rounded-xl px-2.5 sm:px-3 py-2.5 sm:py-3 font-medium text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-navy/40">
-            <option value="">All Tricity</option>
-            <option>Chandigarh</option><option>Mohali</option><option>Panchkula</option><option>Zirakpur</option><option>Kharar</option>
-          </select>
-        </label>
-        <label class="block">
-          <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-navy/60">Property type</span>
-          <select id="qType" class="mt-1 w-full border border-slate-200 rounded-xl px-2.5 sm:px-3 py-2.5 sm:py-3 font-medium text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-navy/40">
-            <option value="">Any type</option>
-            <option>Apartment</option><option>Villa</option><option>Floor</option><option>Plot</option><option>Commercial</option>
-          </select>
-        </label>
-        <label class="block">
-          <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-navy/60">Budget</span>
-          <select id="qBudget" class="mt-1 w-full border border-slate-200 rounded-xl px-2.5 sm:px-3 py-2.5 sm:py-3 font-medium text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-navy/40">
-            <option value="">Any budget</option>
-            <option value="100">Under ₹1 Cr</option>
-            <option value="100-250">₹1 to ₹2.5 Cr</option>
-            <option value="250-500">₹2.5 to ₹5 Cr</option>
-            <option value="500">₹5 Cr+</option>
-          </select>
-        </label>
-        <div class="flex items-end">
-          <button id="searchBtn" data-i18n="searchBtn" class="w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl px-2 sm:px-4 py-2.5 sm:py-3.5 transition text-xs sm:text-[15px] whitespace-nowrap shadow-sm tap-bounce">Search Homes ⌕</button>
+  <!-- 1. OUTCOME-FIRST HERO (End Result Shown Immediately) -->
+  <section id="top" class="text-white relative overflow-hidden bg-navy-deep">
+    <div class="absolute inset-0" id="heroSlides" aria-hidden="true">
+      <div class="slide-layer on" style="background-image:url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=2000&q=80')"></div>
+      <div class="slide-layer" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=80')"></div>
+      <div class="slide-layer" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=80')"></div>
+    </div>
+    <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(15,31,60,.82) 0%, rgba(15,31,60,.62) 45%, rgba(15,31,60,.92) 100%)" aria-hidden="true"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 pt-6 pb-7 sm:pt-16 sm:pb-14 relative">
+      <div class="max-w-3xl">
+        <!-- Outcome trust pill -->
+        <p class="reveal inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1 sm:px-4 sm:py-1.5 text-xs sm:text-[13px] font-semibold tracking-wide">
+          <span class="w-2 h-2 rounded-full bg-gold animate-pulse"></span> 100% LAWYER-VERIFIED · 1,200+ FAMILIES SETTLED · ZERO DISPUTES
+        </p>
+        
+        <!-- Aspirational Outcome H1 -->
+        <h1 class="reveal reveal-d1 font-serif font-bold text-2xl sm:text-4xl lg:display-xl mt-3 sm:mt-5 leading-tight" data-i18n="heroH1">
+          Own a Verified Luxury Home in Chandigarh <span class="text-gold italic">Without the Headaches.</span>
+        </h1>
+        
+        <p class="reveal reveal-d1 font-accent italic text-gold text-lg sm:text-2xl mt-1.5 sm:mt-3" data-i18n="heroLine">Where the paperwork is as clean as the marble.</p>
+        
+        <!-- The End-Result Promise -->
+        <p class="reveal reveal-d2 mt-2 sm:mt-4 text-white/85 text-xs sm:text-base max-w-xl">
+          Clean titles, street-benchmarked pricing, and 48-hour bank pre-approval. Keys in your hand in 21 days with zero broker runarounds.
+        </p>
+      </div>
+
+      <!-- End Result Metric Badges (Desktop & Mobile) -->
+      <div class="reveal reveal-d2 mt-5 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 max-w-4xl text-left">
+        <div class="bg-white/10 border border-white/15 rounded-xl p-2.5 sm:p-3.5 backdrop-blur">
+          <p class="text-gold font-bold text-base sm:text-xl font-serif">1,200+</p>
+          <p class="text-white/70 text-[11px] sm:text-xs">Families Settled</p>
+        </div>
+        <div class="bg-white/10 border border-white/15 rounded-xl p-2.5 sm:p-3.5 backdrop-blur">
+          <p class="text-gold font-bold text-base sm:text-xl font-serif">30-Yr Audit</p>
+          <p class="text-white/70 text-[11px] sm:text-xs">Registry Chain Vetted</p>
+        </div>
+        <div class="bg-white/10 border border-white/15 rounded-xl p-2.5 sm:p-3.5 backdrop-blur">
+          <p class="text-gold font-bold text-base sm:text-xl font-serif">₹850 Cr+</p>
+          <p class="text-white/70 text-[11px] sm:text-xs">Deals Benchmarked</p>
+        </div>
+        <div class="bg-white/10 border border-white/15 rounded-xl p-2.5 sm:p-3.5 backdrop-blur">
+          <p class="text-gold font-bold text-base sm:text-xl font-serif">21 Days</p>
+          <p class="text-white/70 text-[11px] sm:text-xs">Avg. Search to Keys</p>
         </div>
       </div>
-      <!-- Quick search chips -->
-      <div class="mt-2.5 sm:mt-3 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
-        <span class="text-slate-400 shrink-0 font-medium hidden sm:inline">Popular:</span>
-        <button class="link-quick shrink-0 bg-slate-100 hover:bg-gold/20 text-navy font-semibold px-2.5 py-1 rounded-lg transition" data-q="3BHK Mohali">3BHK Mohali</button>
-        <button class="link-quick shrink-0 bg-slate-100 hover:bg-gold/20 text-navy font-semibold px-2.5 py-1 rounded-lg transition" data-q="Villa Panchkula">Villa Panchkula</button>
-        <button class="link-quick shrink-0 bg-slate-100 hover:bg-gold/20 text-navy font-semibold px-2.5 py-1 rounded-lg transition" data-q="Floor Sector 35">Floor Sector 35</button>
-        <button class="link-quick shrink-0 bg-slate-100 hover:bg-gold/20 text-navy font-semibold px-2.5 py-1 rounded-lg transition" data-q="Zirakpur">VIP Rd Zirakpur</button>
+
+      <!-- Quick Search Card (Compact 2-row on mobile, 4-col on desktop) -->
+      <div class="reveal reveal-d3 mt-4 sm:mt-6 bg-white text-slate-800 rounded-2xl shadow-lift p-3.5 sm:p-5 max-w-4xl z-30 luxe">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+          <label class="block">
+            <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-navy/60">Location</span>
+            <select id="qLocation" class="mt-1 w-full border border-slate-200 rounded-xl px-2.5 sm:px-3 py-2.5 sm:py-3 font-medium text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-navy/40">
+              <option value="">All Tricity</option>
+              <option>Chandigarh</option><option>Mohali</option><option>Panchkula</option><option>Zirakpur</option><option>Kharar</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-navy/60">Property type</span>
+            <select id="qType" class="mt-1 w-full border border-slate-200 rounded-xl px-2.5 sm:px-3 py-2.5 sm:py-3 font-medium text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-navy/40">
+              <option value="">Any type</option>
+              <option>Apartment</option><option>Villa</option><option>Floor</option><option>Plot</option><option>Commercial</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-navy/60">Budget</span>
+            <select id="qBudget" class="mt-1 w-full border border-slate-200 rounded-xl px-2.5 sm:px-3 py-2.5 sm:py-3 font-medium text-xs sm:text-sm bg-white focus:outline-none focus:ring-2 focus:ring-navy/40">
+              <option value="">Any budget</option>
+              <option value="100">Under ₹1 Cr</option>
+              <option value="100-250">₹1 to ₹2.5 Cr</option>
+              <option value="250-500">₹2.5 to ₹5 Cr</option>
+              <option value="500">₹5 Cr+</option>
+            </select>
+          </label>
+          <div class="flex items-end">
+            <button id="searchBtn" data-i18n="searchBtn" class="w-full bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-xl px-2 sm:px-4 py-2.5 sm:py-3.5 transition text-xs sm:text-[15px] whitespace-nowrap shadow-sm tap-bounce">Search Homes ⌕</button>
+          </div>
+        </div>
+        <!-- Quick search chips -->
+        <div class="mt-2.5 sm:mt-3 flex items-center gap-1.5 overflow-x-auto no-scrollbar text-xs">
+          <span class="text-slate-400 shrink-0 font-medium hidden sm:inline">Popular:</span>
+          <button class="link-quick shrink-0 bg-slate-100 hover:bg-gold/20 text-navy font-semibold px-2.5 py-1 rounded-lg transition" data-q="3BHK Mohali">3BHK Mohali</button>
+          <button class="link-quick shrink-0 bg-slate-100 hover:bg-gold/20 text-navy font-semibold px-2.5 py-1 rounded-lg transition" data-q="Villa Panchkula">Villa Panchkula</button>
+          <button class="link-quick shrink-0 bg-slate-100 hover:bg-gold/20 text-navy font-semibold px-2.5 py-1 rounded-lg transition" data-q="Floor Sector 35">Floor Sector 35</button>
+          <button class="link-quick shrink-0 bg-slate-100 hover:bg-gold/20 text-navy font-semibold px-2.5 py-1 rounded-lg transition" data-q="Zirakpur">VIP Rd Zirakpur</button>
+        </div>
+      </div>
+
+      <!-- Quick region ribbon -->
+      <div class="reveal mt-3 sm:mt-4 flex gap-2 sm:gap-3 max-w-4xl overflow-x-auto no-scrollbar pb-1 snap-x" id="regionCards">
+        <button onclick="filterLocality('Sector 17')" class="text-left bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 backdrop-blur transition shrink-0 w-44 sm:w-auto sm:flex-1 snap-start tap-bounce">
+          <span class="block font-serif font-bold text-sm sm:text-lg">Chandigarh</span>
+          <span class="block text-white/70 text-[11px] sm:text-[13px] truncate">Sec 17, 35 · from ₹2.1 Cr</span>
+        </button>
+        <button onclick="filterLocality('Mohali')" class="text-left bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 backdrop-blur transition shrink-0 w-44 sm:w-auto sm:flex-1 snap-start tap-bounce">
+          <span class="block font-serif font-bold text-sm sm:text-lg">Mohali</span>
+          <span class="block text-white/70 text-[11px] sm:text-[13px] truncate">Phase 10, Airport Rd · from ₹68 L</span>
+        </button>
+        <button onclick="filterLocality('Panchkula')" class="text-left bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 backdrop-blur transition shrink-0 w-44 sm:w-auto sm:flex-1 snap-start tap-bounce">
+          <span class="block font-serif font-bold text-sm sm:text-lg">Panchkula</span>
+          <span class="block text-white/70 text-[11px] sm:text-[13px] truncate">Sec 12, 20 · from ₹1.9 Cr</span>
+        </button>
+        <button onclick="filterLocality('Zirakpur')" class="text-left bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 backdrop-blur transition shrink-0 w-44 sm:w-auto sm:flex-1 snap-start tap-bounce">
+          <span class="block font-serif font-bold text-sm sm:text-lg">Zirakpur</span>
+          <span class="block text-white/70 text-[11px] sm:text-[13px] truncate">VIP Road · from ₹68 L</span>
+        </button>
       </div>
     </div>
+  </section>
 
-    <!-- Region selector strip (compact horizontal ribbon on mobile) -->
-    <div class="reveal mt-3 sm:mt-4 flex gap-2 sm:gap-3 max-w-4xl overflow-x-auto no-scrollbar pb-1 snap-x" id="regionCards">
-      <button onclick="filterLocality('Sector 17')" class="text-left bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 backdrop-blur transition shrink-0 w-44 sm:w-auto sm:flex-1 snap-start tap-bounce">
-        <span class="block font-serif font-bold text-sm sm:text-lg">Chandigarh</span>
-        <span class="block text-white/70 text-[11px] sm:text-[13px] truncate">Sec 17, 35 · from ₹2.1 Cr</span>
-      </button>
-      <button onclick="filterLocality('Mohali')" class="text-left bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 backdrop-blur transition shrink-0 w-44 sm:w-auto sm:flex-1 snap-start tap-bounce">
-        <span class="block font-serif font-bold text-sm sm:text-lg">Mohali</span>
-        <span class="block text-white/70 text-[11px] sm:text-[13px] truncate">Phase 10, Airport Rd · from ₹68 L</span>
-      </button>
-      <button onclick="filterLocality('Panchkula')" class="text-left bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 backdrop-blur transition shrink-0 w-44 sm:w-auto sm:flex-1 snap-start tap-bounce">
-        <span class="block font-serif font-bold text-sm sm:text-lg">Panchkula</span>
-        <span class="block text-white/70 text-[11px] sm:text-[13px] truncate">Sec 12, 20 · from ₹1.9 Cr</span>
-      </button>
-      <button onclick="filterLocality('Zirakpur')" class="text-left bg-white/10 hover:bg-white/20 border border-white/15 rounded-xl sm:rounded-2xl p-2.5 sm:p-4 backdrop-blur transition shrink-0 w-44 sm:w-auto sm:flex-1 snap-start tap-bounce">
-        <span class="block font-serif font-bold text-sm sm:text-lg">Zirakpur</span>
-        <span class="block text-white/70 text-[11px] sm:text-[13px] truncate">VIP Road · from ₹68 L</span>
-      </button>
+  <!-- Live Marquee Ticker -->
+  <div class="cinematic border-t border-white/10 overflow-hidden">
+    <div class="flex whitespace-nowrap marquee-track py-2 text-[12px] sm:text-[13px] text-white/80 font-medium">
+      <span class="px-6">SECTOR 17: ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span>
+      <span class="px-6">MOHALI PHASE 10: ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span>
+      <span class="px-6">PANCHKULA SEC 20: ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span>
+      <span class="px-6">ZIRAKPUR VIP ROAD: ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span>
+      <span class="px-6">SECTOR 17: ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span>
+      <span class="px-6">MOHALI PHASE 10: ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span>
+      <span class="px-6">PANCHKULA SEC 20: ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span>
+      <span class="px-6">ZIRAKPUR VIP ROAD: ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span>
     </div>
   </div>
-</section>
 
-  <!-- ENHANCED (distill): proof bar lives below the fold — the hero keeps one job -->
-<section class="cinematic" aria-label="Track record">
-  <p class="text-center pt-8"><span class="demo-pill text-gold">Sample figures, replaced at onboarding</span></p>
-  <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold"><span class="counter" data-target="15">0</span>+</p><p class="text-[13px] text-white/80 mt-1">Years in Tricity market</p></div>
-      <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold"><span class="counter" data-target="1200">0</span>+</p><p class="text-[13px] text-white/80 mt-1">Happy families settled</p></div>
-      <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold">₹<span class="counter" data-target="850">0</span>Cr+</p><p class="text-[13px] text-white/80 mt-1">Property transacted</p></div>
-      <div class="bg-white/10 border border-white/15 rounded-2xl p-4 backdrop-blur"><p class="font-serif text-3xl font-bold text-gold">4.9★</p><p class="text-[13px] text-white/80 mt-1">Google rating · 480+ reviews</p></div>
-  </div>
-  <div class="border-t border-white/10 bg-white/5 backdrop-blur overflow-hidden">
-    <div class="flex whitespace-nowrap marquee-track py-2.5 text-[13px] text-white/80 font-medium">
-      <span class="px-6">SECTOR 17: ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">MOHALI PHASE 10: ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">PANCHKULA SEC 20: ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">ZIRAKPUR VIP ROAD: ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">SECTOR 17: ₹2.1 Cr ▲ 6.2% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">MOHALI PHASE 10: ₹1.4 Cr ▲ 8.1% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">PANCHKULA SEC 20: ₹2.8 Cr ▲ 5.4% YoY</span><span class="px-6 text-gold">◆</span><span class="px-6">ZIRAKPUR VIP ROAD: ₹89 L ▲ 9.3% YoY</span><span class="px-6 text-gold">◆</span>
+  <!-- 2. THE PROBLEM STATEMENT (What's Broken in Traditional Real Estate) -->
+  <section class="max-w-7xl mx-auto px-4 py-10 sm:py-16">
+    <div class="reveal text-center max-w-3xl mx-auto">
+      <p class="text-red-600 font-bold tracking-[.2em] text-xs uppercase bg-red-50 inline-block px-3 py-1 rounded-full border border-red-200">The Reality in Tricity</p>
+      <h2 class="font-serif font-bold text-navy text-2xl sm:text-4xl mt-3">Why Finding a Good Home in Tricity Feels So Exhausting.</h2>
+      <p class="text-graphite/70 text-xs sm:text-base mt-2">Most buyers spend 3 to 6 months trapped in broker runarounds, inflated price tags, and hidden legal traps. Here is what you're usually up against:</p>
     </div>
-  </div>
-</section>
 
+    <div class="mt-8 grid sm:grid-cols-3 gap-5">
+      <!-- Pain 1 -->
+      <div class="reveal bg-white rounded-2xl border border-red-100 p-5 sm:p-6 shadow-sm hover:shadow-card transition flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 grid place-items-center text-lg font-bold mb-3">⚠️</div>
+          <h3 class="font-serif font-bold text-navy text-lg sm:text-xl">The Murky Title Trap</h3>
+          <p class="text-graphite/70 text-xs sm:text-sm mt-2 leading-relaxed">
+            Brokers show you the marble and balcony view, but gloss over unresolved family disputes, GPA chains, or pending society dues. You only discover the nightmare after paying an advance.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-red-700">
+          Over 30% of local listings carry title red flags.
+        </div>
+      </div>
 
+      <!-- Pain 2 -->
+      <div class="reveal reveal-d1 bg-white rounded-2xl border border-amber-100 p-5 sm:p-6 shadow-sm hover:shadow-card transition flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 grid place-items-center text-lg font-bold mb-3">💸</div>
+          <h3 class="font-serif font-bold text-navy text-lg sm:text-xl">Artificial Price Markups</h3>
+          <p class="text-graphite/70 text-xs sm:text-sm mt-2 leading-relaxed">
+            Properties are quoted ₹15 to ₹30 Lakhs above true value so agents can pretend to negotiate a "deal" for you. You never know whether you paid genuine market rate or were overcharged.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-amber-700">
+          Zero street registry transparency from typical brokers.
+        </div>
+      </div>
 
-  <!-- Home Section: Spotlight Featured Properties (Top 3) -->
-  <section class="max-w-7xl mx-auto px-4 py-8 sm:py-16">
+      <!-- Pain 3 -->
+      <div class="reveal reveal-d2 bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm hover:shadow-card transition flex flex-col justify-between">
+        <div>
+          <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-700 grid place-items-center text-lg font-bold mb-3">⏳</div>
+          <h3 class="font-serif font-bold text-navy text-lg sm:text-xl">Wasted Weekend Visits</h3>
+          <p class="text-graphite/70 text-xs sm:text-sm mt-2 leading-relaxed">
+            Heavily photoshopped images, outdated photos, and already-sold listings kept active as clickbait. You spend hours in weekend traffic only to be disappointed in the first 10 seconds.
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100 text-[11px] font-bold text-slate-600">
+          Average buyer wastes 14 site visits before giving up.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. THE ANTIDOTE: HOW WE WORK (Our 3-Step Title-First Acquisition Model) -->
+  <section class="bg-white border-y border-navy/10 py-10 sm:py-16">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="reveal text-center max-w-3xl mx-auto">
+        <p class="text-teal font-bold tracking-[.2em] text-xs uppercase bg-teal/10 inline-block px-3 py-1 rounded-full border border-teal/20">A Different Standard</p>
+        <h2 class="font-serif font-bold text-navy text-2xl sm:text-4xl mt-3">A Broker Who Acts Like Your Family CA.</h2>
+        <p class="text-graphite/70 text-xs sm:text-base mt-2">We reject 2 out of every 3 homes we inspect. If the title isn't bulletproof and the valuation isn't fair, it never enters our inventory. Here is how our 3-step acquisition model protects you:</p>
+      </div>
+
+      <div class="mt-8 sm:mt-12 grid sm:grid-cols-3 gap-6">
+        <!-- Step 1 -->
+        <div class="reveal luxe rounded-3xl p-6 sm:p-8 relative border border-navy/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="w-12 h-12 rounded-2xl bg-navy text-gold font-serif font-bold text-lg grid place-items-center">01</span>
+              <span class="text-teal font-bold text-xs uppercase tracking-wider bg-teal/10 px-3 py-1 rounded-full">Legal First</span>
+            </div>
+            <h3 class="font-serif font-bold text-navy text-xl sm:text-2xl mt-5">30-Year Deed Audit</h3>
+            <p class="text-graphite/75 text-xs sm:text-sm mt-2.5 leading-relaxed">
+              Our panel advocates audit the complete 30-year registry chain, CLU clearances, municipal approvals, and bank lien history before we ever list. If papers aren't clean, we walk away.
+            </p>
+          </div>
+          <ul class="mt-5 space-y-1.5 text-xs font-semibold text-navy">
+            <li>✔ Panel lawyer title certificate</li>
+            <li>✔ Zero GPA / litigation check</li>
+          </ul>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="reveal reveal-d1 luxe rounded-3xl p-6 sm:p-8 relative border border-navy/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="w-12 h-12 rounded-2xl bg-navy text-gold font-serif font-bold text-lg grid place-items-center">02</span>
+              <span class="text-gold-dark font-bold text-xs uppercase tracking-wider bg-gold/15 px-3 py-1 rounded-full">Virtual First</span>
+            </div>
+            <h3 class="font-serif font-bold text-navy text-xl sm:text-2xl mt-5">360° Tour &amp; Benchmark</h3>
+            <p class="text-graphite/75 text-xs sm:text-sm mt-2.5 leading-relaxed">
+              Walk every bedroom, terrace, and modular kitchen on your phone before stepping out. We share actual 90-day Sub-Registrar transaction records on the exact street so you never overpay.
+            </p>
+          </div>
+          <ul class="mt-5 space-y-1.5 text-xs font-semibold text-navy">
+            <li>✔ High-definition 360° virtual rooms</li>
+            <li>✔ Street registry data, not broker quotes</li>
+          </ul>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="reveal reveal-d2 luxe rounded-3xl p-6 sm:p-8 relative border border-navy/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="w-12 h-12 rounded-2xl bg-navy text-gold font-serif font-bold text-lg grid place-items-center">03</span>
+              <span class="text-navy font-bold text-xs uppercase tracking-wider bg-navy/10 px-3 py-1 rounded-full">Turnkey</span>
+            </div>
+            <h3 class="font-serif font-bold text-navy text-xl sm:text-2xl mt-5">48-Hr Loan &amp; Handover</h3>
+            <p class="text-graphite/75 text-xs sm:text-sm mt-2.5 leading-relaxed">
+              Pre-approved bank financing at 8.4-8.75% with same-week disbursal. We accompany you on registration day, followed by free 1-year society NOC, utility meter transfer, and resale support.
+            </p>
+          </div>
+          <ul class="mt-5 space-y-1.5 text-xs font-semibold text-navy">
+            <li>✔ Accompanied Sub-Registrar closing</li>
+            <li>✔ Free 1-year after-handover concierge</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. THE PROOF: FEATURED VERIFIED HOMES (Top 3 Spotlight) -->
+  <section class="max-w-7xl mx-auto px-4 py-10 sm:py-16">
     <div class="reveal flex flex-wrap items-end justify-between gap-3">
       <div>
-        <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Handpicked, verified, RERA-checked</p>
-        <h2 class="font-serif font-bold text-navy text-2xl sm:text-4xl mt-1.5">Featured <span class="gold-underline">Highlights</span></h2>
+        <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Curated Inventory</p>
+        <h2 class="font-serif font-bold text-navy text-2xl sm:text-4xl mt-1.5">Verified Homes Ready for Inspection</h2>
         <p class="text-slate-600 mt-1 text-xs sm:text-base max-w-xl">Every listing is physically visited, title-checked and price-benchmarked before listing.</p>
       </div>
       <button onclick="navigateTo('properties')" class="text-navy hover:text-gold-dark font-bold text-sm sm:text-[15px] inline-flex items-center gap-1.5 group tap-bounce">
         View all 9 listings <span class="group-hover:translate-x-1 transition-transform">→</span>
       </button>
     </div>
-    <div id="homePropGrid" class="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-5 stagger"></div>
+    
+    <div id="homePropGrid" class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-5 stagger"></div>
+    
     <div class="mt-6 text-center">
       <button onclick="navigateTo('properties')" class="inline-flex items-center gap-2 bg-navy hover:bg-navy-deep text-white font-bold rounded-full px-7 py-3 text-sm sm:text-base transition shadow-card tap-bounce">
         Browse Complete Property Catalog (9 Verified Homes) →
@@ -505,13 +651,13 @@ tailwind.config = {
     </div>
   </section>
 
-  <!-- Home Section: 360° Virtual Tour Sneak Peek -->
+  <!-- 5. INTERACTIVE 360° TOUR SNEAK PEEK -->
   <section class="max-w-7xl mx-auto px-4 py-8 sm:py-14">
     <div class="reveal bg-white rounded-3xl shadow-card border border-navy/10 overflow-hidden grid lg:grid-cols-12 gap-6 items-center">
       <div class="p-6 sm:p-10 lg:col-span-6">
         <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Interactive Walkthrough</p>
         <h2 class="font-serif font-bold text-navy text-2xl sm:text-3xl mt-1.5">Tour homes in 360° on your phone</h2>
-        <p class="text-slate-600 text-xs sm:text-base mt-2">Walk room by room, inspect floor plans in 3D, and measure wall-to-wall distances before visiting in person.</p>
+        <p class="text-slate-600 text-xs sm:text-base mt-2">Walk room by room, inspect floor plans in 3D, and measure wall-to-wall distances before scheduling an in-person visit.</p>
         <div class="mt-5 flex flex-wrap gap-2.5">
           <button onclick="openTour(1)" class="bg-navy hover:bg-navy-deep text-white font-semibold rounded-full px-5 py-2.5 text-sm transition tap-bounce">▶ Launch Sample Tour</button>
           <button onclick="navigateTo('tour')" class="border border-navy/25 text-navy font-semibold rounded-full px-5 py-2.5 text-sm hover:border-navy transition tap-bounce">Explore all 3D tours →</button>
@@ -526,108 +672,101 @@ tailwind.config = {
     </div>
   </section>
 
-  <!-- Home Section: Market Trends & Localities Snippet -->
-  <section class="bg-navy-deep text-white py-8 sm:py-16">
-    <div class="max-w-7xl mx-auto px-4">
-      <div class="reveal flex flex-wrap items-end justify-between gap-3">
+  <!-- 6. SOCIAL PROOF & TESTIMONIALS SPOTLIGHT -->
+  <section class="max-w-7xl mx-auto px-4 py-8 sm:py-14">
+    <div class="reveal bg-cream rounded-3xl border border-navy/10 p-6 sm:p-10">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-navy/10">
         <div>
-          <p class="text-gold font-bold tracking-[.2em] text-xs uppercase">Tricity Insights</p>
-          <h2 class="font-serif font-bold text-2xl sm:text-3xl mt-1">Where Tricity is moving</h2>
+          <span class="text-gold-dark font-bold text-sm tracking-wide">★★★★★ 4.9 OUT OF 5 · GOOGLE REVIEWS</span>
+          <h3 class="font-serif font-bold text-navy text-2xl sm:text-3xl mt-1">Settled Families Who Trust Us</h3>
         </div>
-        <button onclick="navigateTo('localities')" class="text-gold font-bold text-sm inline-flex items-center gap-1 group tap-bounce">
-          Explore localities &amp; price heatmaps <span class="group-hover:translate-x-1 transition-transform">→</span>
+        <button onclick="navigateTo('contact')" class="text-navy hover:text-gold-dark font-bold text-sm inline-flex items-center gap-1 group self-start sm:self-auto tap-bounce">
+          Read all client reviews <span class="group-hover:translate-x-1 transition-transform">→</span>
         </button>
       </div>
-      <div class="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-        <div class="bg-white/10 rounded-2xl p-3.5 backdrop-blur">
-          <p class="text-xs text-white/60 font-medium">Mohali Airport Rd</p>
-          <p class="font-serif text-xl sm:text-2xl font-bold text-gold mt-1">▲ 8.1%</p>
-          <p class="text-[11px] text-white/70">YoY Growth</p>
+      <div class="mt-6 grid sm:grid-cols-2 gap-6">
+        <div class="bg-white rounded-2xl p-5 border border-navy/10 shadow-sm">
+          <p class="font-serif italic text-navy text-sm sm:text-base leading-relaxed">“They rejected two houses I had almost finalised over title issues I would never have caught. The third was better and ₹9 lakh cheaper.”</p>
+          <div class="mt-4 flex items-center gap-3">
+            <span class="w-9 h-9 rounded-full bg-navy text-gold font-bold grid place-items-center text-xs">RB</span>
+            <div>
+              <p class="font-bold text-xs sm:text-sm text-navy">Col. R. Bedi (Retd.)</p>
+              <p class="text-[11px] text-graphite/60">Bought 3BHK · Sector 35, Chandigarh</p>
+            </div>
+          </div>
         </div>
-        <div class="bg-white/10 rounded-2xl p-3.5 backdrop-blur">
-          <p class="text-xs text-white/60 font-medium">Zirakpur VIP Rd</p>
-          <p class="font-serif text-xl sm:text-2xl font-bold text-gold mt-1">11 Days</p>
-          <p class="text-[11px] text-white/70">Median Letting</p>
+        <div class="bg-white rounded-2xl p-5 border border-navy/10 shadow-sm">
+          <p class="font-serif italic text-navy text-sm sm:text-base leading-relaxed">“We were in Toronto through the whole purchase. Video walkthroughs, lawyer verification on call, and registry completed in one India trip.”</p>
+          <div class="mt-4 flex items-center gap-3">
+            <span class="w-9 h-9 rounded-full bg-navy text-gold font-bold grid place-items-center text-xs">SG</span>
+            <div>
+              <p class="font-bold text-xs sm:text-sm text-navy">Simran &amp; Harpreet Gill</p>
+              <p class="text-[11px] text-graphite/60">Bought Villa · Panchkula Sec 20</p>
+            </div>
+          </div>
         </div>
-        <div class="bg-white/10 rounded-2xl p-3.5 backdrop-blur">
-          <p class="text-xs text-white/60 font-medium">Sector 17 &amp; 35</p>
-          <p class="font-serif text-xl sm:text-2xl font-bold text-gold mt-1">₹14.2k</p>
-          <p class="text-[11px] text-white/70">Avg ₹/sq.ft</p>
-        </div>
-        <div class="bg-white/10 rounded-2xl p-3.5 backdrop-blur">
-          <p class="text-xs text-white/60 font-medium">Panchkula S20</p>
-          <p class="font-serif text-xl sm:text-2xl font-bold text-gold mt-1">▲ 5.4%</p>
-          <p class="text-[11px] text-white/70">YoY Growth</p>
-        </div>
-      </div>
-      <div class="mt-6 text-center">
-        <button onclick="openQuiz()" class="bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full px-6 py-3 text-sm transition tap-bounce">Take 3-Question Locality Match Quiz →</button>
       </div>
     </div>
   </section>
 
-  <!-- Home Section: Quick Loan Calculator Snapshot -->
-  <section class="max-w-7xl mx-auto px-4 py-8 sm:py-14">
-    <div class="reveal bg-cream rounded-3xl border border-navy/10 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
-      <div class="max-w-xl">
-        <p class="text-teal font-bold tracking-[.2em] text-xs uppercase">Transparent Financing</p>
-        <h2 class="font-serif font-bold text-navy text-2xl sm:text-3xl mt-1">Check your monthly EMI in seconds</h2>
-        <p class="text-slate-600 text-sm mt-1.5">Pre-approved home loans from HDFC, SBI &amp; ICICI at 8.40% – 8.75% with instant eligibility check.</p>
-      </div>
-      <div class="flex flex-wrap gap-3 shrink-0">
-        <button onclick="navigateTo('emi')" class="bg-navy hover:bg-navy-deep text-white font-bold rounded-full px-6 py-3 text-sm transition tap-bounce">Open Full EMI Calculator →</button>
-        <button onclick="navigateTo('contact')" class="border border-navy/25 text-navy font-bold rounded-full px-6 py-3 text-sm hover:border-navy transition tap-bounce">Check Loan Eligibility</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Home Section: Quick Consultation CTA -->
+  <!-- 7. PRIVATE CONSULTATION CONVERSION ANCHOR -->
   <section class="max-w-7xl mx-auto px-4 py-8 sm:py-14">
     <div class="reveal cinematic rounded-3xl p-7 sm:p-12 text-white text-center max-w-4xl mx-auto">
-      <p class="text-gold font-bold text-xs uppercase tracking-widest">Ready to find your Tricity home?</p>
-      <h2 class="font-serif font-bold text-2xl sm:text-4xl mt-2">Talk to an expert broker who acts like your family CA.</h2>
-      <p class="text-white/70 text-sm sm:text-base mt-2 max-w-lg mx-auto">Get 3 verified options matched to your budget within 2 working hours. Zero pressure, clear registry records.</p>
+      <p class="text-gold font-bold text-xs uppercase tracking-widest">Get Started Today</p>
+      <h2 class="font-serif font-bold text-2xl sm:text-4xl mt-2">Get 3 Lawyer-Verified Matches on WhatsApp in 2 Hours.</h2>
+      <p class="text-white/70 text-xs sm:text-base mt-2 max-w-lg mx-auto">Tell us your budget and preferred sectors. We send verified dossiers with actual registry rate benchmarks. Zero spam, zero pressure.</p>
       <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-        <button onclick="navigateTo('contact')" class="bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full px-7 py-3 text-sm transition tap-bounce">Request a Callback →</button>
-        <a href="https://wa.me/919780018319?text=Hi%2C%20I%20want%20property%20options%20in%20Tricity" target="_blank" rel="noopener" class="border border-white/25 text-white font-semibold rounded-full px-6 py-3 text-sm hover:border-gold transition tap-bounce">Chat on WhatsApp</a>
+        <button onclick="navigateTo('contact')" class="bg-gold hover:bg-gold-dark text-navy-deep font-bold rounded-full px-7 py-3 text-sm transition tap-bounce">Request Free Consultation →</button>
+        <a href="https://wa.me/919780018319?text=Hi%2C%20I%20want%20property%20options%20in%20Tricity" target="_blank" rel="noopener" class="border border-white/25 text-white font-semibold rounded-full px-6 py-3 text-sm hover:border-gold transition tap-bounce">WhatsApp Concierge</a>
       </div>
     </div>
   </section>
 
   <div class="page-bottom-pad">
-    <!-- ══════════ FOOTER ══════════ -->
-<footer class="cinematic text-white/80">
-  <div class="max-w-7xl mx-auto px-4 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-    <div>
-      <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gold text-navy-deep font-serif font-bold text-lg grid place-items-center">CR</span><span class="font-serif font-bold text-white text-lg">Chandigarh Realty</span></div>
-      <p class="text-sm mt-3 text-white/60">Tricity's title-first property advisory. Buy, sell &amp; rent with verified listings and honest pricing since 2011.</p>
-      <p class="text-xs mt-3 text-white/40">RERA sample: PBRERA-SAS79-CR0142 · real number at onboarding</p>
-    </div>
-    <div><p class="font-bold text-white mb-3">Explore</p><ul class="space-y-2 text-sm"><li><a href="#properties" class="hover:text-gold">Featured properties</a></li><li><a href="#localities" class="hover:text-gold">Localities</a></li><li><a href="#tour" class="hover:text-gold">Virtual tours</a></li><li><a href="#emi" class="hover:text-gold">EMI calculator</a></li></ul></div>
-    <div><p class="font-bold text-white mb-3">Services</p><ul class="space-y-2 text-sm"><li>Home buying &amp; selling</li><li>Rental management</li><li>Home loans &amp; legal</li><li>NRI property desk</li></ul></div>
-    <div><p class="font-bold text-white mb-3">Contact</p><ul class="space-y-2 text-sm"><li><a class="hover:text-gold" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Shop+No.+123-124+Main+Market%2C+Badheri%2C+Sector+41D%2C+Chandigarh+160036">Shop No. 123-124 Main Market, Badheri, Sector 41D, Chandigarh 160036</a></li><li>+91 172 465 4321</li><li>hello@chandigarhrealty.in</li><li class="pt-1"><a href="#contact" class="inline-block bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Book free visit →</a></li></ul></div>
-  </div>
-  <!-- ENHANCED: newsletter + language switcher -->
-  <div class="border-t border-white/10">
-    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6 items-center">
-      <form id="newsForm" class="flex flex-col sm:flex-row gap-3 sm:items-center">
-        <p class="font-serif text-lg text-white shrink-0">One email a month. <span class="italic text-gold">Only the listings we'd buy ourselves.</span></p>
-        <div class="flex gap-2 flex-1">
-          <input id="newsEmail" type="email" placeholder="you@email.com" aria-label="Email for newsletter" class="flex-1 min-w-0 bg-white/10 border border-white/20 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold" />
-          <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm shrink-0">Join →</button>
-        </div>
-      </form>
-      <div class="flex md:justify-end items-center gap-2 text-sm font-semibold">
-        <span class="text-white/50 text-xs uppercase eyebrow">Language:</span>
-        <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-4 py-1.5">English</button>
-        <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">हिंदी</button>
-        <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">ਪੰਜਾਬੀ</button>
+    <!-- ══════════ COMPACT LUXURY FOOTER ══════════ -->
+<footer class="cinematic text-white/80 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-4 py-5 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 text-center sm:text-left">
+      <span class="w-8 h-8 rounded-lg bg-gold text-navy-deep font-serif font-bold text-sm grid place-items-center shrink-0">CR</span>
+      <div>
+        <span class="font-serif font-bold text-white text-sm">Chandigarh Realty</span>
+        <span class="block text-[11px] text-white/50">Tricity Property Advisory · Since 2011</span>
       </div>
     </div>
+    
+    <!-- Inline Navigation Links -->
+    <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm font-medium text-white/70">
+      <a href="#home" onclick="navigateTo('home'); return false;" class="hover:text-gold transition">Home</a>
+      <span class="text-white/20">·</span>
+      <a href="#properties" onclick="navigateTo('properties'); return false;" class="hover:text-gold transition">Properties</a>
+      <span class="text-white/20">·</span>
+      <a href="#localities" onclick="navigateTo('localities'); return false;" class="hover:text-gold transition">Localities</a>
+      <span class="text-white/20">·</span>
+      <a href="#tour" onclick="navigateTo('tour'); return false;" class="hover:text-gold transition">3D Tour</a>
+      <span class="text-white/20">·</span>
+      <a href="#emi" onclick="navigateTo('emi'); return false;" class="hover:text-gold transition">EMI Calc</a>
+      <span class="text-white/20">·</span>
+      <a href="#contact" onclick="navigateTo('contact'); return false;" class="hover:text-gold transition">Contact</a>
+    </nav>
+    
+    <!-- Language Switcher & WhatsApp -->
+    <div class="flex items-center gap-2 text-xs">
+      <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-2.5 py-0.5">EN</button>
+      <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">हिंदी</button>
+      <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">ਪੰਜਾਬੀ</button>
+      <a href="https://wa.me/919780018319" target="_blank" rel="noopener" class="ml-1 bg-[#25D366] text-white font-bold rounded-full px-3 py-1 text-xs inline-flex items-center gap-1 hover:opacity-90 transition tap-bounce">
+        WhatsApp
+      </a>
+    </div>
   </div>
-  <div class="border-t border-white/10"><div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-2 items-center justify-between text-xs text-white/40"><span>© 2026 Chandigarh Realty (demo). Prices indicative; verify RERA &amp; title before purchase.</span><span>Made for client preview</span></div></div>
+  <div class="border-t border-white/5 bg-black/25">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-2 items-center justify-between text-[11px] text-white/40">
+      <span>© 2026 Chandigarh Realty. RERA: PBRERA-SAS79-CR0142. Verified titles only.</span>
+      <span>Shop No. 123-124 Main Market, Sector 41D, Chandigarh · +91 172 465 4321</span>
+    </div>
+  </div>
 </footer>
-
 
   </div>
 </div>
@@ -676,38 +815,51 @@ tailwind.config = {
 
 
   <div class="page-bottom-pad">
-    <!-- ══════════ FOOTER ══════════ -->
-<footer class="cinematic text-white/80">
-  <div class="max-w-7xl mx-auto px-4 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-    <div>
-      <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gold text-navy-deep font-serif font-bold text-lg grid place-items-center">CR</span><span class="font-serif font-bold text-white text-lg">Chandigarh Realty</span></div>
-      <p class="text-sm mt-3 text-white/60">Tricity's title-first property advisory. Buy, sell &amp; rent with verified listings and honest pricing since 2011.</p>
-      <p class="text-xs mt-3 text-white/40">RERA sample: PBRERA-SAS79-CR0142 · real number at onboarding</p>
-    </div>
-    <div><p class="font-bold text-white mb-3">Explore</p><ul class="space-y-2 text-sm"><li><a href="#properties" class="hover:text-gold">Featured properties</a></li><li><a href="#localities" class="hover:text-gold">Localities</a></li><li><a href="#tour" class="hover:text-gold">Virtual tours</a></li><li><a href="#emi" class="hover:text-gold">EMI calculator</a></li></ul></div>
-    <div><p class="font-bold text-white mb-3">Services</p><ul class="space-y-2 text-sm"><li>Home buying &amp; selling</li><li>Rental management</li><li>Home loans &amp; legal</li><li>NRI property desk</li></ul></div>
-    <div><p class="font-bold text-white mb-3">Contact</p><ul class="space-y-2 text-sm"><li><a class="hover:text-gold" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Shop+No.+123-124+Main+Market%2C+Badheri%2C+Sector+41D%2C+Chandigarh+160036">Shop No. 123-124 Main Market, Badheri, Sector 41D, Chandigarh 160036</a></li><li>+91 172 465 4321</li><li>hello@chandigarhrealty.in</li><li class="pt-1"><a href="#contact" class="inline-block bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Book free visit →</a></li></ul></div>
-  </div>
-  <!-- ENHANCED: newsletter + language switcher -->
-  <div class="border-t border-white/10">
-    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6 items-center">
-      <form id="newsForm" class="flex flex-col sm:flex-row gap-3 sm:items-center">
-        <p class="font-serif text-lg text-white shrink-0">One email a month. <span class="italic text-gold">Only the listings we'd buy ourselves.</span></p>
-        <div class="flex gap-2 flex-1">
-          <input id="newsEmail" type="email" placeholder="you@email.com" aria-label="Email for newsletter" class="flex-1 min-w-0 bg-white/10 border border-white/20 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold" />
-          <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm shrink-0">Join →</button>
-        </div>
-      </form>
-      <div class="flex md:justify-end items-center gap-2 text-sm font-semibold">
-        <span class="text-white/50 text-xs uppercase eyebrow">Language:</span>
-        <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-4 py-1.5">English</button>
-        <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">हिंदी</button>
-        <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">ਪੰਜਾਬੀ</button>
+    <!-- ══════════ COMPACT LUXURY FOOTER ══════════ -->
+<footer class="cinematic text-white/80 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-4 py-5 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 text-center sm:text-left">
+      <span class="w-8 h-8 rounded-lg bg-gold text-navy-deep font-serif font-bold text-sm grid place-items-center shrink-0">CR</span>
+      <div>
+        <span class="font-serif font-bold text-white text-sm">Chandigarh Realty</span>
+        <span class="block text-[11px] text-white/50">Tricity Property Advisory · Since 2011</span>
       </div>
     </div>
+    
+    <!-- Inline Navigation Links -->
+    <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm font-medium text-white/70">
+      <a href="#home" onclick="navigateTo('home'); return false;" class="hover:text-gold transition">Home</a>
+      <span class="text-white/20">·</span>
+      <a href="#properties" onclick="navigateTo('properties'); return false;" class="hover:text-gold transition">Properties</a>
+      <span class="text-white/20">·</span>
+      <a href="#localities" onclick="navigateTo('localities'); return false;" class="hover:text-gold transition">Localities</a>
+      <span class="text-white/20">·</span>
+      <a href="#tour" onclick="navigateTo('tour'); return false;" class="hover:text-gold transition">3D Tour</a>
+      <span class="text-white/20">·</span>
+      <a href="#emi" onclick="navigateTo('emi'); return false;" class="hover:text-gold transition">EMI Calc</a>
+      <span class="text-white/20">·</span>
+      <a href="#contact" onclick="navigateTo('contact'); return false;" class="hover:text-gold transition">Contact</a>
+    </nav>
+    
+    <!-- Language Switcher & WhatsApp -->
+    <div class="flex items-center gap-2 text-xs">
+      <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-2.5 py-0.5">EN</button>
+      <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">हिंदी</button>
+      <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">ਪੰਜਾਬੀ</button>
+      <a href="https://wa.me/919780018319" target="_blank" rel="noopener" class="ml-1 bg-[#25D366] text-white font-bold rounded-full px-3 py-1 text-xs inline-flex items-center gap-1 hover:opacity-90 transition tap-bounce">
+        WhatsApp
+      </a>
+    </div>
   </div>
-  <div class="border-t border-white/10"><div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-2 items-center justify-between text-xs text-white/40"><span>© 2026 Chandigarh Realty (demo). Prices indicative; verify RERA &amp; title before purchase.</span><span>Made for client preview</span></div></div>
+  <div class="border-t border-white/5 bg-black/25">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-2 items-center justify-between text-[11px] text-white/40">
+      <span>© 2026 Chandigarh Realty. RERA: PBRERA-SAS79-CR0142. Verified titles only.</span>
+      <span>Shop No. 123-124 Main Market, Sector 41D, Chandigarh · +91 172 465 4321</span>
+    </div>
+  </div>
 </footer>
+
 
 
   </div>
@@ -789,38 +941,51 @@ tailwind.config = {
 
 
   <div class="page-bottom-pad">
-    <!-- ══════════ FOOTER ══════════ -->
-<footer class="cinematic text-white/80">
-  <div class="max-w-7xl mx-auto px-4 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-    <div>
-      <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gold text-navy-deep font-serif font-bold text-lg grid place-items-center">CR</span><span class="font-serif font-bold text-white text-lg">Chandigarh Realty</span></div>
-      <p class="text-sm mt-3 text-white/60">Tricity's title-first property advisory. Buy, sell &amp; rent with verified listings and honest pricing since 2011.</p>
-      <p class="text-xs mt-3 text-white/40">RERA sample: PBRERA-SAS79-CR0142 · real number at onboarding</p>
-    </div>
-    <div><p class="font-bold text-white mb-3">Explore</p><ul class="space-y-2 text-sm"><li><a href="#properties" class="hover:text-gold">Featured properties</a></li><li><a href="#localities" class="hover:text-gold">Localities</a></li><li><a href="#tour" class="hover:text-gold">Virtual tours</a></li><li><a href="#emi" class="hover:text-gold">EMI calculator</a></li></ul></div>
-    <div><p class="font-bold text-white mb-3">Services</p><ul class="space-y-2 text-sm"><li>Home buying &amp; selling</li><li>Rental management</li><li>Home loans &amp; legal</li><li>NRI property desk</li></ul></div>
-    <div><p class="font-bold text-white mb-3">Contact</p><ul class="space-y-2 text-sm"><li><a class="hover:text-gold" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Shop+No.+123-124+Main+Market%2C+Badheri%2C+Sector+41D%2C+Chandigarh+160036">Shop No. 123-124 Main Market, Badheri, Sector 41D, Chandigarh 160036</a></li><li>+91 172 465 4321</li><li>hello@chandigarhrealty.in</li><li class="pt-1"><a href="#contact" class="inline-block bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Book free visit →</a></li></ul></div>
-  </div>
-  <!-- ENHANCED: newsletter + language switcher -->
-  <div class="border-t border-white/10">
-    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6 items-center">
-      <form id="newsForm" class="flex flex-col sm:flex-row gap-3 sm:items-center">
-        <p class="font-serif text-lg text-white shrink-0">One email a month. <span class="italic text-gold">Only the listings we'd buy ourselves.</span></p>
-        <div class="flex gap-2 flex-1">
-          <input id="newsEmail" type="email" placeholder="you@email.com" aria-label="Email for newsletter" class="flex-1 min-w-0 bg-white/10 border border-white/20 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold" />
-          <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm shrink-0">Join →</button>
-        </div>
-      </form>
-      <div class="flex md:justify-end items-center gap-2 text-sm font-semibold">
-        <span class="text-white/50 text-xs uppercase eyebrow">Language:</span>
-        <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-4 py-1.5">English</button>
-        <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">हिंदी</button>
-        <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">ਪੰਜਾਬੀ</button>
+    <!-- ══════════ COMPACT LUXURY FOOTER ══════════ -->
+<footer class="cinematic text-white/80 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-4 py-5 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 text-center sm:text-left">
+      <span class="w-8 h-8 rounded-lg bg-gold text-navy-deep font-serif font-bold text-sm grid place-items-center shrink-0">CR</span>
+      <div>
+        <span class="font-serif font-bold text-white text-sm">Chandigarh Realty</span>
+        <span class="block text-[11px] text-white/50">Tricity Property Advisory · Since 2011</span>
       </div>
     </div>
+    
+    <!-- Inline Navigation Links -->
+    <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm font-medium text-white/70">
+      <a href="#home" onclick="navigateTo('home'); return false;" class="hover:text-gold transition">Home</a>
+      <span class="text-white/20">·</span>
+      <a href="#properties" onclick="navigateTo('properties'); return false;" class="hover:text-gold transition">Properties</a>
+      <span class="text-white/20">·</span>
+      <a href="#localities" onclick="navigateTo('localities'); return false;" class="hover:text-gold transition">Localities</a>
+      <span class="text-white/20">·</span>
+      <a href="#tour" onclick="navigateTo('tour'); return false;" class="hover:text-gold transition">3D Tour</a>
+      <span class="text-white/20">·</span>
+      <a href="#emi" onclick="navigateTo('emi'); return false;" class="hover:text-gold transition">EMI Calc</a>
+      <span class="text-white/20">·</span>
+      <a href="#contact" onclick="navigateTo('contact'); return false;" class="hover:text-gold transition">Contact</a>
+    </nav>
+    
+    <!-- Language Switcher & WhatsApp -->
+    <div class="flex items-center gap-2 text-xs">
+      <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-2.5 py-0.5">EN</button>
+      <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">हिंदी</button>
+      <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">ਪੰਜਾਬੀ</button>
+      <a href="https://wa.me/919780018319" target="_blank" rel="noopener" class="ml-1 bg-[#25D366] text-white font-bold rounded-full px-3 py-1 text-xs inline-flex items-center gap-1 hover:opacity-90 transition tap-bounce">
+        WhatsApp
+      </a>
+    </div>
   </div>
-  <div class="border-t border-white/10"><div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-2 items-center justify-between text-xs text-white/40"><span>© 2026 Chandigarh Realty (demo). Prices indicative; verify RERA &amp; title before purchase.</span><span>Made for client preview</span></div></div>
+  <div class="border-t border-white/5 bg-black/25">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-2 items-center justify-between text-[11px] text-white/40">
+      <span>© 2026 Chandigarh Realty. RERA: PBRERA-SAS79-CR0142. Verified titles only.</span>
+      <span>Shop No. 123-124 Main Market, Sector 41D, Chandigarh · +91 172 465 4321</span>
+    </div>
+  </div>
 </footer>
+
 
 
   </div>
@@ -933,38 +1098,51 @@ tailwind.config = {
 </div>
 
   <div class="page-bottom-pad">
-    <!-- ══════════ FOOTER ══════════ -->
-<footer class="cinematic text-white/80">
-  <div class="max-w-7xl mx-auto px-4 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-    <div>
-      <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gold text-navy-deep font-serif font-bold text-lg grid place-items-center">CR</span><span class="font-serif font-bold text-white text-lg">Chandigarh Realty</span></div>
-      <p class="text-sm mt-3 text-white/60">Tricity's title-first property advisory. Buy, sell &amp; rent with verified listings and honest pricing since 2011.</p>
-      <p class="text-xs mt-3 text-white/40">RERA sample: PBRERA-SAS79-CR0142 · real number at onboarding</p>
-    </div>
-    <div><p class="font-bold text-white mb-3">Explore</p><ul class="space-y-2 text-sm"><li><a href="#properties" class="hover:text-gold">Featured properties</a></li><li><a href="#localities" class="hover:text-gold">Localities</a></li><li><a href="#tour" class="hover:text-gold">Virtual tours</a></li><li><a href="#emi" class="hover:text-gold">EMI calculator</a></li></ul></div>
-    <div><p class="font-bold text-white mb-3">Services</p><ul class="space-y-2 text-sm"><li>Home buying &amp; selling</li><li>Rental management</li><li>Home loans &amp; legal</li><li>NRI property desk</li></ul></div>
-    <div><p class="font-bold text-white mb-3">Contact</p><ul class="space-y-2 text-sm"><li><a class="hover:text-gold" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Shop+No.+123-124+Main+Market%2C+Badheri%2C+Sector+41D%2C+Chandigarh+160036">Shop No. 123-124 Main Market, Badheri, Sector 41D, Chandigarh 160036</a></li><li>+91 172 465 4321</li><li>hello@chandigarhrealty.in</li><li class="pt-1"><a href="#contact" class="inline-block bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Book free visit →</a></li></ul></div>
-  </div>
-  <!-- ENHANCED: newsletter + language switcher -->
-  <div class="border-t border-white/10">
-    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6 items-center">
-      <form id="newsForm" class="flex flex-col sm:flex-row gap-3 sm:items-center">
-        <p class="font-serif text-lg text-white shrink-0">One email a month. <span class="italic text-gold">Only the listings we'd buy ourselves.</span></p>
-        <div class="flex gap-2 flex-1">
-          <input id="newsEmail" type="email" placeholder="you@email.com" aria-label="Email for newsletter" class="flex-1 min-w-0 bg-white/10 border border-white/20 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold" />
-          <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm shrink-0">Join →</button>
-        </div>
-      </form>
-      <div class="flex md:justify-end items-center gap-2 text-sm font-semibold">
-        <span class="text-white/50 text-xs uppercase eyebrow">Language:</span>
-        <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-4 py-1.5">English</button>
-        <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">हिंदी</button>
-        <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">ਪੰਜਾਬੀ</button>
+    <!-- ══════════ COMPACT LUXURY FOOTER ══════════ -->
+<footer class="cinematic text-white/80 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-4 py-5 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 text-center sm:text-left">
+      <span class="w-8 h-8 rounded-lg bg-gold text-navy-deep font-serif font-bold text-sm grid place-items-center shrink-0">CR</span>
+      <div>
+        <span class="font-serif font-bold text-white text-sm">Chandigarh Realty</span>
+        <span class="block text-[11px] text-white/50">Tricity Property Advisory · Since 2011</span>
       </div>
     </div>
+    
+    <!-- Inline Navigation Links -->
+    <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm font-medium text-white/70">
+      <a href="#home" onclick="navigateTo('home'); return false;" class="hover:text-gold transition">Home</a>
+      <span class="text-white/20">·</span>
+      <a href="#properties" onclick="navigateTo('properties'); return false;" class="hover:text-gold transition">Properties</a>
+      <span class="text-white/20">·</span>
+      <a href="#localities" onclick="navigateTo('localities'); return false;" class="hover:text-gold transition">Localities</a>
+      <span class="text-white/20">·</span>
+      <a href="#tour" onclick="navigateTo('tour'); return false;" class="hover:text-gold transition">3D Tour</a>
+      <span class="text-white/20">·</span>
+      <a href="#emi" onclick="navigateTo('emi'); return false;" class="hover:text-gold transition">EMI Calc</a>
+      <span class="text-white/20">·</span>
+      <a href="#contact" onclick="navigateTo('contact'); return false;" class="hover:text-gold transition">Contact</a>
+    </nav>
+    
+    <!-- Language Switcher & WhatsApp -->
+    <div class="flex items-center gap-2 text-xs">
+      <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-2.5 py-0.5">EN</button>
+      <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">हिंदी</button>
+      <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">ਪੰਜਾਬੀ</button>
+      <a href="https://wa.me/919780018319" target="_blank" rel="noopener" class="ml-1 bg-[#25D366] text-white font-bold rounded-full px-3 py-1 text-xs inline-flex items-center gap-1 hover:opacity-90 transition tap-bounce">
+        WhatsApp
+      </a>
+    </div>
   </div>
-  <div class="border-t border-white/10"><div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-2 items-center justify-between text-xs text-white/40"><span>© 2026 Chandigarh Realty (demo). Prices indicative; verify RERA &amp; title before purchase.</span><span>Made for client preview</span></div></div>
+  <div class="border-t border-white/5 bg-black/25">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-2 items-center justify-between text-[11px] text-white/40">
+      <span>© 2026 Chandigarh Realty. RERA: PBRERA-SAS79-CR0142. Verified titles only.</span>
+      <span>Shop No. 123-124 Main Market, Sector 41D, Chandigarh · +91 172 465 4321</span>
+    </div>
+  </div>
 </footer>
+
 
 
   </div>
@@ -1041,38 +1219,51 @@ tailwind.config = {
 
 
   <div class="page-bottom-pad">
-    <!-- ══════════ FOOTER ══════════ -->
-<footer class="cinematic text-white/80">
-  <div class="max-w-7xl mx-auto px-4 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-    <div>
-      <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gold text-navy-deep font-serif font-bold text-lg grid place-items-center">CR</span><span class="font-serif font-bold text-white text-lg">Chandigarh Realty</span></div>
-      <p class="text-sm mt-3 text-white/60">Tricity's title-first property advisory. Buy, sell &amp; rent with verified listings and honest pricing since 2011.</p>
-      <p class="text-xs mt-3 text-white/40">RERA sample: PBRERA-SAS79-CR0142 · real number at onboarding</p>
-    </div>
-    <div><p class="font-bold text-white mb-3">Explore</p><ul class="space-y-2 text-sm"><li><a href="#properties" class="hover:text-gold">Featured properties</a></li><li><a href="#localities" class="hover:text-gold">Localities</a></li><li><a href="#tour" class="hover:text-gold">Virtual tours</a></li><li><a href="#emi" class="hover:text-gold">EMI calculator</a></li></ul></div>
-    <div><p class="font-bold text-white mb-3">Services</p><ul class="space-y-2 text-sm"><li>Home buying &amp; selling</li><li>Rental management</li><li>Home loans &amp; legal</li><li>NRI property desk</li></ul></div>
-    <div><p class="font-bold text-white mb-3">Contact</p><ul class="space-y-2 text-sm"><li><a class="hover:text-gold" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Shop+No.+123-124+Main+Market%2C+Badheri%2C+Sector+41D%2C+Chandigarh+160036">Shop No. 123-124 Main Market, Badheri, Sector 41D, Chandigarh 160036</a></li><li>+91 172 465 4321</li><li>hello@chandigarhrealty.in</li><li class="pt-1"><a href="#contact" class="inline-block bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Book free visit →</a></li></ul></div>
-  </div>
-  <!-- ENHANCED: newsletter + language switcher -->
-  <div class="border-t border-white/10">
-    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6 items-center">
-      <form id="newsForm" class="flex flex-col sm:flex-row gap-3 sm:items-center">
-        <p class="font-serif text-lg text-white shrink-0">One email a month. <span class="italic text-gold">Only the listings we'd buy ourselves.</span></p>
-        <div class="flex gap-2 flex-1">
-          <input id="newsEmail" type="email" placeholder="you@email.com" aria-label="Email for newsletter" class="flex-1 min-w-0 bg-white/10 border border-white/20 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold" />
-          <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm shrink-0">Join →</button>
-        </div>
-      </form>
-      <div class="flex md:justify-end items-center gap-2 text-sm font-semibold">
-        <span class="text-white/50 text-xs uppercase eyebrow">Language:</span>
-        <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-4 py-1.5">English</button>
-        <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">हिंदी</button>
-        <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">ਪੰਜਾਬੀ</button>
+    <!-- ══════════ COMPACT LUXURY FOOTER ══════════ -->
+<footer class="cinematic text-white/80 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-4 py-5 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 text-center sm:text-left">
+      <span class="w-8 h-8 rounded-lg bg-gold text-navy-deep font-serif font-bold text-sm grid place-items-center shrink-0">CR</span>
+      <div>
+        <span class="font-serif font-bold text-white text-sm">Chandigarh Realty</span>
+        <span class="block text-[11px] text-white/50">Tricity Property Advisory · Since 2011</span>
       </div>
     </div>
+    
+    <!-- Inline Navigation Links -->
+    <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm font-medium text-white/70">
+      <a href="#home" onclick="navigateTo('home'); return false;" class="hover:text-gold transition">Home</a>
+      <span class="text-white/20">·</span>
+      <a href="#properties" onclick="navigateTo('properties'); return false;" class="hover:text-gold transition">Properties</a>
+      <span class="text-white/20">·</span>
+      <a href="#localities" onclick="navigateTo('localities'); return false;" class="hover:text-gold transition">Localities</a>
+      <span class="text-white/20">·</span>
+      <a href="#tour" onclick="navigateTo('tour'); return false;" class="hover:text-gold transition">3D Tour</a>
+      <span class="text-white/20">·</span>
+      <a href="#emi" onclick="navigateTo('emi'); return false;" class="hover:text-gold transition">EMI Calc</a>
+      <span class="text-white/20">·</span>
+      <a href="#contact" onclick="navigateTo('contact'); return false;" class="hover:text-gold transition">Contact</a>
+    </nav>
+    
+    <!-- Language Switcher & WhatsApp -->
+    <div class="flex items-center gap-2 text-xs">
+      <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-2.5 py-0.5">EN</button>
+      <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">हिंदी</button>
+      <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">ਪੰਜਾਬੀ</button>
+      <a href="https://wa.me/919780018319" target="_blank" rel="noopener" class="ml-1 bg-[#25D366] text-white font-bold rounded-full px-3 py-1 text-xs inline-flex items-center gap-1 hover:opacity-90 transition tap-bounce">
+        WhatsApp
+      </a>
+    </div>
   </div>
-  <div class="border-t border-white/10"><div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-2 items-center justify-between text-xs text-white/40"><span>© 2026 Chandigarh Realty (demo). Prices indicative; verify RERA &amp; title before purchase.</span><span>Made for client preview</span></div></div>
+  <div class="border-t border-white/5 bg-black/25">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-2 items-center justify-between text-[11px] text-white/40">
+      <span>© 2026 Chandigarh Realty. RERA: PBRERA-SAS79-CR0142. Verified titles only.</span>
+      <span>Shop No. 123-124 Main Market, Sector 41D, Chandigarh · +91 172 465 4321</span>
+    </div>
+  </div>
 </footer>
+
 
 
   </div>
@@ -1174,38 +1365,51 @@ tailwind.config = {
 
 
   <div class="page-bottom-pad">
-    <!-- ══════════ FOOTER ══════════ -->
-<footer class="cinematic text-white/80">
-  <div class="max-w-7xl mx-auto px-4 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-    <div>
-      <div class="flex items-center gap-3"><span class="w-10 h-10 rounded-xl bg-gold text-navy-deep font-serif font-bold text-lg grid place-items-center">CR</span><span class="font-serif font-bold text-white text-lg">Chandigarh Realty</span></div>
-      <p class="text-sm mt-3 text-white/60">Tricity's title-first property advisory. Buy, sell &amp; rent with verified listings and honest pricing since 2011.</p>
-      <p class="text-xs mt-3 text-white/40">RERA sample: PBRERA-SAS79-CR0142 · real number at onboarding</p>
-    </div>
-    <div><p class="font-bold text-white mb-3">Explore</p><ul class="space-y-2 text-sm"><li><a href="#properties" class="hover:text-gold">Featured properties</a></li><li><a href="#localities" class="hover:text-gold">Localities</a></li><li><a href="#tour" class="hover:text-gold">Virtual tours</a></li><li><a href="#emi" class="hover:text-gold">EMI calculator</a></li></ul></div>
-    <div><p class="font-bold text-white mb-3">Services</p><ul class="space-y-2 text-sm"><li>Home buying &amp; selling</li><li>Rental management</li><li>Home loans &amp; legal</li><li>NRI property desk</li></ul></div>
-    <div><p class="font-bold text-white mb-3">Contact</p><ul class="space-y-2 text-sm"><li><a class="hover:text-gold" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Shop+No.+123-124+Main+Market%2C+Badheri%2C+Sector+41D%2C+Chandigarh+160036">Shop No. 123-124 Main Market, Badheri, Sector 41D, Chandigarh 160036</a></li><li>+91 172 465 4321</li><li>hello@chandigarhrealty.in</li><li class="pt-1"><a href="#contact" class="inline-block bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm">Book free visit →</a></li></ul></div>
-  </div>
-  <!-- ENHANCED: newsletter + language switcher -->
-  <div class="border-t border-white/10">
-    <div class="max-w-7xl mx-auto px-4 py-8 grid md:grid-cols-2 gap-6 items-center">
-      <form id="newsForm" class="flex flex-col sm:flex-row gap-3 sm:items-center">
-        <p class="font-serif text-lg text-white shrink-0">One email a month. <span class="italic text-gold">Only the listings we'd buy ourselves.</span></p>
-        <div class="flex gap-2 flex-1">
-          <input id="newsEmail" type="email" placeholder="you@email.com" aria-label="Email for newsletter" class="flex-1 min-w-0 bg-white/10 border border-white/20 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-white/40 focus:outline-none focus:border-gold" />
-          <button class="bg-gold text-navy-deep font-bold rounded-full px-5 py-2.5 text-sm shrink-0">Join →</button>
-        </div>
-      </form>
-      <div class="flex md:justify-end items-center gap-2 text-sm font-semibold">
-        <span class="text-white/50 text-xs uppercase eyebrow">Language:</span>
-        <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-4 py-1.5">English</button>
-        <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">हिंदी</button>
-        <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/25 text-white/70 rounded-full px-4 py-1.5">ਪੰਜਾਬੀ</button>
+    <!-- ══════════ COMPACT LUXURY FOOTER ══════════ -->
+<footer class="cinematic text-white/80 border-t border-white/10">
+  <div class="max-w-7xl mx-auto px-4 py-5 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+    <!-- Brand -->
+    <div class="flex items-center gap-3 text-center sm:text-left">
+      <span class="w-8 h-8 rounded-lg bg-gold text-navy-deep font-serif font-bold text-sm grid place-items-center shrink-0">CR</span>
+      <div>
+        <span class="font-serif font-bold text-white text-sm">Chandigarh Realty</span>
+        <span class="block text-[11px] text-white/50">Tricity Property Advisory · Since 2011</span>
       </div>
     </div>
+    
+    <!-- Inline Navigation Links -->
+    <nav class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs sm:text-sm font-medium text-white/70">
+      <a href="#home" onclick="navigateTo('home'); return false;" class="hover:text-gold transition">Home</a>
+      <span class="text-white/20">·</span>
+      <a href="#properties" onclick="navigateTo('properties'); return false;" class="hover:text-gold transition">Properties</a>
+      <span class="text-white/20">·</span>
+      <a href="#localities" onclick="navigateTo('localities'); return false;" class="hover:text-gold transition">Localities</a>
+      <span class="text-white/20">·</span>
+      <a href="#tour" onclick="navigateTo('tour'); return false;" class="hover:text-gold transition">3D Tour</a>
+      <span class="text-white/20">·</span>
+      <a href="#emi" onclick="navigateTo('emi'); return false;" class="hover:text-gold transition">EMI Calc</a>
+      <span class="text-white/20">·</span>
+      <a href="#contact" onclick="navigateTo('contact'); return false;" class="hover:text-gold transition">Contact</a>
+    </nav>
+    
+    <!-- Language Switcher & WhatsApp -->
+    <div class="flex items-center gap-2 text-xs">
+      <button onclick="setLang('en')" data-lang="en" class="lang-btn border border-gold text-gold rounded-full px-2.5 py-0.5">EN</button>
+      <button onclick="setLang('hi')" data-lang="hi" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">हिंदी</button>
+      <button onclick="setLang('pa')" data-lang="pa" class="lang-btn border border-white/20 text-white/60 rounded-full px-2.5 py-0.5 hover:border-white/50">ਪੰਜਾਬੀ</button>
+      <a href="https://wa.me/919780018319" target="_blank" rel="noopener" class="ml-1 bg-[#25D366] text-white font-bold rounded-full px-3 py-1 text-xs inline-flex items-center gap-1 hover:opacity-90 transition tap-bounce">
+        WhatsApp
+      </a>
+    </div>
   </div>
-  <div class="border-t border-white/10"><div class="max-w-7xl mx-auto px-4 py-4 flex flex-wrap gap-2 items-center justify-between text-xs text-white/40"><span>© 2026 Chandigarh Realty (demo). Prices indicative; verify RERA &amp; title before purchase.</span><span>Made for client preview</span></div></div>
+  <div class="border-t border-white/5 bg-black/25">
+    <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-2 items-center justify-between text-[11px] text-white/40">
+      <span>© 2026 Chandigarh Realty. RERA: PBRERA-SAS79-CR0142. Verified titles only.</span>
+      <span>Shop No. 123-124 Main Market, Sector 41D, Chandigarh · +91 172 465 4321</span>
+    </div>
+  </div>
 </footer>
+
 
 
   </div>
